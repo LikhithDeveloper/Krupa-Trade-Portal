@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Krupa Corporation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Quicksand:wght@300..700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "Quicksand", sans-serif;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f6f6;
+        color: #333;
+      }
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 300px;
+        background-color: #4729c0;
+        color: black;
+        background-color: white;
+        padding: 20px;
+        transition: all 0.3s ease;
+      }
+      .main-content {
+        flex-grow: 1;
+        transition: all 0.3s ease;
+      }
+      .logo {
+        width: 100%;
+        max-width: 200px;
+        margin-bottom: 30px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 5px;
+        color: #292f46;
+        text-decoration: none;
+        font-size: 17px;
+        gap: 9px;
+        font-weight: 700;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+      }
+      .nav-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      .nav-item.active {
+        background-color: #00a1ff;
+        font-weight: 600;
+      }
+      .icon {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        margin-right: 10px;
+      }
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        background-color: #fff;
+        padding: 10px;
+      }
+      .search-bar {
+        display: flex;
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+      .search-bar input {
+        flex-grow: 1;
+        padding: 10px 15px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background-color: #dee2e6;
+      }
+      .search-bar button {
+        padding: 10px 15px;
+        background-color: #dee2e6;
+        border: none;
+        cursor: pointer;
+      }
+      .top-icons {
+        display: flex;
+        gap: 20px;
+      }
+      .top-icons .icon {
+        width: 24px;
+        height: 24px;
+        fill: #666;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: black;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .filter-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 30px;
+        background-color: #fff;
+        border: 1px solid black;
+        border-radius: 20px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+      .filter-button .icon {
+        margin-left: 5px;
+        width: 16px;
+        color: white;
+        background-color: #324558;
+        border-radius: 50%;
+        height: 16px;
+      }
+      .cont {
+        padding: 10px;
+        overflow-y: scroll;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 300px;
+        }
+        .nav-item {
+          justify-content: flex-start;
+          padding: 15px;
+        }
+        .top-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .search-bar {
+          width: 100%;
+        }
+        .filter-button {
+          width: 100%;
+          justify-content: center;
+        }
+        .menu-toggle {
+          display: block;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          flex-direction: column;
+        }
+        .sidebar {
+          position: fixed;
+          height: 100%;
+          z-index: 1000;
+          left: -300px;
+          transition: left 0.3s ease;
+        }
+        .menu-toggle {
+          display: block;
+          position: fixed;
+          top: 15px;
+          left: 15px;
+          z-index: 1001;
+        }
+        .sidebar.show {
+          left: 0;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .top-bar {
+          padding: 15px;
+        }
+        .cont {
+          padding: 20px;
+        }
+        .filter-button {
+          width: 100%;
+        }
+      }
+
+      .container-support-ticket {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        color: #060606;
+        font-weight: 700;
+      }
+
+      p {
+        font-size: 13px;
+        font-weight: 500;
+        color: #777777;
+        margin-bottom: 20px;
+      }
+
+      .ticket-status-tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #eeeeee;
+      }
+
+      .ticket-status-tabs .tab {
+        padding: 10px 20px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 3px 3px 0 0;
+        transition: background-color 0.3s;
+      }
+
+      .ticket-status-tabs .tab.active {
+        border-bottom: 2px solid #007bff;
+        color: black;
+      }
+
+      .ticket-status-tabs .tab:hover:not(.active) {
+        background-color: #e6e6e6;
+      }
+
+      .ticket-status-tabs .create-ticket-btn {
+        margin-left: auto;
+        padding: 5px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        transition: background-color 0.3s;
+      }
+
+      .ticket-status-tabs .create-ticket-btn:hover {
+        background-color: #0056b3;
+      }
+
+      .ticket-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+
+      .ticket-table th,
+      .ticket-table td {
+        color: #5d9ef3;
+        font-size: small;
+        font-weight: 600;
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .ticket-table th {
+        background-color: #f5f5f5;
+      }
+
+      .ticket-table td {
+        color: #666;
+      }
+
+      @media (max-width: 767px) {
+        .container-support-ticket {
+          padding: 20px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+
+        .ticket-status-tabs {
+          flex-wrap: wrap;
+        }
+
+        .ticket-status-tabs .tab,
+        .ticket-status-tabs .create-ticket-btn {
+          padding: 8px 12px;
+          font-size: 12px;
+          margin-bottom: 10px;
+        }
+
+        .ticket-status-tabs .create-ticket-btn {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .ticket-table {
+          font-size: 12px;
+        }
+
+        .ticket-table th,
+        .ticket-table td {
+          padding: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .ticket-status-tabs .tab,
+        .ticket-status-tabs .create-ticket-btn {
+          padding: 6px 10px;
+          font-size: 11px;
+        }
+
+        .ticket-table {
+          font-size: 10px;
+        }
+
+        .ticket-table th,
+        .ticket-table td {
+          padding: 6px;
+        }
+      }
+      .cont {
+        padding: 10px 50px;
+        height: 89vh;
+        overflow-y: scroll;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="menu-toggle">☰</button>
+      <aside class="sidebar">
+        <img src="/images/krupa.svg" alt="Logo" class="logo" />
+
+        <nav
+          style="
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+          "
+        >
+          <a href="#" class="nav-item">
+            <img
+              src="/images/dashboard.svg"
+              alt="Dashboard Icon"
+              class="icon"
+            />
+            <span>Dashboard</span>
+          </a>
+          <a href="/products/{{id}}/" class="nav-item">
+            <img src="/images/products.svg" alt="Products Icon" class="icon" />
+            <span>Products</span>
+          </a>
+          <a href="/orders/{{id}}/" class="nav-item">
+            <img src="/images/orders.svg" alt="Orders Icon" class="icon" />
+            <span>Orders</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="/images/invoice.svg" alt="Invoices Icon" class="icon" />
+            <span>My Invoices</span>
+          </a>
+          <a href="/request/{{id}}/" class="nav-item">
+            <img src="/images/quote.svg" alt="Quotes Icon" class="icon" />
+            <span>My Request For Quote</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="/images/track.svg" alt="Track Orders Icon" class="icon" />
+            <span>Track Orders</span>
+          </a>
+          <a href="/accounts/{{id}}/" class="nav-item">
+            <img src="/images/account.svg" alt="Account Icon" class="icon" />
+            <span>Account</span>
+          </a>
+          <a href="#" class="nav-item active">
+            <img
+              src="/images/tickets.svg"
+              alt="Support Tickets Icon"
+              class="icon"
+            />
+            <span>Support Tickets</span>
+          </a>
+        </nav>
+      </aside>
+      <main class="main-content">
+        <div class="top-bar">
+          <div class="search-bar">
+            <input type="text" placeholder="Search term" />
+            <button>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div class="top-icons">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              ></path>
+            </svg>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <div class="cont">
+          <h1>Support Tickets</h1>
+          <p>
+            Do you have a question or problem? The support ticket system allows
+            us to respond to your inquiries. Submit a ticket and we will get
+            back to you.
+          </p>
+
+          <div class="container-support-ticket">
+            <div class="ticket-status-tabs">
+              <a
+                onclick="displayTickets(records)"
+                class="tab active"
+                id="tab1"
+                style="cursor: pointer"
+                >All</a
+              >
+              <a
+                onclick="filterTicket1()"
+                class="tab"
+                id="tab2"
+                style="cursor: pointer"
+                >Open</a
+              >
+              <a
+                onclick="filterTicket2()"
+                class="tab"
+                id="tab3"
+                style="cursor: pointer"
+                >Answered</a
+              >
+              <a href="/support_create/{{id}}/" class="create-ticket-btn"
+                >Create</a
+              >
+            </div>
+            <table class="ticket-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Subject</th>
+                  <th>Status</th>
+                  <th>Department</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody class="ticket-data">
+                <tr>
+                  <td>#67287</td>
+                  <td>Issue with adding websites</td>
+                  <td>closed</td>
+                  <td>General Enquiries</td>
+                  <td>2024-02-26 09:22:28</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      document
+        .querySelector(".menu-toggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("show");
+        });
+      const records = JSON.parse('{{ tickets|safe }}');
+      console.log(records);
+     
+      const active1 = document.getElementById("tab1");
+      const active2 = document.getElementById("tab2");
+      const active3 = document.getElementById("tab3");
+
+      const list = document.querySelector(".ticket-data");
+      // displayTickets(records);
+      function displayTickets(data) {
+        list.innerHTML = "";
+        data.forEach((pro) => {
+          const card = `
+          <tr>
+                  <td>${pro.fields.order_id}</td>
+                  <td>${pro.fields.subject}</td>
+                  <td>${pro.fields.answered == true?"Closed":"Not closed"}</td>
+                  <td>${pro.fields.department}</td>
+                  <td>${pro.fields.created_at}</td>
+                </tr>`;
+          list.innerHTML += card;
+        });
+        active1.classList.add("active");
+        active2.classList.remove("active");
+        active3.classList.remove("active");
+      }
+
+      displayTickets(records);
+      function filterTicket1() {
+        
+        list.innerHTML = "";
+        const filterdata = records.filter((pro) => pro.fields.answered == false);
+        displayTickets(filterdata);
+        active1.classList.remove("active");
+        active2.classList.add("active");
+        active3.classList.remove("active");
+      }
+
+      function filterTicket2() {
+        list.innerHTML = "";
+        const filterdata = records.filter((pro) => pro.fields.answered == true);
+        displayTickets(filterdata);
+        active1.classList.remove("active");
+        active2.classList.remove("active");
+        active3.classList.add("active");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Krupa Corporation</title>
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f6f6f6;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 280px;
+            background-color: #ffffff;
+            color: #292F46;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .sidebar .dropdown-content {
+            display: none;
+            flex-direction: column;
+            
+        }
+        .sidebar .dropdown-content a {
+            padding: 15px;
+            color: #292F46;
+            background-color: #f7f4f4;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 15px;
+            text-align: center;
+            border-radius: 10px;
+            transition: background-color 0.2s;
+        }
+        .sidebar .dropdown-content .active {
+            background-color: #00A1ff;
+            color: white;
+        }
+        .sidebar .dropdown-content.show {
+            display: flex;
+        }
+        .logo {
+            width: 100%;
+            max-width: 180px;
+            margin-bottom: 30px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            color: #292F46;
+            text-decoration: none;
+            background-color: #f7f4f4;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+        }
+        .nav-item.active {
+            background-color: #E5E8Eb;
+            color: #252525;
+            
+        }
+        .drop-active{
+            border: 1px solid #00A1ff;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+        .arrow.down {
+            transform: rotate(-90deg);
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: black;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .cont {
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: fixed;
+                height: 100%;
+                z-index: 1000;
+                left: -250px;
+                transition: left 0.3s ease;
+            }
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                z-index: 1001;
+            }
+            .sidebar.show {
+                left: 0;
+            }
+        }
+        .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;  /* Adjusted for better spacing */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.search-bar {
+    display: flex;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 300px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    background-color: #DEE2E6;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-bar button {
+    padding: 10px;
+    background-color: #DEE2E6;
+    border: none;
+    cursor: pointer;
+}
+
+.top-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.top-icons .icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+    }
+    
+    .search-bar {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .top-icons {
+        width: 100%;
+        justify-content: flex-end;  
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 10px;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .top-icons {
+        gap: 10px; 
+    }
+}
+
+.main-content {
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        margin-left: 0;
+    }
+    .sidebar.show + .main-content {
+        margin-left: 250px;
+    }
+}
+
+.top-bar {
+    position: relative;
+    margin-top: 0;
+    margin-left: 0;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cont {
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.dashboard-wrapper {
+  width: 90%;
+  margin: 30px auto;
+  background-color: #fff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+  padding: 25px;
+  border-radius: 10px;
+}
+
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 15px;
+}
+
+.header-title {
+  font-size: 26px;
+  color: #333;
+  margin: 0;
+}
+
+.action-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-icon {
+  font-size: 18px;
+  margin-left: 15px;
+  color: #666;
+  cursor: pointer;
+}
+
+.add-product-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-product-btn:hover {
+  background-color: #0056b3;
+}
+
+.product-table-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.product-table-list th, .product-table-list td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.product-table-list th {
+  background-color: #f0f0f0;
+  color: #444;
+  font-weight: bold;
+}
+
+.product-thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.product-table-list td {
+  color: #333;
+}
+
+.table-icon {
+  color: #777;
+  cursor: pointer;
+}
+
+.table-icon:hover {
+  color: #000;
+}
+
+/* Responsive Styles */
+
+/* Tablet view adjustments */
+@media screen and (max-width: 1024px) {
+  .dashboard-wrapper {
+    width: 95%;
+  }
+
+  .header-title {
+    font-size: 22px;
+  }
+
+  .add-product-btn {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .product-table-list th, .product-table-list td {
+    padding: 10px 14px;
+  }
+
+  .action-icons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Mobile view adjustments */
+@media screen and (max-width: 768px) {
+  .product-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-icons {
+    margin-top: 10px;
+    gap: 12px;
+  }
+
+  .product-table-list, .product-table-list th, .product-table-list td {
+    font-size: 12px;
+  }
+
+  .product-thumbnail {
+    width: 30px;
+    height: 30px;
+  }
+
+  .product-table-list th, .product-table-list td {
+    padding: 8px 10px;
+  }
+
+  .product-header {
+    align-items: flex-start;
+  }
+}
+
+/* Small mobile view adjustments */
+@media screen and (max-width: 480px) {
+  .product-table-list {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .product-header {
+    font-size: 18px;
+  }
+
+  .action-icons {
+    gap: 5px;
+  }
+
+  .product-table-list th, .product-table-list td {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+  .add-product-btn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="menu-toggle">☰</button>
+        <aside class="sidebar">
+            <img src="images/krupa.svg" alt="Logo" class="logo">
+            <nav style="height: 80vh; display: flex; flex-direction: column;">
+                <div class="nav-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <img src="images/dashboard-light.svg" alt="Dashboard Icon" class="icon">
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+                <div class="nav-item drop-active active" data-dropdown="products-dropdown">
+                    <div>
+                        <img src="images/products-dark.svg" alt="Products Icon" class="icon">
+                        <span>Products</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div id="products-dropdown" class="dropdown-content show">
+                    <a href="#" class="active">Products List</a>
+                    <a href="#">Category List</a>
+                </div>
+                <div class="nav-item" data-dropdown="leads-dropdown">
+                    <div>
+                        <img src="images/leads.svg" alt="Leads Icon" class="icon">
+                        <span>Leads</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div class="nav-item" data-dropdown="users-dropdown">
+                    <div>
+                        <img src="images/user-dark.svg" alt="Users Icon" class="icon">
+                        <span>Users</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div class="nav-item" data-dropdown="sales-dropdown">
+                    <div>
+                        <img src="images/sales-dark.svg" alt="Sales Icon" class="icon">
+                        <span>Sales</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div class="nav-item" data-dropdown="purchases-dropdown">
+                    <div>
+                        <img src="images/purchaces.svg" alt="Purchases Icon" class="icon">
+                        <span>Purchases</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search term">
+                    <button>
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                    </button>
+                </div>
+                <div class="top-icons">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"></path></svg>
+                </div>
+            </div>
+            <div class="cont">
+
+                <div class="dashboard-wrapper">
+                    <header class="product-header">
+                      <h1 class="header-title">All Products</h1>
+                      <div class="action-icons">
+                        <a href="/addproducts/" style="text-decoration: none;" class="add-product-btn">+ New</a>
+                        <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/refresh.svg" alt=""></a>
+                        <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/threedots.svg" alt=""></a>
+                        <a style="background-color: #Fc8F31;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;"><img src="images/question.svg" alt=""></a>
+                      </div>
+                    </header>
+                
+                    <table class="product-table-list">
+                      <thead>
+                        <tr>
+                          <th><img src="images/table1.svg" alt=""> </th>
+                          <th>Product Name</th>
+                          <th>Categories</th>
+                          <th>Subcategory</th>
+                          <th>Quantity</th>
+                          <th>Amount</th>
+                          <th><img src="images/search.svg" alt=""></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for i in products %}
+                        <tr>
+                          <td><img src="{{ i.product_image.url }}" alt="Product Image" class="product-thumbnail"></td>
+                          <td>{{i.product_name}}</td>
+                          <td>{{i.category.category_name}}</td>
+                          <td>{{i.subcategory.sub_name}}</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td><img src="images/bin.svg" alt=""> </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('show');
+        });
+        document.querySelectorAll('.nav-item[data-dropdown]').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdownId = item.getAttribute('data-dropdown');
+                const dropdown = document.getElementById(dropdownId);
+                dropdown.classList.toggle('show');
+                const arrow = item.querySelector('.arrow');
+                arrow.classList.toggle('down');
+            });
+        });
+    </script>
+</body>
+</html>
