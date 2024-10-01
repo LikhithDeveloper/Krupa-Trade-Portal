@@ -35,7 +35,7 @@ def login_view(request):
         if profile is not None:
             login(request, profile)
             id = user.id
-            return redirect(f'/products/{id}/')
+            return redirect(f'/')
         else:
             messages.error(request, "Invalid email or password. Please try again.")
             return render(request, "login.html")
@@ -115,7 +115,7 @@ def order_view(request, id):
 
 
 @login_required
-def products_view(requset,id):
+def products_view(requset):
     category = Category.objects.all()
     subcategory = Subcategory.objects.all()
     products = Products.objects.all()
@@ -123,7 +123,7 @@ def products_view(requset,id):
     subcategory_json1 = JSONRenderer().render(subcategory_json.data)
     serializer = ProductSerializer(products, many=True)
     products_json = JSONRenderer().render(serializer.data)
-    context = {'id':id ,'category':category,'subcategory':subcategory, 'product':products_json.decode('utf-8'),'subcategory1':subcategory_json1.decode('utf-8')}
+    context = {'id':requset.user.id ,'category':category,'subcategory':subcategory, 'product':products_json.decode('utf-8'),'subcategory1':subcategory_json1.decode('utf-8')}
     if requset.method == "POST":
         data = requset.POST
         print(data)
@@ -133,7 +133,7 @@ def products_view(requset,id):
         pincode = data.get("pincode")
         email = data.get("email")
         mobile_number = data.get("mobile")
-        profile = CustomUser.objects.filter(id=id).first()
+        profile = CustomUser.objects.filter(id=requset.user.id).first()
         request_model = Request.objects.create(
             profile = profile,
             product_name = product_name,

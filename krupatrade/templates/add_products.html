@@ -436,8 +436,9 @@ small {
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
                 <div id="products-dropdown" class="dropdown-content show">
-                    <a href="#" class="active">Products List</a>
-                    <a href="#">Category List</a>
+                    <a href="/adminproducts/" class="active">Products List</a>
+                    <a href="/addcategories/">Category List</a>
+                    <a href="/addsubcategories/">Sub Category List</a>
                 </div>
                 <div class="nav-item">
                     <div>
@@ -495,7 +496,7 @@ small {
                         <div class="form-row">
                           <div class="form-group">
                             <label for="category">Category</label>
-                            <select id="category" name="category" required>
+                            <select id="category" name="category" required onchange="filtersubcategory(event)">
                               <option value="">Choose category</option>
                               {% for j in category %}
                               <option value="{{j.category_name}}">{{j.category_name}}</option>
@@ -506,9 +507,9 @@ small {
                             <label for="sub-category">Sub Category</label>
                             <select id="sub-category" name="sub-category" required>
                               <option value="">Choose sub-category</option>
-                              {% for i in sub_category %}
+                              <!-- {% for i in sub_category %}
                               <option value="{{i.sub_name}}">{{i.sub_name}}</option>
-                              {% endfor %}
+                              {% endfor %} -->
                             </select>
                           </div>
                         </div>
@@ -619,6 +620,20 @@ function previewImages(files) {
   });
 }
 
+
+subcategory = JSON.parse('{{sub|safe}}')
+let html = document.getElementById("sub-category");
+function filtersubcategory(event) {
+    let cat = event.target.value;
+    let filtersub = subcategory.filter((sub) => {
+        return sub.category === cat;
+    })
+    html.innerHTML = "";
+    html.innerHTML += `<option value="">Choose sub-category</option>`;
+    filtersub.forEach((sub) => {
+        html.innerHTML +=`<option value="${sub.sub_name}">${sub.sub_name}</option>`
+    })
+}
     </script>
 </body>
 </html>

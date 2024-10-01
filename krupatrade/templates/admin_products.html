@@ -444,9 +444,11 @@
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
                 <div id="products-dropdown" class="dropdown-content show">
-                    <a href="#" class="active">Products List</a>
-                    <a href="#">Category List</a>
+                  <a href="/adminproducts/" class="active">Products List</a>
+                  <a href="/addcategories/">Category List</a>
+                  <a href="/addsubcategories/">Sub Category List</a>
                 </div>
+                <a href="/leadsall/" style="text-decoration: none;">
                 <div class="nav-item" data-dropdown="leads-dropdown">
                     <div>
                         <img src="images/leads.svg" alt="Leads Icon" class="icon">
@@ -454,6 +456,7 @@
                     </div>
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
+              </a>
                 <div class="nav-item" data-dropdown="users-dropdown">
                     <div>
                         <img src="images/user-dark.svg" alt="Users Icon" class="icon">
@@ -534,6 +537,8 @@
         </main>
     </div>
     <script>
+      const data = JSON.parse('{{products|safe}}');
+      console.log(data);
         document.querySelector('.menu-toggle').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.toggle('show');
         });

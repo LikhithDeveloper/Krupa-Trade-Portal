@@ -1,5 +1,9 @@
 from django.shortcuts import render,HttpResponse
 from krupa.models import *
+from django.core import serializers
+from django.core.serializers import serialize
+from rest_framework.renderers import JSONRenderer
+from .serializer import *
 
 # Create your views here.
 
@@ -11,7 +15,11 @@ def AdminProducts(request):
 def AddProducts(request):
     category = Category.objects.all()
     sub_category = Subcategory.objects.all()
-    context = {'category':category,'sub_category':sub_category}
+    serializer = SubcategorySerializer(sub_category,many =True)
+    # print(serializer)
+    sub = JSONRenderer().render(serializer.data).decode('utf-8')
+    # print(sub)
+    context = {'category':category,'sub_category':sub_category,'sub':sub}
 
     if request.method == "POST":
         # Extracting form data
