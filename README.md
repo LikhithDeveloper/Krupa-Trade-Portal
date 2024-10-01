@@ -1,0 +1,1 @@
+# Krupa-Trade-Portal
