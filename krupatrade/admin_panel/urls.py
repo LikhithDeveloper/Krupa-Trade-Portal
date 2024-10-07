@@ -9,7 +9,9 @@ urlpatterns = [
     path('addproducts/',AddProducts,name="AddProducts"),
     path('addsubcategories/',AddSubCategories,name="AddSubCategories"),
     path('addcategories/',AddCategories,name="AddCategories"),
-    path('leadsall/',Leads1,name='Leads1')
+    path('leadsall/',Leads1,name='Leads1'),
+    path('leadsbuyer/',Leads2,name='Leads2'),
+    path('leadsseller/',Leads3,name='Leads3')
 ]
 
 if settings.DEBUG:

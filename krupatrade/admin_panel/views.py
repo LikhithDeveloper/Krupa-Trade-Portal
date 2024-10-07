@@ -115,3 +115,9 @@ def AddCategories(request):
 
 def Leads1(request):
     return render(request,"leads-1.html")
+
+def Leads2(request):
+    return render(request,"leads-2.html")
+
+def Leads3(request):
+    return render(request,"leads-3.html")
