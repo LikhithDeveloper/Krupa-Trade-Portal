@@ -670,7 +670,9 @@
             <div id="productList" class="product-list"></div>
           </div>
 
-          <button class="floating-btn">Tell Us Your Requirement</button>
+          <button class="floating-btn" onclick="openRequest()">
+            Tell Us Your Requirement
+          </button>
 
           <div id="requirementForm" class="requirement-form">
             <div class="form-header">
@@ -690,9 +692,12 @@
               </div>
               <div class="form-group">
                 <label>Enter Product</label>
-                <input name="product" class="product-name" />
-                <!-- <option value="">Select Product</option> -->
-                <!-- </select> -->
+                <!-- <input name="product" class="product-name" /> -->
+                <select name="product" class="product-name">
+                  <!-- <option class="product-name1">Select Product</option>
+                  <option value="hi">Hi</option>
+                  <option value="Hello">Hello</option> -->
+                </select>
               </div>
               <div class="form-group">
                 <label>Quantity <span class="info-icon">ⓘ</span></label>
@@ -738,7 +743,6 @@
             // Parsing the JSON data for products
             const products = JSON.parse("{{ product|escapejs }}");
             const subcat = JSON.parse("{{subcategory1|escapejs}}");
-            console.log(subcat);
 
             // Getting the DOM element to display the products
             const productList = document.getElementById("productList");
@@ -766,19 +770,31 @@
                             <div class="product-info">
                                 <h3>${product.product_name}</h3>
                                 <p>${product.descripton}</p> <!-- Corrected typo here -->
-                                <button class="request-quote" onclick = "float('${product.product_name}')" >Request Quote</button>
+                                <button class="request-quote" onclick = "openRequest('${product.product_name}')" >Request Quote</button>
                             </div>
                         </div>
                     `;
                 productList.innerHTML += productCard;
               });
             }
-            function float(pro_name1) {
+
+            
+            function openRequest(p_name) {
               const requirementForm =
                 document.getElementById("requirementForm");
               requirementForm.classList.add("active");
-              let pro_name = document.querySelector(".product-name");
-              pro_name.value = pro_name1;
+              let option = document.querySelector(".product-name");
+              console.log(p_name);
+              if (p_name == undefined) {
+                option.innerHTML = `<option class="product-name1">Select a product</option>`;
+              } else {
+                option.innerHTML = `<option class="product-name1">${p_name}</option>`;
+              }
+              let products_options = ""; // Accumulate options here
+              products.forEach((pro) => {
+                products_options += `<option value=${pro.product_name}>${pro.product_name}</option>`;
+              });
+              option.innerHTML += products_options;
             }
 
             // Initial rendering of all products
@@ -817,23 +833,21 @@
             // console.log(document
             // .querySelectorAll(".subcategory"))
             function attacheventlisteners() {
-            document
-              .querySelectorAll(".subcategory")
-              .forEach((subcategoryButton) => {
-                subcategoryButton.addEventListener("click", () => {
-                  console.log("Hi");
-                  // Filtering products based on the selected subcategory
-                  const subcategory =
-                    subcategoryButton.getAttribute("data-subcategory");
-                  console.log(products);
-                  const filteredProducts = products.filter(
-                    (product) => product.subcategory_name === subcategory
-                  );
-                  // console.log(filteredProducts);
-                  renderProducts(filteredProducts);
+              document
+                .querySelectorAll(".subcategory")
+                .forEach((subcategoryButton) => {
+                  subcategoryButton.addEventListener("click", () => {
+                    // Filtering products based on the selected subcategory
+                    const subcategory =
+                      subcategoryButton.getAttribute("data-subcategory");
+                    const filteredProducts = products.filter(
+                      (product) => product.subcategory_name === subcategory
+                    );
+                    // console.log(filteredProducts);
+                    renderProducts(filteredProducts);
+                  });
                 });
-              });
-            };
+            }
 
             // Adding scroll functionality to category buttons
             document
