@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        max-width: 1000px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        padding: 20px 30px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      .left-section {
+        width: 60%;
+        padding-right: 20px;
+      }
+
+      .right-section {
+        width: 35%;
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h2,
+      h3 {
+        color: #003366;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      h3 {
+        margin-top: 30px;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #003366;
+        font-size: 14px;
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .signup-btn {
+        display: none;
+        width: 100%;
+        padding: 12px;
+        background-color: #00a1ff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .new-supplier-btn {
+        width: 30%;
+        padding: 12px;
+        background-color: #00a1ff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      #verifyBtn {
+        margin-top: 10px;
+        background-color: #00a1ff;
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      .info-box {
+        background-color: #1d9eea;
+        color: white;
+        padding: 25px 15px;
+        border-radius: 8px;
+        margin-bottom: 2px;
+        font-weight: 400;
+        font-size: 16px;
+        text-align: left;
+        display: flex;
+        gap: 20px;
+        line-height: 1.5;
+      }
+
+      .info-box span {
+        display: block;
+        font-size: 16px;
+      }
+
+      .subtext {
+        display: block;
+        margin-top: 5px;
+        font-size: 14px;
+        color: #e0f3ff;
+      }
+
+      .two {
+        border-radius: 0px;
+      }
+
+      .one {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+
+      .three {
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+      }
+
+      footer {
+        background-color: #00a1ff;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        color: white;
+      }
+
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
+        display: none;
+        margin: 10px auto;
+      }
+      #gstDetails {
+        color: #28a745;
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        padding: 15px;
+        border-radius: 4px;
+        margin-top: 20px;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-line;
+        display: none;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-section">
+        <h2>REGISTRATION</h2>
+        <form id="registrationForm">
+          {% csrf_token %}
+          <div style="display: flex; justify-content: space-between">
+            <div class="input-group" style="width: 45%">
+              <label for="email">
+                <img src="images/email.svg" alt="" />
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div class="input-group" style="width: 45%">
+              <label for="phone">
+                <img src="images/email.svg" alt="" />
+                Phone number
+              </label>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                placeholder="Enter your mobile number"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="password">
+              <img src="images/password.svg" alt="" />
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="gstin">Company GSTIN</label>
+            <input
+              type="text"
+              id="gstin"
+              name="gstin"
+              placeholder="Enter your GSTIN"
+              required
+            />
+          </div>
+          <p id="gstDetails"></p>
+          <button type="button" id="verifyBtn">VERIFY NOW</button>
+          <div id="loader" class="loader"></div>
+          <button type="submit" class="signup-btn" id="signupBtn">
+            SIGN UP
+          </button>
+        </form>
+        <div class="supplier-section">
+          <h3>SUPPLIER REGISTRATION</h3>
+          <p>
+            Please Click on the following button to fill your Supplier
+            Registration Form.
+          </p>
+          <button class="new-supplier-btn">
+            <img src="images/supplier.svg" alt="" />
+            NEW SUPPLIER
+          </button>
+        </div>
+      </div>
+      <div class="right-section">
+        <div class="info-box one">
+          <div class="icon">
+            <img src="images/new_user.svg" alt="" />
+          </div>
+          <span> New User Registration</span>
+        </div>
+        <div class="info-box two">
+          <div class="icon">
+            <img src="images/contact_us.svg" alt="" />
+          </div>
+          <div>
+            <span> Contact Us</span>
+            <span class="subtext">sales@krupacorporation.com</span>
+          </div>
+        </div>
+        <div class="info-box three">
+          <div class="icon">
+            <img src="images/help.svg" alt="" />
+          </div>
+          <div>
+            <span> Need Help?</span>
+            <span class="subtext">Chat with us</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        © 2024 Krupa Corporation Private Limited | Krupa Trade E-Procurement
+        Portal | All rights reserved
+      </p>
+    </footer>
+
+    <script>
+      document
+        .getElementById("verifyBtn")
+        .addEventListener("click", function () {
+          const gstin = document.getElementById("gstin").value;
+          const apiKey = "gyJwMm47Bjf54dNGeNheHMEIxL22";
+          const url = `https://appyflow.in/api/verifyGST?gstNo=${gstin}&key_secret=${apiKey}`;
+          const loader = document.getElementById("loader");
+
+          loader.style.display = "block";
+
+          fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+              loader.style.display = "none";
+              if (!data.error) {
+                const gstDetails = `
+                            <strong>Owner Name:</strong> ${data.taxpayerInfo.lgnm}<br>
+                            <strong>Shop Name:</strong> ${data.taxpayerInfo.tradeNam}<br>
+                            <strong>Address:</strong> ${data.taxpayerInfo.pradr.addr.bno}, ${data.taxpayerInfo.pradr.addr.st}, ${data.taxpayerInfo.pradr.addr.loc}, ${data.taxpayerInfo.pradr.addr.dst}, ${data.taxpayerInfo.pradr.addr.stcd}, ${data.taxpayerInfo.pradr.addr.pncd}
+                        `;
+                document.getElementById("gstDetails").style.display = "block";
+                document.getElementById("gstDetails").innerHTML = gstDetails;
+                document.getElementById("verifyBtn").style.display = "none";
+                document.getElementById("signupBtn").style.display = "block"; // Show the SIGN UP button
+              } else {
+                alert("GST Verification failed. Please try again.");
+              }
+            })
+            .catch((error) => {
+              loader.style.display = "none";
+              alert(
+                "An error occurred during GST verification. Please try again later."
+              );
+            });
+        });
+
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const gstin = document.getElementById("gstin").value;
+    const phone = document.getElementById("phone").value;
+
+    const formData = {
+        email: email,
+        password: password,
+        gstin: gstin,
+        phone: phone,
+    };
+
+    const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+    fetch("/register/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify(formData),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log("Response Data:", data); // Log the response data
+        if (data.success) {
+            alert("Registration successful!");
+            document.getElementById("registrationForm").reset();
+            document.getElementById("gstDetails").style.display = "none";
+            document.getElementById("signupBtn").style.display = "none";
+            window.location.href = data.redirect_url;
+        } else {
+            alert("Registration failed. Error: " + data.error); // Show the specific error
+        }
+    })
+    .catch((error) => {
+        console.error("Error during registration:", error);
+        alert("An error occurred during registration. Please try again later.");
+    });
+});
+
+        // });
+    </script>
+  
+  </body>
+</html>
