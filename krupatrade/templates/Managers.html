@@ -73,8 +73,8 @@
             transition: background-color 0.2s;
         }
         .nav-item.active {
-            background-color: #E5E8Eb;
-            color: #252525;
+            background-color: #00A1ff;
+            color: white;
             
         }
         .drop-active{
@@ -353,7 +353,7 @@ td {
         padding-left: 50%;
         padding-top: 12px;
         padding-bottom: 12px;
-        min-height: 40px; /* Increased minimum height */
+        min-height: 40px; 
     }
     
     td:before {
@@ -390,14 +390,15 @@ td {
                         <span>Dashboard</span>
                     </div>
                 </div>
-                <div class="nav-item drop-active active" data-dropdown="products-dropdown">
+                
+                <div class="nav-item" data-dropdown="products-dropdown">
                     <div>
                         <img src="images/products-dark.svg" alt="Products Icon" class="icon">
                         <span>Products</span>
                     </div>
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
-                <div id="products-dropdown" class="dropdown-content show">
+                <div id="products-dropdown" class="dropdown-content">
                     <a href="#" class="active">Products List</a>
                     <a href="#">Category List</a>
                 </div>
@@ -406,7 +407,12 @@ td {
                         <img src="images/leads.svg" alt="Leads Icon" class="icon">
                         <span>Leads</span>
                     </div>
-                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div class="nav-item active" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <img src="images/manager.svg" alt="Dashboard Icon" class="icon">
+                        <span>Managers  </span>
+                    </div>
                 </div>
                 <div class="nav-item" data-dropdown="users-dropdown">
                     <div>
@@ -448,12 +454,10 @@ td {
 
                 <div class="header">
                     <div class="tabs">
-                        <div class="tab" onclick={goToAll()}>All</div>
-                        <div class="tab active" onclick={goToBuyer()}>Buyer</div>
-                        <div class="tab" onclick="goToSeller()">Seller</div>
+                        <h1 style="font-size: 24px;font-weight: 700;color: #000000;">All Managers</h1>
                     </div>
                     <div class="action-icons" style="display: flex;gap: 10px;">
-                        <button class="btn btn-primary">+ New</button>
+                        <a href="/addmanagers/" class="btn btn-primary" style="text-decoration: none;">+ New</a>
 
                         <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/refresh.svg" alt=""></a>
                         <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/threedots.svg" alt=""></a>
@@ -464,33 +468,23 @@ td {
                     <thead>
                         <tr>
                             <th ><img src="images/table1.svg" alt=""></th>
-                            <th>DATE</th>
-                            <th>TYPE</th>
-                            <th>RFQ#</th>
                             <th>NAME</th>
-                            <th>COMPANY</th>
                             <th>EMAIL</th>
-                            <th>QNT</th>
-                            <th>PROPOSED PRICE</th>
+                            <th>WORK PHONE</th>
+                            <th>ROLE</th>
                             <th class="search-icon"><img src="images/search.svg" alt="" style="scale: 1.2;"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in leads %}
-                        {% if i.type == "Buyer"%}
+                        {% for i in managers %}
                         <tr>
                             <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">{{i.date}}</td>
-                            <td data-label="TYPE" class="buyer">{{i.type}}</td>
-                            <td data-label="RFQ#">{{i.id}}</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">{{i.company}}</td>
+                            <td data-label="NAME">{{i.displayname}}</td>
                             <td data-label="EMAIL">{{i.email}}</td>
-                            <td data-label="QNT">{{i.quantity}}</td>
-                            <td data-label="PROPOSED PRICE">{{i.price}}</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
+                            <td data-label="WORK PHONE">+91 {{i.work_phone}}</td>
+                            <td data-label="ROLE">Relationship Manager</td>
+                            <td class="search-icon"><img src="images/bin.svg" alt=""></td>
                         </tr>
-                        {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
@@ -510,18 +504,6 @@ td {
                 arrow.classList.toggle('down');
             });
         });
-
-        function goToAll(){
-            window.location.href = "/leadsall/";
-        }
-
-        function goToBuyer() {
-            window.location.href = "/leadsbuyer/";
-        }
-
-        function goToSeller(){
-            window.location.href = "/leadsseller";
-        }
     </script>
 </body>
 </html>

@@ -11,7 +11,10 @@ urlpatterns = [
     path('addcategories/',AddCategories,name="AddCategories"),
     path('leadsall/',Leads1,name='Leads1'),
     path('leadsbuyer/',Leads2,name='Leads2'),
-    path('leadsseller/',Leads3,name='Leads3')
+    path('leadsseller/',Leads3,name='Leads3'),
+    path('customerspage/',Customers,name='Customers'),
+    path('managers/',ManagersView,name="ManagersView"),
+    path('addmanagers/',AddManagers,name="AddManagers"),
 ]
 
 if settings.DEBUG:

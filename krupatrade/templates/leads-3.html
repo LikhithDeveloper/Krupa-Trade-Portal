@@ -476,90 +476,22 @@ td {
                         </tr>
                     </thead>
                     <tbody>
+                        {% for i in leads %}
+                        {% if i.type == "Seller"%}
                         <tr>
                             <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
+                            <td data-label="DATE">{{i.date}}</td>
+                            <td data-label="TYPE" class="buyer">{{i.type}}</td>
+                            <td data-label="RFQ#">{{i.id}}</td>
                             <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
+                            <td data-label="COMPANY">{{i.company}}</td>
+                            <td data-label="EMAIL">{{i.email}}</td>
+                            <td data-label="QNT">{{i.quantity}}</td>
+                            <td data-label="PROPOSED PRICE">{{i.price}}</td>
                             <td class="search-icon"><img src="images/search.svg" alt=""></td>
                         </tr>
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">5 Aug 2024</td>
-                            <td data-label="TYPE" class="buyer">BUYER</td>
-                            <td data-label="RFQ#">123456</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">ABC</td>
-                            <td data-label="EMAIL">Email</td>
-                            <td data-label="QNT">30</td>
-                            <td data-label="PROPOSED PRICE">$0.00</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
+                        {% endif %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

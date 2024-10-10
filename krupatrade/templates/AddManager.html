@@ -73,8 +73,8 @@
             transition: background-color 0.2s;
         }
         .nav-item.active {
-            background-color: #E5E8Eb;
-            color: #252525;
+            background-color: #00A1ff;
+            color: white;
             
         }
         .drop-active{
@@ -251,131 +251,65 @@
             border-radius: 4px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             overflow: hidden;
+            height: 90vh;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid #e0e0e0;
+      .cont-container{
+        background-color: #F4F4F4;
+        width: 100%;
+      }
+        .form-container {
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
         }
-        .tabs {
-            display: flex;
-            gap: 30px;
+        .form-group {
+            margin-bottom: 20px;
         }
-        .tab {
-            padding: 5px 10px;
-            cursor: pointer;
-            color: #777;
-            font-size: 20px;
-            font-weight: 600;
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
         }
-        .tab.active {
-            color: #2196F3;
-            border-bottom: 2px solid #2196F3;
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
         }
-        .actions {
+        .phone-inputs {
             display: flex;
             gap: 10px;
         }
-        .btn {
-            padding: 5px 10px;
+        .phone-inputs input {
+            flex: 1;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
         }
-        .btn-primary {
-            background-color: #2196F3;
+        .save-btn {
+            background-color: #00a8e8;
             color: white;
         }
-        .btn-icon {
-            background-color: transparent;
-            color: #777;
-            font-size: 18px;
+        .cancel-btn {
+            background-color: #f0f0f0;
+            color: #333;
         }
-        .table-container {
-    width: 100%;
-    overflow-x: visible;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    text-align: left;
-    padding: 12px;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 14px;
-}
-
-th {
-    color: black;
-    font-weight: 700;
-}
-
-td {
-    color: #333;
-}
-
-.buyer { color: #F44336; }
-.seller { color: #4CAF50; }
-
-.checkbox-cell {
-    width: 40px;
-}
-
-.search-icon {
-    width: 40px;
-}
-
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-    
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-    
-    tr {
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-    }
-    
-    td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
-        padding-top: 12px;
-        padding-bottom: 12px;
-        min-height: 40px; /* Increased minimum height */
-    }
-    
-    td:before {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        content: attr(data-label);
-        font-weight: bold;
-    }
-    
-    .checkbox-cell, .search-icon {
-        padding-left: 12px;
-        text-align: left;
-    }
-    
-    .checkbox-cell:before, .search-icon:before {
-        display: none;
-    }
-}
+        @media (max-width: 480px) {
+            .phone-inputs {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -390,14 +324,15 @@ td {
                         <span>Dashboard</span>
                     </div>
                 </div>
-                <div class="nav-item drop-active active" data-dropdown="products-dropdown">
+                
+                <div class="nav-item" data-dropdown="products-dropdown">
                     <div>
                         <img src="images/products-dark.svg" alt="Products Icon" class="icon">
                         <span>Products</span>
                     </div>
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
-                <div id="products-dropdown" class="dropdown-content show">
+                <div id="products-dropdown" class="dropdown-content">
                     <a href="#" class="active">Products List</a>
                     <a href="#">Category List</a>
                 </div>
@@ -406,7 +341,12 @@ td {
                         <img src="images/leads.svg" alt="Leads Icon" class="icon">
                         <span>Leads</span>
                     </div>
-                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div class="nav-item active" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <img src="images/manager.svg" alt="Dashboard Icon" class="icon">
+                        <span>Managers  </span>
+                    </div>
                 </div>
                 <div class="nav-item" data-dropdown="users-dropdown">
                     <div>
@@ -445,55 +385,44 @@ td {
                 </div>
             </div>
             <div class="cont">
-
-                <div class="header">
-                    <div class="tabs">
-                        <div class="tab" onclick={goToAll()}>All</div>
-                        <div class="tab active" onclick={goToBuyer()}>Buyer</div>
-                        <div class="tab" onclick="goToSeller()">Seller</div>
+                <h1 style="font-size: 24px;font-weight: 700;color: #000000;padding: 10px 0px;">New Managers</h1>
+                
+                <div class="cont-container">
+                    <div class="form-container">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="primary-contact">Primary Contact</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <!-- <select id="salutation" style="width: 30%;">
+                                        <option>Salutation</option>
+                                    </select> -->
+                                    <input type="text" id="first-name" placeholder="First Name" style="width: 35%;" name="firstname">
+                                    <input type="text" id="last-name" placeholder="Last Name" style="width: 35%;" name="lastname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="manager-name">Managers Display Name</label>
+                                <input type="text" id="manager-name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="manager-email">Managers Email</label>
+                                <input type="email" id="manager-email" placeholder="example@abc.com" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="manager-phone">Managers Phone</label>
+                                <div class="phone-inputs">
+                                    <input type="tel" id="work-phone" placeholder="Work Phone" name="phone1">
+                                    <input type="tel" id="mobile-phone" placeholder="Work Phone" name="phone2">
+                                </div>
+                            </div>
+                            <div class="buttons">
+                                <button type="submit" class="save-btn">Save</button>
+                                <button type="button" class="cancel-btn">Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="action-icons" style="display: flex;gap: 10px;">
-                        <button class="btn btn-primary">+ New</button>
-
-                        <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/refresh.svg" alt=""></a>
-                        <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/threedots.svg" alt=""></a>
-                        <a style="background-color: #Fc8F31;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;"><img src="images/question.svg" alt=""></a>
-                      </div>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th ><img src="images/table1.svg" alt=""></th>
-                            <th>DATE</th>
-                            <th>TYPE</th>
-                            <th>RFQ#</th>
-                            <th>NAME</th>
-                            <th>COMPANY</th>
-                            <th>EMAIL</th>
-                            <th>QNT</th>
-                            <th>PROPOSED PRICE</th>
-                            <th class="search-icon"><img src="images/search.svg" alt="" style="scale: 1.2;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in leads %}
-                        {% if i.type == "Buyer"%}
-                        <tr>
-                            <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">{{i.date}}</td>
-                            <td data-label="TYPE" class="buyer">{{i.type}}</td>
-                            <td data-label="RFQ#">{{i.id}}</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">{{i.company}}</td>
-                            <td data-label="EMAIL">{{i.email}}</td>
-                            <td data-label="QNT">{{i.quantity}}</td>
-                            <td data-label="PROPOSED PRICE">{{i.price}}</td>
-                            <td class="search-icon"><img src="images/search.svg" alt=""></td>
-                        </tr>
-                        {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
             </div>
         </main>
     </div>
@@ -510,18 +439,6 @@ td {
                 arrow.classList.toggle('down');
             });
         });
-
-        function goToAll(){
-            window.location.href = "/leadsall/";
-        }
-
-        function goToBuyer() {
-            window.location.href = "/leadsbuyer/";
-        }
-
-        function goToSeller(){
-            window.location.href = "/leadsseller";
-        }
     </script>
 </body>
 </html>

@@ -134,6 +134,7 @@ def products_view(requset):
         email = data.get("email")
         mobile_number = data.get("mobile")
         profile = CustomUser.objects.filter(id=requset.user.id).first()
+        type = data.get('type')
         request_model = Request.objects.create(
             profile = profile,
             product_name = product_name,
@@ -141,7 +142,8 @@ def products_view(requset):
             company = company,
             pincode = pincode,
             email = email,
-            mobile_number = mobile_number
+            mobile_number = mobile_number,
+            type = type
         )
         request_model.save()
     return render(requset,"products.html",context)

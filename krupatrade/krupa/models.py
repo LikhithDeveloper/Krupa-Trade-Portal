@@ -100,7 +100,8 @@ class Request(models.Model):
     mobile_number = models.CharField(max_length=10)
     price = models.IntegerField(blank=True,null=True)
     request = models.BooleanField(default=False, null=True,blank=True)
-
+    type = models.CharField(max_length=20)
+    date = models.DateField(auto_now_add=True,blank=True,null=True)
 @receiver(post_save, sender=Request)
 def create_orders(sender, instance, created, **kwargs):
     if instance.request:

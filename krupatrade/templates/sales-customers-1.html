@@ -298,84 +298,119 @@
     width: 100%;
     overflow-x: visible;
 }
-
 table {
-    width: 100%;
-    border-collapse: collapse;
-}
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-th, td {
-    text-align: left;
-    padding: 12px;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 14px;
-}
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
 
-th {
-    color: black;
-    font-weight: 700;
-}
+        th {
+            color: black;
+            font-weight: 700;
+        }
 
-td {
-    color: #333;
-}
+        td {
+            color: #333;
+        }
 
-.buyer { color: #F44336; }
-.seller { color: #4CAF50; }
+        .checkbox-cell {
+            width: 40px;
+        }
 
-.checkbox-cell {
-    width: 40px;
-}
+        .search-icon {
+            width: 40px;
+        }
 
-.search-icon {
-    width: 40px;
-}
+        .dropbtn {
+            background-color: #00A9f0;
+            color: white;
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 30px;
+        }
 
-@media (max-width: 768px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-    
-    thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-    
-    tr {
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-    }
-    
-    td {
-        border: none;
-        position: relative;
-        padding-left: 50%;
-        padding-top: 12px;
-        padding-bottom: 12px;
-        min-height: 40px; /* Increased minimum height */
-    }
-    
-    td:before {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        content: attr(data-label);
-        font-weight: bold;
-    }
-    
-    .checkbox-cell, .search-icon {
-        padding-left: 12px;
-        text-align: left;
-    }
-    
-    .checkbox-cell:before, .search-icon:before {
-        display: none;
-    }
-}
+        #managerDropdown {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        #managerDropdown input {
+            width: 90%;
+            margin: 5px;
+            padding: 5px;
+        }
+
+        #managerDropdown button {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            text-align: left;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        #managerDropdown button:hover {
+            background-color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+            }
+            
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                min-height: 40px; 
+            }
+            
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                font-weight: bold;
+            }
+            
+            .checkbox-cell, .search-icon {
+                padding-left: 12px;
+                text-align: left;
+            }
+            
+            .checkbox-cell:before, .search-icon:before {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -390,15 +425,15 @@ td {
                         <span>Dashboard</span>
                     </div>
                 </div>
-                <div class="nav-item drop-active active" data-dropdown="products-dropdown">
+                <div class="nav-item" data-dropdown="products-dropdown">
                     <div>
                         <img src="images/products-dark.svg" alt="Products Icon" class="icon">
                         <span>Products</span>
                     </div>
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
-                <div id="products-dropdown" class="dropdown-content show">
-                    <a href="#" class="active">Products List</a>
+                <div id="products-dropdown" class="dropdown-content">
+                    <a href="#">Products List</a>
                     <a href="#">Category List</a>
                 </div>
                 <div class="nav-item" data-dropdown="leads-dropdown">
@@ -406,7 +441,6 @@ td {
                         <img src="images/leads.svg" alt="Leads Icon" class="icon">
                         <span>Leads</span>
                     </div>
-                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
                 <div class="nav-item" data-dropdown="users-dropdown">
                     <div>
@@ -415,12 +449,19 @@ td {
                     </div>
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
-                <div class="nav-item" data-dropdown="sales-dropdown">
+                <div class="nav-item drop-active active" data-dropdown="sales-dropdown">
                     <div>
                         <img src="images/sales-dark.svg" alt="Sales Icon" class="icon">
                         <span>Sales</span>
                     </div>
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div id="sales-dropdown" class="dropdown-content show">
+                    <a href="#" class="active">Customers</a>
+                    <a href="#">Estimates</a>
+                    <a href="#">Sales Orders</a>
+                    <a href="#">Invoices</a>
+                    <a href="#">Payments Received</a>
                 </div>
                 <div class="nav-item" data-dropdown="purchases-dropdown">
                     <div>
@@ -448,52 +489,120 @@ td {
 
                 <div class="header">
                     <div class="tabs">
-                        <div class="tab" onclick={goToAll()}>All</div>
-                        <div class="tab active" onclick={goToBuyer()}>Buyer</div>
-                        <div class="tab" onclick="goToSeller()">Seller</div>
+                        <h1 style="font-size: 24px;font-weight: 700;">Customer</h1>
                     </div>
                     <div class="action-icons" style="display: flex;gap: 10px;">
-                        <button class="btn btn-primary">+ New</button>
-
-                        <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/refresh.svg" alt=""></a>
                         <a style="background-color: #F0F0F0;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;border: 1px solid #c2c2cd;"><img src="images/threedots.svg" alt=""></a>
                         <a style="background-color: #Fc8F31;padding: 3px;height: 30px;width: 30px;display: flex;align-items: center;justify-content: center;border-radius: 5px;"><img src="images/question.svg" alt=""></a>
                       </div>
                 </div>
-                <table>
+                <table id="managerTable">
                     <thead>
                         <tr>
-                            <th ><img src="images/table1.svg" alt=""></th>
-                            <th>DATE</th>
-                            <th>TYPE</th>
-                            <th>RFQ#</th>
+                            <th><img src="images/table1.svg" alt=""></th>
                             <th>NAME</th>
-                            <th>COMPANY</th>
+                            <th>COMPANY NAME</th>
                             <th>EMAIL</th>
-                            <th>QNT</th>
-                            <th>PROPOSED PRICE</th>
+                            <th>WORK PHONE</th>
+                            <th>QUANTITY</th>
+                            <th>MANAGER INFO</th>
                             <th class="search-icon"><img src="images/search.svg" alt="" style="scale: 1.2;"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in leads %}
-                        {% if i.type == "Buyer"%}
+                        {% for i in obj %}
                         <tr>
                             <td class="checkbox-cell"><input type="checkbox"></td>
-                            <td data-label="DATE">{{i.date}}</td>
-                            <td data-label="TYPE" class="buyer">{{i.type}}</td>
-                            <td data-label="RFQ#">{{i.id}}</td>
-                            <td data-label="NAME">Mr. Joe</td>
-                            <td data-label="COMPANY">{{i.company}}</td>
+                            <td data-label="NAME">-</td>
+                            <td data-label="COMPANY NAME">{{i.company}}</td>
                             <td data-label="EMAIL">{{i.email}}</td>
-                            <td data-label="QNT">{{i.quantity}}</td>
-                            <td data-label="PROPOSED PRICE">{{i.price}}</td>
+                            <td data-label="WORK PHONE">{{i.mobile_number}}</td>
+                            <td data-label="RECEIVABLE(BYC)">{{i.quantity}}</td>
+                            <td data-label="MANAGER INFO">
+                                <button class="dropbtn" onclick="showDropdown(event)">ADD MANAGER ▼</button>
+                            </td>
                             <td class="search-icon"><img src="images/search.svg" alt=""></td>
                         </tr>
-                        {% endif %}
                         {% endfor %}
+                        
                     </tbody>
                 </table>
+            
+                <div id="managerDropdown">
+                    <input type="text" id="managerSearch" placeholder="Search" oninput="filterManagers()">
+                    <div id="managerList">
+                        <button onclick="assignManager(this)">John (ABC)</button>
+                        <button onclick="assignManager(this)">Jane (XYZ)</button>
+                        <button onclick="assignManager(this)">Bob (DEF)</button>
+                        <button onclick="assignManager(this)">Alice (GHI)</button>
+                    </div>
+                </div>
+            
+                <script>
+                    let currentButton;
+            
+                    function showDropdown(event) {
+                        const dropdown = document.getElementById("managerDropdown");
+                        const rect = event.target.getBoundingClientRect();
+                        dropdown.style.display = "block";
+                        dropdown.style.left = rect.left + "px";
+                        dropdown.style.top = rect.bottom + "px";
+                        currentButton = event.target;
+                        document.getElementById("managerSearch").value = ""; // Clear search input
+                        filterManagers(); // Show all options
+                    }
+            
+                    function assignManager(manager) {
+                        if (currentButton) {
+                            currentButton.textContent = manager.textContent;
+                            document.getElementById("managerDropdown").style.display = "none";
+                        }
+                    }
+            
+                    function filterManagers() {
+                        const input = document.getElementById("managerSearch");
+                        const filter = input.value.toUpperCase();
+                        const buttons = document.getElementById("managerList").getElementsByTagName("button");
+                        let visibleCount = 0;
+            
+                        for (let i = 0; i < buttons.length; i++) {
+                            const txtValue = buttons[i].textContent || buttons[i].innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                buttons[i].style.display = "";
+                                visibleCount++;
+                            } else {
+                                buttons[i].style.display = "none";
+                            }
+                        }
+            
+                        // Show a message if no results found
+                        const noResultsMsg = document.getElementById("noResultsMsg");
+                        if (visibleCount === 0) {
+                            if (!noResultsMsg) {
+                                const msg = document.createElement("p");
+                                msg.id = "noResultsMsg";
+                                msg.textContent = "No matching managers found";
+                                msg.style.padding = "10px";
+                                msg.style.color = "#666";
+                                document.getElementById("managerList").appendChild(msg);
+                            }
+                        } else if (noResultsMsg) {
+                            noResultsMsg.remove();
+                        }
+                    }
+            
+                    // Close the dropdown if clicked outside
+                    window.onclick = function(event) {
+                        if (!event.target.matches('.dropbtn') && !event.target.closest('#managerDropdown')) {
+                            document.getElementById("managerDropdown").style.display = "none";
+                        }
+                    }
+            
+                    // Prevent dropdown from closing when clicking inside it
+                    document.getElementById("managerDropdown").onclick = function(event) {
+                        event.stopPropagation();
+                    }
+                </script>
             </div>
         </main>
     </div>
@@ -510,18 +619,6 @@ td {
                 arrow.classList.toggle('down');
             });
         });
-
-        function goToAll(){
-            window.location.href = "/leadsall/";
-        }
-
-        function goToBuyer() {
-            window.location.href = "/leadsbuyer/";
-        }
-
-        function goToSeller(){
-            window.location.href = "/leadsseller";
-        }
     </script>
 </body>
 </html>

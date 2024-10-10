@@ -1,5 +1,6 @@
 from django.shortcuts import render,HttpResponse
 from krupa.models import *
+from admin_panel.models import Managers
 from django.core import serializers
 from django.core.serializers import serialize
 from rest_framework.renderers import JSONRenderer
@@ -114,10 +115,44 @@ def AddCategories(request):
 
 
 def Leads1(request):
-    return render(request,"leads-1.html")
+    leads = Request.objects.all()
+    context = {'leads':leads}
+    return render(request,"leads-1.html",context)
 
 def Leads2(request):
-    return render(request,"leads-2.html")
+    leads = Request.objects.all()
+    context = {'leads':leads}
+    return render(request,"leads-2.html",context)
 
 def Leads3(request):
-    return render(request,"leads-3.html")
+    leads = Request.objects.all()
+    context = {'leads':leads}
+    return render(request,"leads-3.html",context)
+
+def Customers(request):
+    obj = Request.objects.all()
+    context = {'obj':obj}
+    return render(request,"sales-customers-1.html",context)
+
+############################ MANAGERS PAGES #############################
+
+def ManagersView(request):
+    managers = Managers.objects.all()
+    context = {'managers':managers}
+    return render(request,"Managers.html",context)
+
+def AddManagers(request):
+    if request.method == "POST":
+        data = request.POST
+        print(data)
+        manager = Managers.objects.create(
+            firstname = data.get('firstname'),
+            lastname = data.get('lastname'),
+            displayname= data.get('name'),
+            email = data.get('email'),
+            work_phone = data.get('phone1'),
+            emergency_phone = data.get('phone2'),
+        )
+        manager.save()
+    
+    return render(request,"AddManager.html")
