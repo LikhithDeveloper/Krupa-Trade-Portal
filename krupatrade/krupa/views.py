@@ -16,7 +16,7 @@ from django.core.serializers import serialize
 
 # Create your views here.
 
-def login_view(request):
+def login_view(request):  # sourcery skip: avoid-builtin-shadow
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -35,40 +35,43 @@ def login_view(request):
         if profile is not None:
             login(request, profile)
             id = user.id
-            return redirect(f'/')
+            return redirect('/')
         else:
             messages.error(request, "Invalid email or password. Please try again.")
             return render(request, "login.html")
     return render(request, "login.html")
 
-def register_view(request):
+def register_view(request):  # sourcery skip: avoid-builtin-shadow
     if request.method == "POST":
         try:
-            data = json.loads(request.body)
-            print(data)
-            if CustomUser.objects.filter(email = data['email']).exists():
-                return JsonResponse({'success':False,"error":"Email already exits"},status = 400)
-            user = CustomUser.objects.create(
-                email = data['email'],
-                # password = data['password'],
-                gstin = data['gstin'],
-                username = data['email'],
-                phone_number = data['phone']
-            )
-            user.set_password(data['password'])
-            user.save()
-            id = user.id  
-            context = {'id',id}
-            return JsonResponse({'success': True, 'redirect_url': f'/login/'}) 
-
+            return _extracted_from_register_view_4(request)
         except IntegrityError:
             return JsonResponse({'success':False,"error":"Email already exits"},status = 400)
         except json.JSONDecodeError:
             return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
         except Exception as e:
             return JsonResponse({'success':False,"error": str(e)},status = 500)
-    
+
     return render(request, 'register.html')
+
+
+# TODO Rename this here and in `register_view`
+def _extracted_from_register_view_4(request):
+    data = json.loads(request.body)
+    print(data)
+    if CustomUser.objects.filter(email = data['email']).exists():
+        return JsonResponse({'success':False,"error":"Email already exits"},status = 400)
+    user = CustomUser.objects.create(
+        email = data['email'],
+        # password = data['password'],
+        gstin = data['gstin'],
+        username = data['email'],
+        phone_number = data['phone']
+    )
+    user.set_password(data['password'])
+    user.save()
+    context = {'id', user.id}
+    return JsonResponse({'success': True, 'redirect_url': '/login/'})
 
 
 def order_details_view(request,id):
@@ -115,7 +118,7 @@ def order_view(request, id):
 
 
 @login_required
-def products_view(requset):
+def products_view(requset):  # sourcery skip: avoid-builtin-shadow
     category = Category.objects.all()
     subcategory = Subcategory.objects.all()
     products = Products.objects.all()
@@ -195,7 +198,7 @@ def support_ticket_view_2(request,id):
 @login_required
 def account_view(request,id):
     data = CustomUser.objects.get(id = id)
-    address = UserAddress.objects.get(profile = data)
+    address = UserAddress.objects.filter(profile = data).first()
     print(address)
     context = {'data':data,'address':address,'id':id}
     return render(request,"accounts.html",context)
@@ -203,16 +206,16 @@ def account_view(request,id):
 
 @login_required
 def invoice_view(request,id):
-    user = CustomUser.objects.get(id = id)
-    address = UserAddress.objects.get(profile = user)
-    order = Orders.objects.get(profile = user)
-    invoice = Invoice.objects.get(order = order)
-    print(invoice.invoice_id)
+    # user = CustomUser.objects.get(id = id)
+    # address = UserAddress.objects.get(profile = user)
+    # order = Orders.objects.get(profile = user)
+    # invoice = Invoice.objects.get(order = order)
+    # print(invoice.invoice_id)
     # print(order)
     # print(user)
     # print(address)
-    context = {'address':address,'invoice':invoice,'user':user}
-    return render(request,"invoice.html",context)
+    # context = {'address':address,'invoice':invoice,'user':user}
+    return render(request,"invoice.html")
 
 
 def dashboard_view(request):

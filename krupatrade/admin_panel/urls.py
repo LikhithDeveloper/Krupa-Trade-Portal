@@ -15,6 +15,9 @@ urlpatterns = [
     path('customerspage/',Customers,name='Customers'),
     path('managers/',ManagersView,name="ManagersView"),
     path('addmanagers/',AddManagers,name="AddManagers"),
+    path('estimates/',Estimates,name="Estimates"),
+    path('estimates2/',Estimates2,name="Estimate2"),
+    path('newestimates/',Newestimates,name='Newestimates'),
 ]
 
 if settings.DEBUG:

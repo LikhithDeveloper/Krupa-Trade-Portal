@@ -156,3 +156,12 @@ def AddManagers(request):
         manager.save()
     
     return render(request,"AddManager.html")
+
+def Estimates(request):
+    return render(request,"Estimates.html")
+
+def Estimates2(request):
+    return render(request,"Estimates2.html")
+
+def Newestimates(request):
+    return render(request,"newestimates.html")
