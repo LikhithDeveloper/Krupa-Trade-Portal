@@ -164,4 +164,6 @@ def Estimates2(request):
     return render(request,"Estimates2.html")
 
 def Newestimates(request):
+    if request.method == "POST":
+        print(request.POST)
     return render(request,"newestimates.html")

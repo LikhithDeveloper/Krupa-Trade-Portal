@@ -33,6 +33,8 @@ urlpatterns = [
     path('accounts/<int:id>/',account_view,name='account_view'),
     path('invoice/<int:id>/',invoice_view,name="invoice_view"),
     path('dashboard/',dashboard_view,name="dashboard_view"),
+    path('trackhome/',TrackHome,name="TrackHome"),
+    path('trackorder/',TrackOrder,name="TrackOrder"),
 
     path('',include('admin_panel.urls')),
 ]

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Krupa Corporation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Quicksand:wght@300..700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "Quicksand", sans-serif;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f6f6;
+        color: #333;
+      }
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 300px;
+        background-color: white;
+        padding: 20px;
+        transition: all 0.3s ease;
+        position: fixed;
+        top: 60px;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        overflow-y: auto;
+      }
+      .sidebar.hide {
+        left: -300px;
+      }
+      .main-content {
+        flex-grow: 1;
+        margin-left: 300px; /* Match sidebar width */
+        transition: all 0.3s ease;
+        padding-top: 60px;
+        padding-left: 20px; /* Add some padding */
+        padding-right: 20px; /* Add some padding */
+      }
+      .main-content.full-width {
+        margin-left: 0;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          left: -300px;
+        }
+        .sidebar.hide {
+          left: 0;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+      }
+
+      nav {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 5px;
+        color: #292f46;
+        text-decoration: none;
+        font-size: 17px;
+        gap: 9px;
+        font-weight: 700;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+      }
+      .nav-item:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+      .nav-item.active {
+        background-color: #00a1ff;
+        color: white;
+      }
+      .icon {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+      }
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        padding: 10px 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+      .logo {
+        height: 90px;
+        margin-right: 20px;
+      }
+      .menu-toggle {
+        background: none;
+        border: none;
+        color: black;
+        font-size: 24px;
+        cursor: pointer;
+        margin-right: 15px;
+      }
+      .search-bar {
+        display: flex;
+        background-color: #dee2e6;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 300px;
+        margin-left: 50px;
+      }
+      .search-bar input {
+        flex-grow: 1;
+        padding: 10px 15px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background-color: transparent;
+      }
+      .search-bar button {
+        padding: 10px 15px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+      }
+      .top-icons {
+        display: flex;
+        gap: 20px;
+      }
+      .top-icons .icon {
+        width: 24px;
+        height: 24px;
+        fill: #666;
+      }
+      .nav-contact-card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 250px;
+        height: 100px;
+      }
+      .title {
+        color: #00a2e8;
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .contact-icon {
+        width: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .contact-icon::before {
+        content: "";
+        width: 15px;
+        height: 15px;
+        border: 2px solid white;
+        border-top: none;
+        border-right: none;
+        transform: rotate(-45deg);
+        margin-top: -5px;
+      }
+      .buttons {
+        display: flex;
+        gap: 10px;
+      }
+      .btn {
+        flex: 1;
+        padding: 4px;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+      }
+      .whatsapp {
+        background-color: #25d366;
+      }
+      .call {
+        background-color: #00a2e8;
+      }
+      @media (max-width: 768px) {
+        .search-bar {
+          width: 200px;
+        }
+        .sidebar {
+          left: -300px;
+        }
+        .sidebar.hide {
+          left: 0px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .search-bar {
+          display: none;
+        }
+        .top-icons {
+          gap: 10px;
+        }
+      }
+
+      .bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        padding: 10px 0;
+      }
+
+      .bottom-nav .bottom-nav-items {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        list-style-type: none;
+      }
+
+      .bottom-nav .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .bottom-nav .bottom-nav-item.b-active {
+        color: #0284c7;
+      }
+
+      .bottom-nav .bottom-nav-item svg {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 767px) {
+        .bottom-nav {
+          display: block;
+        }
+      }
+
+      /* content   */
+      .order-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .breadcrumb-nav {
+        margin-bottom: 20px;
+        font-size: 0.9em;
+        color: #666;
+      }
+      .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .order-number {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .order-track-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+      }
+      .invoice {
+        background-color: transparent;
+        color: #999a9d;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        border: 2px solid #d0d5dd;
+        cursor: pointer;
+        font-size: 1em;
+      }
+      .order-date-info,
+      .delivery-date-info {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 5px;
+      }
+      .tracking-container {
+        margin: 30px 0;
+      }
+      .tracking-progress-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        position: relative;
+      }
+      .tracking-step {
+        text-align: center;
+        flex: 1;
+        font-size: 0.8em;
+        position: relative;
+        padding-top: 20px;
+      }
+      .tracking-step::before {
+        content: "";
+        width: 20px;
+        height: 20px;
+        background-color: #e0e0e0;
+        border-radius: 50%;
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+      }
+      .tracking-step.active::before {
+        background-color: #4caf50;
+      }
+      .tracking-step.active {
+        font-weight: bold;
+        color: #4caf50;
+      }
+      .tracking-bar-bg {
+        background-color: #e0e0e0;
+        height: 4px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+      }
+      .tracking-bar {
+        background-color: #4caf50;
+        height: 100%;
+        width: 0;
+        transition: width 0.5s ease-in-out;
+      }
+      .product-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+      }
+      .product-info img {
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+        border-radius: 4px;
+      }
+      .payment-delivery-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .payment-delivery-info > div {
+        flex: 1;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+      }
+      .payment-delivery-info > div:first-child {
+        margin-right: 10px;
+      }
+      .support-links a {
+        display: block;
+        margin-bottom: 10px;
+        color: #1a73e8;
+        text-decoration: none;
+      }
+      .order-summary-container {
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 4px;
+      }
+      .summary-details {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .summary-total {
+        font-weight: bold;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+      }
+      @media (max-width: 600px) {
+        body {
+          padding: 0px;
+        }
+        .order-container {
+          padding: 10px;
+          margin-bottom: 50px;
+        }
+        .order-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .order-track-btn,
+        .invoice {
+          width: 100%;
+          margin-top: 10px;
+        }
+        .payment-delivery-info {
+          flex-direction: column;
+        }
+        .payment-delivery-info > div {
+          margin-bottom: 10px;
+        }
+        .payment-delivery-info > div:first-child {
+          margin-right: 0;
+        }
+        .tracking-step {
+          font-size: 0.7em;
+        }
+        .tracking-container {
+          padding-top: 30px;
+        }
+        .tracking-progress-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .tracking-step {
+          width: 100%;
+          text-align: left;
+          padding-left: 30px;
+          margin-bottom: 20px;
+        }
+        .tracking-step::before {
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .one {
+          flex-direction: column;
+          width: 100%;
+        }
+        .tracking-bar-bg {
+          left: 10px;
+          width: 4px;
+          top: 0;
+          bottom: 0;
+          height: auto;
+        }
+        .tracking-bar {
+          width: 100%;
+          transition: height 0.5s ease-in-out;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-bar">
+        <div class="logo-container">
+          <img src="images/krupa.svg" alt="Krupa Corporation" class="logo" />
+          <button class="menu-toggle" style="margin-top: 50px">
+            <img src="images/toggle.svg" alt="" />
+          </button>
+          <div class="search-bar">
+            <input type="text" placeholder="Search term" />
+            <button>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="top-icons" style="display: flex; align-items: center">
+          <svg class="contact-icon" viewBox="0 0 24 24">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            ></path>
+          </svg>
+          <svg class="contact-icon" viewBox="0 0 24 24">
+            <path
+              d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
+            ></path>
+          </svg>
+          <div class="nav-contact-card">
+            <div class="title">
+              <div class="icon">
+                <img src="images/support-nav.svg" alt="" />
+              </div>
+              Krupa Customer Care
+            </div>
+            <div class="buttons">
+              <a href="https://wa.me/1234567890" class="btn whatsapp"
+                >WhatsApp</a
+              >
+              <a href="tel:1234567890" class="btn call">Call</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="sidebar">
+        <nav>
+          <a href="#" class="nav-item">
+            <img src="images/dashboard.svg" alt="Dashboard Icon" class="icon" />
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="images/products.svg" alt="Products Icon" class="icon" />
+            <span>Products</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="images/orders.svg" alt="Orders Icon" class="icon" />
+            <span>Orders</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="images/invoice.svg" alt="Invoices Icon" class="icon" />
+            <span>My Invoices</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="images/quote.svg" alt="Quotes Icon" class="icon" />
+            <span>My Request For Quote</span>
+          </a>
+          <a href="#" class="nav-item active">
+            <img src="images/track.svg" alt="Track Orders Icon" class="icon" />
+            <span>Track Orders</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img src="images/account.svg" alt="Account Icon" class="icon" />
+            <span>Account</span>
+          </a>
+          <a href="#" class="nav-item">
+            <img
+              src="images/tickets.svg"
+              alt="Support Tickets Icon"
+              class="icon"
+            />
+            <span>Support Tickets</span>
+          </a>
+        </nav>
+      </aside>
+      <nav class="bottom-nav">
+        <ul class="bottom-nav-items">
+          <li>
+            <a href="#" class="bottom-nav-item b-active" data-nav="home">
+              <svg
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                ></path>
+              </svg>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#" class="bottom-nav-item" data-nav="career">
+              <svg
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
+                ></path>
+              </svg>
+              Career
+            </a>
+          </li>
+          <li>
+            <a href="#" class="bottom-nav-item" data-nav="courses">
+              <svg
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+                ></path>
+              </svg>
+              Courses
+            </a>
+          </li>
+          <li>
+            <a href="#" class="bottom-nav-item" data-nav="connect">
+              <svg
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+                ></path>
+              </svg>
+              Connect
+            </a>
+          </li>
+          <li>
+            <a href="#" class="bottom-nav-item" data-nav="profile">
+              <svg
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                ></path>
+              </svg>
+              Profile
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="main-content" style="margin-top: 100px">
+        <div class="cont">
+          <div class="order-container">
+            <div class="breadcrumb-nav">Home > Orders > ID 3354654654526</div>
+
+            <div class="order-header">
+              <div class="order-number">Order ID: 3354654654526</div>
+              <div class="one" style="display: flex; gap: 20px">
+                <button class="invoice">Invoice</button>
+
+                <button class="order-track-btn" onclick="trackOrder()">
+                  Track order
+                </button>
+              </div>
+            </div>
+
+            <div class="order-date-info">Order date: Feb 16, 2022</div>
+            <div class="delivery-date-info">
+              Estimated delivery: May 16, 2022
+            </div>
+
+            <div class="tracking-container">
+              <div class="tracking-progress-bar">
+                <div class="tracking-bar-bg">
+                  <div class="tracking-bar" id="progress"></div>
+                </div>
+                <div class="tracking-step" data-step="1">Order Confirmed</div>
+                <div class="tracking-step" data-step="2">Shipped</div>
+                <div class="tracking-step" data-step="3">Out For Delivery</div>
+                <div class="tracking-step" data-step="4">Delivered</div>
+              </div>
+            </div>
+
+            <div class="product-info">
+              <div style="display: flex; align-items: center">
+                <img src="images/product.png" alt="Primary TMT Fe 500D" />
+                <h3 style="font-size: larger">Primary TMT Fe 500D</h3>
+              </div>
+              <div>
+                <p>₹2599.00</p>
+                <p>Qty: 1</p>
+              </div>
+            </div>
+
+            <div class="payment-delivery-info">
+              <div class="payment-info">
+                <h3>Payment</h3>
+                <p>Visa **56</p>
+              </div>
+              <div class="delivery-info">
+                <h3>Delivery</h3>
+                <p>847 Jewess Bridge Apt.</p>
+                <p>174 London, UK</p>
+                <p>474-769-3919</p>
+              </div>
+            </div>
+
+            <div class="support-links">
+              <h3>Need Help</h3>
+              <a href="#">Order Issues</a>
+              <a href="#">Delivery Info</a>
+              <a href="#">Returns</a>
+            </div>
+
+            <div class="order-summary-container">
+              <h3>Order Summary</h3>
+              <div class="summary-details">
+                <span>Discount</span>
+                <span>₹5554</span>
+              </div>
+              <div class="summary-details">
+                <span>Discount (20%)</span>
+                <span>-₹1109.40</span>
+              </div>
+              <div class="summary-details">
+                <span>Delivery</span>
+                <span>₹0.00</span>
+              </div>
+              <div class="summary-details">
+                <span>Tax</span>
+                <span>+₹221.88</span>
+              </div>
+              <div class="summary-total">
+                <span>Total</span>
+                <span>₹4717.38</span>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            function trackOrder() {
+              let progress = document.getElementById("progress");
+              let steps = document.querySelectorAll(".tracking-step");
+              let activeStep = 2; // Change this to track the current step
+
+              progress.style.width =
+                ((activeStep - 1) / (steps.length - 1)) * 100 + "%";
+
+              steps.forEach((step, index) => {
+                if (index < activeStep) {
+                  step.classList.add("active");
+                }
+              });
+            }
+
+            window.onload = trackOrder;
+          </script>
+        </div>
+      </main>
+    </div>
+    <script>
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(".nav-item.active").classList.remove("active");
+          this.classList.add("active");
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.querySelector(".sidebar");
+        const mainContent = document.querySelector(".main-content");
+        const menuToggle = document.querySelector(".menu-toggle");
+
+        menuToggle.addEventListener("click", function () {
+          sidebar.classList.toggle("hide");
+          mainContent.classList.toggle("full-width");
+        });
+
+        function adjustLayout() {
+          if (window.innerWidth <= 768) {
+            sidebar.classList.add("hide");
+            mainContent.classList.add("full-width");
+          } else {
+            sidebar.classList.remove("hide");
+            mainContent.classList.remove("full-width");
+          }
+        }
+
+        adjustLayout();
+        window.addEventListener("resize", adjustLayout);
+      });
+    </script>
+  </body>
+</html>

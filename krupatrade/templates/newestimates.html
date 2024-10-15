@@ -750,7 +750,7 @@
           </div>
         </div>
         <div class="cont">
-          <div class="containerr">
+          <form class="containerr">
             <h1>New Estimate</h1>
             <div style="background-color: #f6f6f6; padding: 20px">
               <!-- address  -->
@@ -1138,6 +1138,69 @@
                   font-size: 10px;
                   color: #666;
                 }
+                .containerrr {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .row > span:first-child {
+            color: #333;
+            font-weight: normal;
+        }
+        .containerrr input[type="text"] {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: right;
+            color: #333;
+            font-size: 14px;
+        }
+        .containerrr input[type="text"]::placeholder {
+            color: #999;
+        }
+        .info-icon {
+            color: #999;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .apply-text {
+            color: #3498db;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            margin-left: 2px;
+        }
+        .value {
+            color: #999;
+            font-size: 14px;
+            text-align: right;
+            width: 80px;
+            display: inline-block;
+        }
+        .total .value {
+            color: #333;
+            font-weight: bold;
+        }
               </style>
               <!-- Sub Total Section -->
               <div class="totals-section">
@@ -1162,30 +1225,61 @@
                 </div>
 
                 <div class="amount-section">
-                  <!-- Subtotal, Shipping, Adjustment, and Total Section -->
-                  <div class="line-item">
-                    <label>Sub Total</label>
-                    <input type="number" value="0.00" disabled />
-                  </div>
-                  <div class="line-item">
-                    <label
-                      >Shipping Charges <span class="info-mark">?</span></label
-                    >
-                    <input type="text" placeholder="Enter Shipping Charges" />
-                    <a href="#" class="shipping-link"
-                      >Apply Tax on Shipping Charge</a
-                    >
-                    <input type="number" value="0.00" disabled />
-                  </div>
-                  <div class="line-item">
-                    <label>Adjustment <span class="info-mark">?</span></label>
-                    <input type="number" value="0.00" />
-                  </div>
-                  <div class="grand-total">
-                    <label>Total ( ₹ )</label>
-                    <input type="number" value="0.00" disabled />
-                  </div>
+                    <div class="containerrr">
+                        <div class="row">
+                            <span>Sub Total</span>
+                            <span class="value" id="subTotal">0.00</span>
+                        </div>
+                        <div class="row">
+                            
+                              <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
+                                <span>Shipping Charges</span>
+                                <input type="text" id="shippingCharges" placeholder="0.00" class="">
+                                <span class="info-icon">ⓘ</span>
+                              </div>
+                              <span class="value" id="shippigcharges"></span>
+                            
+                        </div>
+                        <div class="apply-text">Apply Tax on Shipping Charge</div>
+                        <div class="row">
+                            <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
+                
+                                <span>Adjustment</span>
+                                <input type="text" id="adjustment" placeholder="0.00" class="one">
+                                <span class="info-icon">ⓘ</span>
+                            </div>
+                            <span class="value" id="adjustmentcharges"></span>
+                        </div>
+                        <div class="row total">
+                            <span>Total ($)</span>
+                            <span class="value" id="total">0.00</span>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <script>
+                var adjcharge = document.getElementById('adjustmentcharges');
+                var shipcharge = document.getElementById('shippigcharges');
+                function calculateTotal() {
+                    
+                    const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
+                    const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
+                    const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
+                    
+                    const total = subTotal + shippingCharges + adjustment;
+                    document.getElementById('total').textContent = total.toFixed(2);
+                    adjcharge.innerHTML=adjustment;
+                    shipcharge.innerHTML=shippingCharges;
+                    // Update the color of filled inputs
+                    document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
+                    document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
+                }
+                
+                document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
+                document.getElementById('adjustment').addEventListener('input', calculateTotal);
+        
+                calculateTotal();
+            </script>
               </div>
 
               <div class="tc-main-container">
@@ -1268,10 +1362,10 @@
             </style>
             <div class="button-container">
               <button class="save-draft">Save as Draft</button>
-              <button class="save-as-draft">Save as Draft</button>
+              <button class="save-as-draft" type="submit">Save Estimate</button>
               <button class="cancel">Cancel</button>
             </div>
-          </div>
+        </form>
         </div>
       </main>
     </div>
@@ -1289,5 +1383,5 @@
         });
       });
     </script>
-  </body>
+ </body>
 </html>

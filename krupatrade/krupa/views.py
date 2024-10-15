@@ -220,3 +220,9 @@ def invoice_view(request,id):
 
 def dashboard_view(request):
     return render(request,'dashboard.html')
+
+def TrackHome(request):
+    return render(request,"Track1.html")
+
+def TrackOrder(request):
+    return render(request,"Track2.html")
