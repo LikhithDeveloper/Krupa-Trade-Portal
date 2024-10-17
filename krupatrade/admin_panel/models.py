@@ -4,6 +4,7 @@ from django.utils.crypto import get_random_string
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from krupa.models import *
+from krupa.models import CustomUser
 
 class Managers(models.Model):
     firstname = models.CharField(max_length=30)

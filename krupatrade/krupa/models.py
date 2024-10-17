@@ -90,6 +90,7 @@ class Orders(models.Model):
         super().save(*args, **kwargs)
 
 
+from admin_panel.models import *
 class Request(models.Model):
     profile = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     product_name = models.CharField(max_length=30)
@@ -102,6 +103,7 @@ class Request(models.Model):
     request = models.BooleanField(default=False, null=True,blank=True)
     type = models.CharField(max_length=20)
     date = models.DateField(auto_now_add=True,blank=True,null=True)
+    manager = models.ForeignKey(Managers,on_delete=models.SET_NULL,null=True,blank=True)
 @receiver(post_save, sender=Request)
 def create_orders(sender, instance, created, **kwargs):
     if instance.request:

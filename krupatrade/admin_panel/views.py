@@ -129,9 +129,20 @@ def Leads3(request):
     context = {'leads':leads}
     return render(request,"leads-3.html",context)
 
-def Customers(request):
+def Customers(request):  # sourcery skip: avoid-builtin-shadow
     obj = Request.objects.all()
-    context = {'obj':obj}
+    manager = Managers.objects.all()
+    context = {'obj':obj,'manager':manager}
+    if request.method == 'POST':
+        # print(request.POST)
+        data = request.POST
+        id = data.get('id')
+        name = data.get('manager').strip()
+        request_id = Request.objects.get(id = id)
+        print(request_id)
+        manager_name = Managers.objects.filter(displayname__iexact = name).first()
+        request_id.manager = manager_name
+        request_id.save()
     return render(request,"sales-customers-1.html",context)
 
 ############################ MANAGERS PAGES #############################

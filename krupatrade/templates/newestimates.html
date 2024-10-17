@@ -645,9 +645,35 @@
         color: #888;
         font-style: italic;
       }
+      
+      .open-add-form2{
+        position: absolute; width: 400px; height: 300px;z-index: 3;top: 275px;left: 750px; padding: 20px;padding-top: 0px;display: none;
+      }
+      .open-add-form{
+        position: absolute;
+        width: 400px; height: 300px;
+        z-index: 3;
+        top: 275px;
+        left: 450px;
+        display: none;
+      }
     </style>
   </head>
-  <body>
+  <body style="position: relative;">
+    <div class="open-add-form" >
+      <form onsubmit="handleSubmit1(event)">
+      <textarea placeholder="Enter Billing address here..." rows="10" cols="50" onchange="change(event)"></textarea>
+      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
+    </form>
+    
+    </div>
+    <div class="open-add-form2" >
+      <form onsubmit="handleSubmit2(event)">
+      <textarea placeholder="Enter shipping address here..." rows="10" cols="50"></textarea>
+      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
+    </form>
+    </div>
+    
     <div class="container">
       <button class="menu-toggle">☰</button>
       <aside class="sidebar">
@@ -794,26 +820,58 @@
                     <div class="col">
                       <label
                         >Billing Address
-                        <a href="#" class="edit-icon">✎</a></label
-                      >
-                      <p class="address">
-                        Queen<br />019 Marianna Mill Apt. 792<br />075 Desmond
-                        Place Suite 660<br />Goyettetown<br />Delaware
-                        994-941<br />Seychelles<br />Phone: (463)-979-800<br />Fax
-                        Number: 1-786-913-9473 x246
-                      </p>
+                        <button type="button" class="edit-icon" onclick="OpenFormAdd()">✎</button>
+                    </label>
+                      <pre class="address1" style="font-style:oblique">
+Queen
+019 Marianna Mill Apt. 792
+075 Desmond
+Place Suite 660
+Goyettetown
+Delaware
+994-941
+Seychelles
+Phone: (463)-979-800
+Fax Number: 1-786-913-9473 x246
+                      </pre>
                     </div>
                     <div class="col">
                       <label
                         >Shipping Address
-                        <a href="#" class="edit-icon">✎</a></label
-                      >
-                      <p class="address">
-                        Queen<br />019 Marianna Mill Apt. 792<br />075 Desmond
-                        Place Suite 660<br />Goyettetown<br />Delaware
-                        994-941<br />Seychelles<br />Phone: (463)-979-800<br />Fax
-                        Number: 1-786-913-9473 x246
-                      </p>
+                        <button type="button" class="edit-icon" onclick="OpenFormAdd2()">✎</button>
+                      </label>
+                      <script>
+                        function OpenFormAdd(){
+                          const form = document.querySelector(".open-add-form");
+            // Toggle visibility of the form
+            if (form.style.display === "flex") {
+                form.style.display = "none"; // Hide the form
+            } else {
+                form.style.display = "flex"; // Show the form
+            }
+                        }
+                        function OpenFormAdd2(){
+                          const form = document.querySelector(".open-add-form2");
+            // Toggle visibility of the form
+            if (form.style.display === "flex") {
+                form.style.display = "none"; // Hide the form
+            } else {
+                form.style.display = "flex"; // Show the form
+            }
+                        }
+                      </script>
+                      <pre class="address2" style="font-style:oblique">
+                        Queen
+                        019 Marianna Mill Apt. 792
+                        075 Desmond
+                        Place Suite 660
+                        Goyettetown
+                        Delaware
+                        994-941
+                        Seychelles
+                        Phone: (463)-979-800
+                        Fax Number: 1-786-913-9473 x246
+                                              </pre>
                     </div>
                   </div>
                   <div>
@@ -1382,6 +1440,26 @@
           arrow.classList.toggle("down");
         });
       });
+      function handleSubmit1(e) {
+        e.preventDefault(); 
+        const text = document.querySelector(".address1");
+        const add = text.innerHTML = "";
+      const textarea = e.target.querySelector('textarea');
+      console.log(textarea.value); 
+      text.innerHTML = textarea.value;
+    document.querySelector(".open-add-form").style.display = "none";
+
+    }
+    function handleSubmit2(e) {
+        e.preventDefault(); 
+        const text = document.querySelector(".address2");
+        const add = text.innerHTML = "";
+      const textarea = e.target.querySelector('textarea');
+      console.log(textarea.value); 
+      text.innerHTML = textarea.value;
+    document.querySelector(".open-add-form2").style.display = "none";
+
+    }
     </script>
  </body>
 </html>
