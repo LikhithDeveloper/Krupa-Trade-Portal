@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Category, Products, Subcategory, Orders, Request, SupportTicket, UserAddress, Invoice
+from .models import CustomUser, Category, Products, Subcategory, Orders, Request, SupportTicket, UserAddress, Invoice, Estimate, EstimateItem
 # Register your models here.
 
 admin.site.register(CustomUser)
@@ -11,5 +11,7 @@ admin.site.register(Request)
 admin.site.register(SupportTicket)
 admin.site.register(UserAddress)
 admin.site.register(Invoice)
+admin.site.register(EstimateItem)
+admin.site.register(Estimate)
 
 

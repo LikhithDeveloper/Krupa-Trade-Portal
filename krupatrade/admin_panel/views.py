@@ -129,7 +129,7 @@ def Leads3(request):
     context = {'leads':leads}
     return render(request,"leads-3.html",context)
 
-def Customers(request):  # sourcery skip: avoid-builtin-shadow
+def Customers(request):  # sourcery skip: avoid-builtin-shadow, extract-method
     obj = Request.objects.all()
     manager = Managers.objects.all()
     context = {'obj':obj,'manager':manager}
@@ -174,7 +174,72 @@ def Estimates(request):
 def Estimates2(request):
     return render(request,"Estimates2.html")
 
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from krupa.models import Estimate, EstimateItem
+
+@csrf_exempt
 def Newestimates(request):
+    requests = Request.objects.all()
+    context = {"custoumers":requests}
     if request.method == "POST":
-        print(request.POST)
-    return render(request,"newestimates.html")
+        try:
+            data = json.loads(request.body)
+            # print(data)
+            
+            # Convert date fields properly
+            estimate_date = data.get('estimateDate', None) if data.get('estimateDate') else None
+            expiry_date = data.get('expiryDate', None) if data.get('expiryDate') else None
+            name = data.get('customerName', '')
+            customer_name1 = Request.objects.get(company = name)
+            
+            # Create the Estimate object
+            estimate = Estimate.objects.create(
+                customer_name=customer_name1,
+                billing_address=data.get('billingAddress', ''),
+                shipping_address=data.get('shippingAddress', ''),
+                place_of_supply=data.get('placeOfSupply', 'Select place of supply'),
+                estimate_number=data.get('estimateNumber', ''),
+                reference=data.get('reference', ''),
+                estimate_date=estimate_date,
+                expiry_date=expiry_date,
+                sales_person=data.get('salesPerson', ''),
+                project_name=data.get('projectName', ''),
+                subject=data.get('subject', ''),
+                sub_total=data.get('subTotal', '0.00'),
+                shipping_charges=data.get('shippingCharges', '0.00') or '0.00',
+                adjustment=data.get('adjustment', '0.00') or '0.00',
+                total=data.get('total', '0.00'),
+                terms_and_conditions=data.get('termsAndConditions', ''),
+                create_retainer_invoice=data.get('createRetainerInvoice', False)
+            )
+            
+            # Create the related EstimateItem objects
+            for item in data['items']:
+                EstimateItem.objects.create(
+                    estimate=estimate,
+                    item_details=item.get('itemDetails', ''),
+                    quantity=item.get('quantity', 0.00),
+                    rate=item.get('rate', 0.00),
+                    discount=item.get('discount', '0 %'),
+                    tax=item.get('tax', 'Select a Tax'),
+                    amount=item.get('amount', 0.00)
+                )
+
+            return JsonResponse({'message': 'Estimate created successfully'}, status=201)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return render(request, "newestimates.html",context)
+
+
+def Invoice1(request):
+    return render(request,"invoice1.html")
+
+def Invoice2(request):
+    return render(request,"invoice2.html")
+
+def Invoice3(request):
+    return render(request,"invoice3.html")

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from admin_panel.views import *
+from admin_panel.views import AdminProducts,AddProducts,AddSubCategories,AddCategories,Leads1,Leads2,Leads3,Customers,ManagersView,AddManagers,Estimates,Estimates2,Newestimates,Invoice1,Invoice2,Invoice3
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -18,6 +18,9 @@ urlpatterns = [
     path('estimates/',Estimates,name="Estimates"),
     path('estimates2/',Estimates2,name="Estimate2"),
     path('newestimates/',Newestimates,name='Newestimates'),
+    path('invoice1/',Invoice1,name="Invoice1"),
+    path('invoice2/',Invoice2,name="Invoice2"),
+    path('newinvoice/',Invoice3,name="Invoice3"),
 ]
 
 if settings.DEBUG:

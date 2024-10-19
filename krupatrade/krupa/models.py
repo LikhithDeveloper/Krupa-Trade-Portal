@@ -80,17 +80,16 @@ class Orders(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.order_id:
-            # Generate a unique sequential order ID
-            last_order = Orders.objects.order_by('-id').first()
-            if last_order:
-                last_id = int(last_order.order_id)
-                self.order_id = str(last_id + 1).zfill(5)  # Increment and pad with zeros
+            if last_order := Orders.objects.order_by('-id').first():
+                self.order_id = str(int(last_order.order_id) + 1).zfill(5)
             else:
                 self.order_id = '000001'  # Starting value
         super().save(*args, **kwargs)
 
 
-from admin_panel.models import *
+from admin_panel.models import Managers
+
+# from admin_panel.models import *
 class Request(models.Model):
     profile = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     product_name = models.CharField(max_length=30)
@@ -132,11 +131,8 @@ class SupportTicket(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.order_id:
-            # Generate a unique sequential order ID
-            last_order = SupportTicket.objects.order_by('-id').first()
-            if last_order:
-                last_id = int(last_order.order_id)
-                self.order_id = str(last_id + 1).zfill(5)  # Increment and pad with zeros
+            if last_order := SupportTicket.objects.order_by('-id').first():
+                self.order_id = str(int(last_order.order_id) + 1).zfill(5)
             else:
                 self.order_id = '000001'  # Starting value
         super().save(*args, **kwargs)
@@ -161,13 +157,42 @@ class Invoice(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.invoice_id:
-            # Generate a unique sequential invoice ID
-            last_invoice = Invoice.objects.order_by('-id').first()     
-            if last_invoice:
-                last_id = int(last_invoice.invoice_id)
-                self.invoice_id = str(last_id + 1).zfill(6)  # Increment and pad with zeros
+            if last_invoice := Invoice.objects.order_by('-id').first():
+                self.invoice_id = str(int(last_invoice.invoice_id) + 1).zfill(6)
             else:
                 self.invoice_id = '000001'  # Starting value
         super().save(*args, **kwargs)
 
 
+
+
+
+################ Estimate ##########################
+
+class Estimate(models.Model):
+    customer_name = models.ForeignKey(Request, null=True, blank=True,on_delete=models.CASCADE)
+    billing_address = models.TextField(null=True, blank=True)
+    shipping_address = models.TextField(null=True, blank=True)
+    place_of_supply = models.CharField(max_length=255, null=True, blank=True)
+    estimate_number = models.CharField(max_length=100, null=True, blank=True)
+    reference = models.CharField(max_length=100, null=True, blank=True)
+    estimate_date = models.DateField(null=True, blank=True)
+    expiry_date = models.DateField(null=True, blank=True)
+    sales_person = models.CharField(max_length=255, null=True, blank=True)
+    project_name = models.CharField(max_length=255, null=True, blank=True)
+    subject = models.TextField(null=True, blank=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
+    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    adjustment = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
+    terms_and_conditions = models.TextField(null=True, blank=True)
+    create_retainer_invoice = models.BooleanField(default=False)
+
+class EstimateItem(models.Model):
+    estimate = models.ForeignKey(Estimate, on_delete=models.CASCADE, related_name='items', null=True, blank=True)
+    item_details = models.CharField(max_length=255, null=True, blank=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
+    discount = models.CharField(max_length=50, null=True, blank=True, default="0 %")
+    tax = models.CharField(max_length=255, null=True, blank=True, default="Select a Tax")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
