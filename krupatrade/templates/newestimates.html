@@ -799,6 +799,16 @@
         <div class="cont">
           <form class="containerr"  action="/submit-estimate" method="post">
             <h1>New Estimate</h1>
+            {% if messages %}
+    <div class="container mt-4">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
             <div style="background-color: #f6f6f6; padding: 20px">
               <!-- address  -->
               <div class="address-details" style="margin-bottom: 20px">
@@ -1021,7 +1031,7 @@ Fax Number: 1-786-913-9473 x246
                   <div class="col1">
                     <div class="input-container" style="position: relative">
                       <input
-                        type="text"
+                        type="date"
                         class="single-input"
                         id="Estimate-date"
                         style="border: 2px solid #d1d5db; border-radius: 10px"

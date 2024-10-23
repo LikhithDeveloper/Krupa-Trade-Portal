@@ -1,10 +1,11 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,redirect
 from krupa.models import *
 from admin_panel.models import Managers
 from django.core import serializers
 from django.core.serializers import serialize
 from rest_framework.renderers import JSONRenderer
 from .serializer import *
+from django.contrib import messages
 
 # Create your views here.
 
@@ -187,16 +188,16 @@ def Newestimates(request):
         try:
             data = json.loads(request.body)
             # print(data)
-            
-            # Convert date fields properly
             estimate_date = data.get('estimateDate', None) if data.get('estimateDate') else None
             expiry_date = data.get('expiryDate', None) if data.get('expiryDate') else None
             name = data.get('customerName', '')
             customer_name1 = Request.objects.get(company = name)
+            print(customer_name1.profile.gstin)
             
             # Create the Estimate object
             estimate = Estimate.objects.create(
-                customer_name=customer_name1,
+                customer=customer_name1.profile,
+                request = customer_name1,
                 billing_address=data.get('billingAddress', ''),
                 shipping_address=data.get('shippingAddress', ''),
                 place_of_supply=data.get('placeOfSupply', 'Select place of supply'),
@@ -227,6 +228,9 @@ def Newestimates(request):
                     amount=item.get('amount', 0.00)
                 )
 
+            messages.success(request,"New estimate created successfully")
+            return redirect("newestimates/")
+
             return JsonResponse({'message': 'Estimate created successfully'}, status=201)
 
         except Exception as e:
@@ -241,5 +245,66 @@ def Invoice1(request):
 def Invoice2(request):
     return render(request,"invoice2.html")
 
+# from .models import Customer, Invoice, Item
+@csrf_exempt
 def Invoice3(request):
-    return render(request,"invoice3.html")
+    # print("Hi")
+    requests = Request.objects.all()  # Fetch all Request objects
+    context = {"custoumers": requests}
+
+    if request.method == "POST":
+        try:
+            # Parse the JSON data from the request body
+            data = json.loads(request.body)
+            print(data)
+            
+            # Handle customer name lookup
+            name = data.get('customerName', '')
+            customer_name1 = Request.objects.get(company=name)
+            print(customer_name1.profile)
+
+            # Handle the invoice date and due date
+            invoice_date = data.get('invoiceDate', None) if data.get('invoiceDate') else None
+            due_date = data.get('dueDate', None) if data.get('dueDate') else None
+            
+            # Create the Invoice object
+            invoice = InvoiceEstimate.objects.create(
+                customer=customer_name1.profile,
+                request = customer_name1,
+                invoice_number=data.get('invoiceNumber', ''),
+                order_number=data.get('orderNumber', ''),
+                invoice_date=invoice_date,
+                terms=data.get('terms', ''),
+                due_date=due_date,
+                sales_person=data.get('salesPerson', ''),
+                sub_total=data.get('subTotal', '0.00'),
+                shipping_charges=data.get('shippingCharges', '0.00') or '0.00',
+                adjustment=data.get('adjustment', '0.00') or '0.00',
+                total=data.get('total', '0.00'),
+                terms_and_conditions=data.get('termsAndConditions', ''),
+                create_retainer_invoice=data.get('createRetainerInvoice', False)
+            )
+            
+            # Create the related Item objects for the invoice
+            for item_data in data.get('items', []):
+                Item.objects.create(
+                    invoice=invoice,
+                    item_details=item_data.get('itemDetails', ''),
+                    quantity=item_data.get('quantity', 0.00),
+                    rate=item_data.get('rate', 0.00),
+                    discount=item_data.get('discount', '0 %'),
+                    tax=item_data.get('tax', 'Select a Tax'),
+                    amount=item_data.get('amount', 0.00)
+                )
+
+            # On successful creation, send a success message and redirect
+            messages.success(request, "Invoice created successfully.")
+            return JsonResponse({'message': 'Invoice created successfully'}, status=201)
+
+        except Request.DoesNotExist:
+            return JsonResponse({'error': 'Customer not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    # If it's a GET request, return the form
+    return render(request, "invoice3.html", context)

@@ -770,6 +770,9 @@
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
                         <option>Select or add customer</option>
+                        {% for i in custoumers %}
+                        <option>{{i.company}}</option>
+                        {% endfor %}
                       </select>
                     </div>
                     <button class="search-button" style="margin-right: 10px">
@@ -1265,10 +1268,11 @@
               <button type="button" onclick="getInvoiceFormData()">Save Invoice</button>
               <button class="cancel">Cancel</button>
             </div>
-            <div id="jsonOutput"></div>
+            <!-- <div id="jsonOutput"></div> -->
 
             <script>
               function getInvoiceFormData() {
+                console.log("Hi")
                 const form = document.querySelector('.containerr'); 
                 const jsonObject = {};
 
@@ -1314,9 +1318,25 @@
                 jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value.trim();
                 jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked; 
 
-                // Display the JSON
-                const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
-                jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+                // // Display the JSON
+                // const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
+                // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+
+                fetch('/newinvoice/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // 'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(jsonObject)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
             }
             </script>
         </form>

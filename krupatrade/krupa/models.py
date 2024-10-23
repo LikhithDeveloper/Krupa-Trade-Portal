@@ -170,14 +170,15 @@ class Invoice(models.Model):
 ################ Estimate ##########################
 
 class Estimate(models.Model):
-    customer_name = models.ForeignKey(Request, null=True, blank=True,on_delete=models.CASCADE)
+    customer_name = models.ForeignKey(CustomUser, null=True, blank=True,on_delete=models.CASCADE)
+    request = models.ForeignKey(Request, null=True, blank=True,on_delete=models.CASCADE)
     billing_address = models.TextField(null=True, blank=True)
     shipping_address = models.TextField(null=True, blank=True)
     place_of_supply = models.CharField(max_length=255, null=True, blank=True)
     estimate_number = models.CharField(max_length=100, null=True, blank=True)
     reference = models.CharField(max_length=100, null=True, blank=True)
-    estimate_date = models.DateField(null=True, blank=True)
-    expiry_date = models.DateField(null=True, blank=True)
+    estimate_date = models.CharField(max_length=20,null=True, blank=True)
+    expiry_date = models.CharField(max_length=20,null=True, blank=True)
     sales_person = models.CharField(max_length=255, null=True, blank=True)
     project_name = models.CharField(max_length=255, null=True, blank=True)
     subject = models.TextField(null=True, blank=True)
@@ -196,3 +197,43 @@ class EstimateItem(models.Model):
     discount = models.CharField(max_length=50, null=True, blank=True, default="0 %")
     tax = models.CharField(max_length=255, null=True, blank=True, default="Select a Tax")
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
+
+
+
+
+################################# Invoices ######################################
+
+class InvoiceEstimate(models.Model):
+    customer_name = models.ForeignKey(CustomUser, null=True, blank=True,on_delete=models.CASCADE)
+    request = models.ForeignKey(Request, null=True, blank=True,on_delete=models.CASCADE)
+    invoice_number = models.CharField(max_length=100, blank=True)
+    order_number = models.CharField(max_length=100, blank=True)
+    invoice_date = models.CharField(max_length=30,null=True, blank=True)
+    terms = models.TextField(blank=True)
+    due_date = models.CharField(max_length=30,null=True, blank=True)
+    sales_person = models.CharField(max_length=255, blank=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    adjustment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    terms_and_conditions = models.TextField(blank=True)
+    create_retainer_invoice = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Invoice {self.invoice_number} for {self.customer}"
+    
+
+
+class Item(models.Model):
+    invoice = models.ForeignKey(InvoiceEstimate, on_delete=models.CASCADE, related_name='items')
+    item_details = models.CharField(max_length=255)
+    quantity = models.PositiveIntegerField(default=1)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount = models.CharField(max_length=10, default="0 %")
+    tax = models.CharField(max_length=100, blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.item_details
+
+
