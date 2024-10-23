@@ -287,7 +287,7 @@
       }
       .single-input {
         width: 100%;
-        height: 100%;
+        height: 40px;
         padding: 0 30px 0 10px;
       }
       .select-input:focus,
@@ -645,56 +645,9 @@
         color: #888;
         font-style: italic;
       }
-      
-      .open-add-form2{
-        position: absolute; width: 400px; height: 300px;z-index: 3;top: 275px;left: 750px; padding: 20px;padding-top: 0px;display: none;
-      }
-      .open-add-form{
-        position: absolute;
-        width: 400px; height: 300px;
-        z-index: 3;
-        top: 275px;
-        left: 450px;
-        display: none;
-      }
     </style>
   </head>
-  <body style="position: relative;">
-    <div class="open-add-form" >
-      <form onsubmit="handleSubmit1(event)">
-      <textarea placeholder="Enter Billing address here..." rows="10" cols="50" onchange="change(event)"></textarea>
-      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
-    </form>
-    
-    </div>
-    <div class="open-add-form2" >
-      <form onsubmit="handleSubmit2(event)">
-      <textarea placeholder="Enter shipping address here..." rows="10" cols="50"></textarea>
-      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
-    </form>
-    </div>
-    <script>
-      function handleSubmit1(e) {
-        e.preventDefault(); 
-        const text = document.querySelector(".address1");
-        const add = text.innerHTML = "";
-      const textarea = e.target.querySelector('textarea');
-      console.log(textarea.value); 
-      text.innerHTML = textarea.value;
-    document.querySelector(".open-add-form").style.display = "none";
-
-    }
-    function handleSubmit2(e) {
-        e.preventDefault(); 
-        const text = document.querySelector(".address2");
-        const add = text.innerHTML = "";
-      const textarea = e.target.querySelector('textarea');
-      console.log(textarea.value); 
-      text.innerHTML = textarea.value;
-    document.querySelector(".open-add-form2").style.display = "none";
-
-    }
-    </script>
+  <body>
     <div class="container">
       <button class="menu-toggle">☰</button>
       <aside class="sidebar">
@@ -753,8 +706,8 @@
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
             <a href="#">Customers</a>
-            <a href="#" class="active">Estimates</a>
-            <a href="#">Sales Orders</a>
+            <a href="#">Estimates</a>
+            <a href="#" class="active">Sales Orders</a>
             <a href="#">Invoices</a>
             <a href="#">Payments Received</a>
           </div>
@@ -797,18 +750,8 @@
           </div>
         </div>
         <div class="cont">
-          <form class="containerr"  action="/submit-estimate" method="post">
-            <h1>New Estimate</h1>
-            {% if messages %}
-    <div class="container mt-4">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-
+          <form class="containerr">
+            <h1>New Order</h1>
             <div style="background-color: #f6f6f6; padding: 20px">
               <!-- address  -->
               <div class="address-details" style="margin-bottom: 20px">
@@ -827,7 +770,7 @@
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
                         <option>Select or add customer</option>
-                        {% for i in custoumers %}
+                        {% for i in customers %}
                         <option>{{i.company}}</option>
                         {% endfor %}
                       </select>
@@ -850,111 +793,8 @@
                     </button>
                     <span class="currency">INR</span>
                   </div>
-                  <div class="row">
-                    <div class="col">
-                      <label
-                        >Billing Address
-                        <button type="button" class="edit-icon" onclick="OpenFormAdd()">✎</button>
-                    </label>
-                      <pre class="address1" style="font-style:oblique">
-Queen
-019 Marianna Mill Apt. 792
-075 Desmond
-Place Suite 660
-Goyettetown
-Delaware
-994-941
-Seychelles
-Phone: (463)-979-800
-Fax Number: 1-786-913-9473 x246
-                      </pre>
-                    </div>
-                    <div class="col">
-                      <label
-                        >Shipping Address
-                        <button type="button" class="edit-icon" onclick="OpenFormAdd2()">✎</button>
-                      </label>
-                      <script>
-                        function OpenFormAdd(){
-                          const form = document.querySelector(".open-add-form");
-            // Toggle visibility of the form
-            if (form.style.display === "flex") {
-                form.style.display = "none"; // Hide the form
-            } else {
-                form.style.display = "flex"; // Show the form
-            }
-                        }
-                        function OpenFormAdd2(){
-                          const form = document.querySelector(".open-add-form2");
-            // Toggle visibility of the form
-            if (form.style.display === "flex") {
-                form.style.display = "none"; // Hide the form
-            } else {
-                form.style.display = "flex"; // Show the form
-            }
-                        }
-                      </script>
-                      <pre class="address2" style="font-style:oblique">
-                        Queen
-                        019 Marianna Mill Apt. 792
-                        075 Desmond
-                        Place Suite 660
-                        Goyettetown
-                        Delaware
-                        994-941
-                        Seychelles
-                        Phone: (463)-979-800
-                        Fax Number: 1-786-913-9473 x246
-                                              </pre>
-                    </div>
-                  </div>
-                  <div>
-                    <p>REMARKS</p>
-                    <p>placet aspernatur ratione quisquam</p>
-                  </div>
-                  <div>
-                    <p>
-                      GST Treatment:
-                      <strong style="font-size: small; font-weight: 600"
-                        >Registered Business-Regular</strong
-                      >
-                    </p>
-                  </div>
-                  <div>
-                    <p>
-                      GSTIN:
-                      <strong style="font-size: small; font-weight: 600"
-                        >33LDAFV3105H9Z5</strong
-                      >
-                    </p>
-                  </div>
                 </div>
               </div>
-
-              <!-- place of supply  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="place-of-supply"
-                    style="font-size: 20px; font-weight: 600"
-                    >Place Of Supply</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <div class="custom-select">
-                      <select
-                        class="select-input"
-                        id="place-of-supply"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      >
-                        <option>Select place of supply</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- end of place of supply  -->
             </div>
 
             <!-- second section  -->
@@ -972,9 +812,9 @@ Fax Number: 1-786-913-9473 x246
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
-                    for="estimate"
+                    for="sales-order"
                     style="font-size: 20px; font-weight: 600"
-                    >Estimate#</label
+                    >Sales Order#</label
                   >
                 </div>
                 <div class="col1">
@@ -982,7 +822,7 @@ Fax Number: 1-786-913-9473 x246
                     <input
                       type="text"
                       class="single-input"
-                      id="estimate"
+                      id="sales-order"
                       placeholder="EST-001"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
                     />
@@ -1012,51 +852,68 @@ Fax Number: 1-786-913-9473 x246
                 </div>
               </div>
               <!-- end of reference  -->
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-between;
-                  width: 100%;
-                "
-              >
-                <!-- estimate date  -->
-                <div class="address-details" style="width: 45%">
-                  <div>
-                    <label
-                      for="Estimate-date"
-                      style="font-size: 20px; font-weight: 600"
-                      >Estimate Date</label
-                    >
-                  </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative">
-                      <input
-                        type="date"
-                        class="single-input"
-                        id="Estimate-date"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
+
+              <!-- sales order date  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="sales-order-date"
+                    style="font-size: 20px; font-weight: 600"
+                    >Sales Order Date</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="sales-order-date"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
                   </div>
                 </div>
+              </div>
+              <!-- sales order date end  -->
 
-                <div class="address-details" style="width: 45%">
-                  <div>
-                    <label
-                      for="expiry-date"
-                      style="font-size: 20px; font-weight: 600"
-                      >Expiry Date</label
-                    >
+              <!-- explected shipment date  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="expected-shipment-date"
+                    style="font-size: 20px; font-weight: 600"
+                    >Expected Shipment Date</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="expected-shipment-date"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
                   </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative">
-                      <input
-                        type="text"
-                        class="single-input"
-                        id="expiry-date"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
+                </div>
+              </div>
+              <!-- explected shipment date end-->
+
+              <!-- payments terms  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="payment-terms"
+                    style="font-size: 20px; font-weight: 600"
+                    >Payment Terms</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="payment-terms"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
                   </div>
                 </div>
               </div>
@@ -1078,6 +935,32 @@ Fax Number: 1-786-913-9473 x246
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
+                    for="delivery-method"
+                    style="font-size: 20px; font-weight: 600"
+                    >Delivery Method</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <select
+                      name="delivery-method"
+                      id="delivery-method"
+                      class="single-input"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    >
+                      <option value="">
+                        select a delivery method or type to add
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- end of sales person  -->
+
+              <!-- project name  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
                     for="sales-person"
                     style="font-size: 20px; font-weight: 600"
                     >Sales Person</label
@@ -1096,65 +979,9 @@ Fax Number: 1-786-913-9473 x246
                   </div>
                 </div>
               </div>
-              <!-- end of sales person  -->
-
-              <!-- project name  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="project-name"
-                    style="font-size: 20px; font-weight: 600"
-                    >Project Name</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <select
-                      name="project-name"
-                      id="project-name"
-                      class="single-input"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">select or add sales person</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
               <!-- end of reference  -->
             </div>
             <!-- end of third section  -->
-
-            <!-- fourth section  -->
-            <div
-              style="
-                padding: 20px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 30px;
-                border-bottom: 1px solid #d1d5db;
-              "
-            >
-              <!-- sales person  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label for="subject" style="font-size: 20px; font-weight: 600"
-                    >Subject</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <input
-                      type="text"
-                      class="single-input"
-                      id="subject"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- end of sales person  -->
-            </div>
 
             <!-- section five  -->
 
@@ -1231,68 +1058,68 @@ Fax Number: 1-786-913-9473 x246
                   color: #666;
                 }
                 .containerrr {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            width: 100%;
-            height: 40vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        .row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .row > span:first-child {
-            color: #333;
-            font-weight: normal;
-        }
-        .containerrr input[type="text"] {
-            width: 80px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            text-align: right;
-            color: #333;
-            font-size: 14px;
-        }
-        .containerrr input[type="text"]::placeholder {
-            color: #999;
-        }
-        .info-icon {
-            color: #999;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-        .total {
-            font-weight: bold;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        .apply-text {
-            color: #3498db;
-            font-size: 12px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            margin-left: 2px;
-        }
-        .value {
-            color: #999;
-            font-size: 14px;
-            text-align: right;
-            width: 80px;
-            display: inline-block;
-        }
-        .total .value {
-            color: #333;
-            font-weight: bold;
-        }
+                  background-color: white;
+                  padding: 20px;
+                  border-radius: 5px;
+                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                  width: 100%;
+                  height: 40vh;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-around;
+                }
+                .row {
+                  display: flex;
+                  justify-content: space-between;
+                  margin-bottom: 15px;
+                  align-items: center;
+                }
+                .row > span:first-child {
+                  color: #333;
+                  font-weight: normal;
+                }
+                .containerrr input[type="text"] {
+                  width: 80px;
+                  padding: 5px;
+                  border: 1px solid #ccc;
+                  border-radius: 3px;
+                  text-align: right;
+                  color: #333;
+                  font-size: 14px;
+                }
+                .containerrr input[type="text"]::placeholder {
+                  color: #999;
+                }
+                .info-icon {
+                  color: #999;
+                  font-size: 14px;
+                  cursor: pointer;
+                  margin-left: 5px;
+                }
+                .total {
+                  font-weight: bold;
+                  margin-top: 15px;
+                  padding-top: 15px;
+                  border-top: 1px solid #eee;
+                }
+                .apply-text {
+                  color: #3498db;
+                  font-size: 12px;
+                  margin-top: -10px;
+                  margin-bottom: 15px;
+                  margin-left: 2px;
+                }
+                .value {
+                  color: #999;
+                  font-size: 14px;
+                  text-align: right;
+                  width: 80px;
+                  display: inline-block;
+                }
+                .total .value {
+                  color: #333;
+                  font-weight: bold;
+                }
               </style>
               <!-- Sub Total Section -->
               <div class="totals-section">
@@ -1317,62 +1144,97 @@ Fax Number: 1-786-913-9473 x246
                 </div>
 
                 <div class="amount-section">
-                    <div class="containerrr">
-                        <div class="row">
-                            <span>Sub Total</span>
-                            <span class="value" id="subTotal">0.00</span>
-                        </div>
-                        <div class="row">
-                            
-                              <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                                <span>Shipping Charges</span>
-                                <input type="text" id="shippingCharges" placeholder="0.00" class="">
-                                <span class="info-icon">ⓘ</span>
-                              </div>
-                              <span class="value" id="shippigcharges"></span>
-                            
-                        </div>
-                        <div class="apply-text">Apply Tax on Shipping Charge</div>
-                        <div class="row">
-                            <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                
-                                <span>Adjustment</span>
-                                <input type="text" id="adjustment" placeholder="0.00" class="one">
-                                <span class="info-icon">ⓘ</span>
-                            </div>
-                            <span class="value" id="adjustmentcharges"></span>
-                        </div>
-                        <div class="row total">
-                            <span>Total ($)</span>
-                            <span class="value" id="total">0.00</span>
-                        </div>
+                  <div class="containerrr">
+                    <div class="row">
+                      <span>Sub Total</span>
+                      <span class="value" id="subTotal">0.00</span>
                     </div>
+                    <div class="row">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 10px;
+                          justify-content: center;
+                          align-items: center;
+                        "
+                      >
+                        <span>Shipping Charges</span>
+                        <input
+                          type="text"
+                          id="shippingCharges"
+                          placeholder="0.00"
+                          class=""
+                        />
+                        <span class="info-icon">ⓘ</span>
+                      </div>
+                      <span class="value" id="shippigcharges"></span>
+                    </div>
+                    <div class="apply-text">Apply Tax on Shipping Charge</div>
+                    <div class="row">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 10px;
+                          justify-content: center;
+                          align-items: center;
+                        "
+                      >
+                        <span>Adjustment</span>
+                        <input
+                          type="text"
+                          id="adjustment"
+                          placeholder="0.00"
+                          class="one"
+                        />
+                        <span class="info-icon">ⓘ</span>
+                      </div>
+                      <span class="value" id="adjustmentcharges"></span>
+                    </div>
+                    <div class="row total">
+                      <span>Total ($)</span>
+                      <span class="value" id="total">0.00</span>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            <script>
-                var adjcharge = document.getElementById('adjustmentcharges');
-                var shipcharge = document.getElementById('shippigcharges');
-                function calculateTotal() {
-                    
-                    const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
-                    const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                    const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                    
-                    const total = subTotal + shippingCharges + adjustment;
-                    document.getElementById('total').textContent = total.toFixed(2);
-                    adjcharge.innerHTML=adjustment;
-                    shipcharge.innerHTML=shippingCharges;
-                    // Update the color of filled inputs
-                    document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
-                    document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
-                }
-                
-                document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
-                document.getElementById('adjustment').addEventListener('input', calculateTotal);
-        
-                calculateTotal();
-            </script>
               </div>
+              <script>
+                var adjcharge = document.getElementById("adjustmentcharges");
+                var shipcharge = document.getElementById("shippigcharges");
+                function calculateTotal() {
+                  const subTotal =
+                    parseFloat(
+                      document.getElementById("subTotal").textContent
+                    ) || 0;
+                  const shippingCharges =
+                    parseFloat(
+                      document.getElementById("shippingCharges").value
+                    ) || 0;
+                  const adjustment =
+                    parseFloat(document.getElementById("adjustment").value) ||
+                    0;
+
+                  const total = subTotal + shippingCharges + adjustment;
+                  document.getElementById("total").textContent =
+                    total.toFixed(2);
+                  adjcharge.innerHTML = adjustment;
+                  shipcharge.innerHTML = shippingCharges;
+                  // Update the color of filled inputs
+                  document.getElementById("shippingCharges").style.color =
+                    shippingCharges ? "#333" : "#999";
+                  document.getElementById("adjustment").style.color = adjustment
+                    ? "#333"
+                    : "#999";
+                }
+
+                document
+                  .getElementById("shippingCharges")
+                  .addEventListener("input", calculateTotal);
+                document
+                  .getElementById("adjustment")
+                  .addEventListener("input", calculateTotal);
+
+                calculateTotal();
+              </script>
 
               <div class="tc-main-container">
                 <div class="tc-form-section">
@@ -1454,99 +1316,106 @@ Fax Number: 1-786-913-9473 x246
             </style>
             <div class="button-container">
               <button class="save-draft">Save as Draft</button>
-              <button type="button" onclick="getFormData()">Save</button>
+              <button type="button" onclick="getOrderFormData()">
+                Save Order
+              </button>
               <button class="cancel">Cancel</button>
             </div>
-  
-    <!-- <div id="jsonOutput"></div> -->
+            <!-- <div id="jsonOutput"></div> -->
 
-    <script>
-    function getFormData() {
-        const form = document.querySelector('.containerr');
-        const jsonObject = {};
+            <script>
+              function getOrderFormData() {
+                const form = document.querySelector(".containerr"); // Assuming your form has the 'containerr' class
+                const jsonObject = {};
 
-        // Customer details
-        jsonObject.customerName = document.getElementById('customer-name').value;
-        jsonObject.billingAddress = document.querySelector('.address1').textContent.trim();
-        jsonObject.shippingAddress = document.querySelector('.address2').textContent.trim();
-        jsonObject.placeOfSupply = document.getElementById('place-of-supply').value;
+                // Customer Details
+                jsonObject.customerName = document
+                  .getElementById("customer-name")
+                  .value.trim();
+                if (!jsonObject.customerName) {
+                  alert("Please enter a Customer Name.");
+                  return;
+                }
 
-        // Estimate details
-        jsonObject.estimateNumber = document.getElementById('estimate').value;
-        jsonObject.reference = document.getElementById('referecne').value;
-        jsonObject.estimateDate = document.getElementById('Estimate-date').value;
-        jsonObject.expiryDate = document.getElementById('expiry-date').value;
+                // Order Details
+                jsonObject.salesOrderNumber = document
+                  .getElementById("sales-order")
+                  .value.trim();
+                jsonObject.referenceNumber = document
+                  .getElementById("referecne")
+                  .value.trim();
+                jsonObject.salesOrderDate =
+                  document.getElementById("sales-order-date").value;
+                jsonObject.expectedShipmentDate = document.getElementById(
+                  "expected-shipment-date"
+                ).value;
+                jsonObject.paymentTerms = document
+                  .getElementById("payment-terms")
+                  .value.trim();
 
-        // Sales and project details
-        jsonObject.salesPerson = document.getElementById('sales-person').value;
-        jsonObject.projectName = document.getElementById('project-name').value;
-        jsonObject.subject = document.getElementById('subject').value;
+                // Delivery and Sales Person
+                jsonObject.deliveryMethod =
+                  document.getElementById("delivery-method").value;
+                jsonObject.salesPerson =
+                  document.getElementById("sales-person").value;
 
-        // Item details
-        jsonObject.items = [];
-        const itemRows = document.querySelectorAll('table tbody tr');
-        itemRows.forEach(row => {
-            const inputs = row.querySelectorAll('input, select');
-            jsonObject.items.push({
-                itemDetails: inputs[0].value,
-                quantity: inputs[1].value,
-                rate: inputs[2].value,
-                discount: inputs[3].value,
-                tax: inputs[4].value,
-                amount: inputs[5].value
-            });
-        });
+                // Item Details (Same as before)
+                jsonObject.items = [];
+                const itemRows = document.querySelectorAll("table tbody tr");
+                itemRows.forEach((row) => {
+                  const inputs = row.querySelectorAll("input, select");
+                  jsonObject.items.push({
+                    itemDetails: inputs[0].value.trim(),
+                    quantity: parseFloat(inputs[1].value) || 0,
+                    rate: parseFloat(inputs[2].value) || 0,
+                    discount: inputs[3].value.trim(),
+                    tax: inputs[4].value,
+                    amount: parseFloat(inputs[5].value) || 0,
+                  });
+                });
 
-        // Totals
-        jsonObject.subTotal = document.getElementById('subTotal').textContent;
-        jsonObject.shippingCharges = document.getElementById('shippingCharges').value;
-        jsonObject.adjustment = document.getElementById('adjustment').value;
-        jsonObject.total = document.getElementById('total').textContent;
+                // Totals (Same as before)
+                jsonObject.subTotal =
+                  parseFloat(document.getElementById("subTotal").textContent) ||
+                  0;
+                jsonObject.shippingCharges =
+                  parseFloat(
+                    document.getElementById("shippingCharges").value
+                  ) || 0;
+                jsonObject.adjustment =
+                  parseFloat(document.getElementById("adjustment").value) || 0;
+                jsonObject.total =
+                  parseFloat(document.getElementById("total").textContent) || 0;
 
-        // Terms and conditions
-        jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value;
-        jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked;
+                // Terms and Conditions (Same as before)
+                jsonObject.termsAndConditions = document
+                  .querySelector(".tc-input-textarea")
+                  .value.trim();
+                jsonObject.createRetainerInvoice =
+                  document.getElementById("tc-create-invoice").checked;
 
-        fetch('/newestimates/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
-        },
-        body: JSON.stringify(jsonObject)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-}
+                // Display the JSON
+                // const jsonOutput = document.getElementById("jsonOutput"); // You'll need a <div id="jsonOutput"> in your HTML
+                // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
 
-// Helper function to get the CSRF token
-// function getCookie(name) {
-//     let cookieValue = null;
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';');
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim();
-//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                 break;
-//             }
-//         }
-//     }
-//     return cookieValue;
-// }
-
-        // Display the JSON
-        // const jsonOutput = document.getElementById('jsonOutput');
-        // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
-    </script>
-        </form>
-
-        
+                fetch("/salesorder/", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
+                  },
+                  body: JSON.stringify(jsonObject),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log("Success:", data);
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                  });
+              }
+            </script>
+          </form>
         </div>
       </main>
     </div>
@@ -1564,5 +1433,5 @@ Fax Number: 1-786-913-9473 x246
         });
       });
     </script>
- </body>
+  </body>
 </html>

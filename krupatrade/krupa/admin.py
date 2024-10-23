@@ -16,5 +16,6 @@ admin.site.register(EstimateItem)
 admin.site.register(Estimate)
 admin.site.register(InvoiceEstimate)
 admin.site.register(Item)
+admin.site.register(SalesOrder)
 
 

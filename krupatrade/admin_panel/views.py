@@ -6,6 +6,7 @@ from django.core.serializers import serialize
 from rest_framework.renderers import JSONRenderer
 from .serializer import *
 from django.contrib import messages
+from .models import *
 
 # Create your views here.
 
@@ -169,6 +170,9 @@ def AddManagers(request):
     
     return render(request,"AddManager.html")
 
+
+########################### NEW ESTIMATES #############################
+
 def Estimates(request):
     return render(request,"Estimates.html")
 
@@ -196,7 +200,7 @@ def Newestimates(request):
             
             # Create the Estimate object
             estimate = Estimate.objects.create(
-                customer=customer_name1.profile,
+                customer_name=customer_name1.profile,
                 request = customer_name1,
                 billing_address=data.get('billingAddress', ''),
                 shipping_address=data.get('shippingAddress', ''),
@@ -229,7 +233,7 @@ def Newestimates(request):
                 )
 
             messages.success(request,"New estimate created successfully")
-            return redirect("newestimates/")
+            # return redirect("newestimates/")
 
             return JsonResponse({'message': 'Estimate created successfully'}, status=201)
 
@@ -239,6 +243,73 @@ def Newestimates(request):
     return render(request, "newestimates.html",context)
 
 
+
+########################### Sales Orders #############################
+
+@csrf_exempt
+def Newsalesorder(request):
+    requests = Request.objects.all()  # Fetch all Request objects
+    context = {"customers": requests}
+    # print(requests)
+
+    if request.method == "POST":
+        try:
+            # Parse the JSON data from the request body
+            data = json.loads(request.body)
+            # print(data)
+
+            sales_order_date = data.get('salesOrderDate', None)
+            expected_shipment_date = data.get('expectedShipmentDate', None)
+            name = data.get('customerName', '')
+            customer_name1 = Request.objects.get(company=name)
+
+            # Create the SalesOrder object
+            sales_order = SalesOrder.objects.create(
+                customer_name=customer_name1.profile,
+                request = customer_name1,
+                sales_order_number=data.get('salesOrderNumber', ''),
+                reference_number=data.get('referenceNumber', ''),
+                sales_order_date=sales_order_date,
+                expected_shipment_date=expected_shipment_date,
+                payment_terms=data.get('paymentTerms', ''),
+                delivery_method=data.get('deliveryMethod', ''),
+                sales_person=data.get('salesPerson', ''),
+                sub_total=float(data.get('subTotal', '0.00')),
+                shipping_charges=float(data.get('shippingCharges', '0.00')),
+                adjustment=float(data.get('adjustment', '0.00')),
+                total=float(data.get('total', '0.00')),
+                terms_and_conditions=data.get('termsAndConditions', ''),
+                create_retainer_invoice=data.get('createRetainerInvoice', False)
+            )
+            sales_order.full_clean()
+
+            # Create the related SalesOrderItem objects
+            for item_data in data.get('items', []):
+                sales_order_item = SalesOrderItem.objects.create(
+                    sales_order=sales_order,
+                    item_details=item_data.get('itemDetails', ''),
+                    quantity=float(item_data.get('quantity', 0.00)),
+                    rate=float(item_data.get('rate', 0.00)),
+                    discount=item_data.get('discount', '0 %'),
+                    tax=item_data.get('tax', 'Select a Tax'),
+                    amount=float(item_data.get('amount', 0.00))
+                )
+                sales_order_item.full_clean()
+
+            # On successful creation, send a success message and respond with success
+            messages.success(request, "Sales order created successfully.")
+            return JsonResponse({'message': 'Sales order created successfully'}, status=201)
+
+        except (Request.DoesNotExist, ValidationError):
+            return JsonResponse({'error': 'Customer not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    # If it's a GET request, return the form
+    return render(request, "salesorder.html", context)
+
+
+########################### Invoices #############################
 def Invoice1(request):
     return render(request,"invoice1.html")
 
@@ -246,6 +317,7 @@ def Invoice2(request):
     return render(request,"invoice2.html")
 
 # from .models import Customer, Invoice, Item
+from django.core.exceptions import ValidationError
 @csrf_exempt
 def Invoice3(request):
     # print("Hi")
@@ -256,20 +328,20 @@ def Invoice3(request):
         try:
             # Parse the JSON data from the request body
             data = json.loads(request.body)
-            print(data)
+            # print(data)
             
-            # Handle customer name lookup
+            invoice_date = data.get('invoiceDate', None) if data.get('invoiceDate') else None
+            due_date = data.get('dueDate', None) if data.get('dueDate') else None
             name = data.get('customerName', '')
             customer_name1 = Request.objects.get(company=name)
             print(customer_name1.profile)
+            # print(data.get('total', '0.00'))
 
             # Handle the invoice date and due date
-            invoice_date = data.get('invoiceDate', None) if data.get('invoiceDate') else None
-            due_date = data.get('dueDate', None) if data.get('dueDate') else None
             
             # Create the Invoice object
             invoice = InvoiceEstimate.objects.create(
-                customer=customer_name1.profile,
+                customer_name=customer_name1.profile,
                 request = customer_name1,
                 invoice_number=data.get('invoiceNumber', ''),
                 order_number=data.get('orderNumber', ''),
@@ -277,17 +349,18 @@ def Invoice3(request):
                 terms=data.get('terms', ''),
                 due_date=due_date,
                 sales_person=data.get('salesPerson', ''),
-                sub_total=data.get('subTotal', '0.00'),
-                shipping_charges=data.get('shippingCharges', '0.00') or '0.00',
-                adjustment=data.get('adjustment', '0.00') or '0.00',
-                total=data.get('total', '0.00'),
+                sub_total=float(data.get('subTotal', '0.00')),
+                shipping_charges=float(data.get('shippingCharges', '0.00') or '0.00'),
+                adjustment=float(data.get('adjustment', '0.00') or '0.00'),
+                total=float(data.get('total', '0.00')),
                 terms_and_conditions=data.get('termsAndConditions', ''),
                 create_retainer_invoice=data.get('createRetainerInvoice', False)
             )
-            
+            invoice.full_clean()  
+
             # Create the related Item objects for the invoice
             for item_data in data.get('items', []):
-                Item.objects.create(
+                item = Item.objects.create(
                     invoice=invoice,
                     item_details=item_data.get('itemDetails', ''),
                     quantity=item_data.get('quantity', 0.00),
@@ -296,6 +369,7 @@ def Invoice3(request):
                     tax=item_data.get('tax', 'Select a Tax'),
                     amount=item_data.get('amount', 0.00)
                 )
+                item.full_clean()
 
             # On successful creation, send a success message and redirect
             messages.success(request, "Invoice created successfully.")
@@ -303,7 +377,7 @@ def Invoice3(request):
 
         except Request.DoesNotExist:
             return JsonResponse({'error': 'Customer not found'}, status=404)
-        except Exception as e:
+        except ValidationError as e:
             return JsonResponse({'error': str(e)}, status=400)
 
     # If it's a GET request, return the form

@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.crypto import get_random_string
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from krupa.models import CustomUser
+from krupa.models import*
 # from krupa.models import Request, Orders, CustomUser
 
 class Managers(models.Model):
@@ -17,6 +17,9 @@ class Managers(models.Model):
     def __str__(self):
         return self.displayname
     
+
+
+
 
 
 

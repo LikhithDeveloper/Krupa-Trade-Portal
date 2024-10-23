@@ -189,6 +189,9 @@ class Estimate(models.Model):
     terms_and_conditions = models.TextField(null=True, blank=True)
     create_retainer_invoice = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"New Estimates {self.estimate_number} - {self.request.company}"
+
 class EstimateItem(models.Model):
     estimate = models.ForeignKey(Estimate, on_delete=models.CASCADE, related_name='items', null=True, blank=True)
     item_details = models.CharField(max_length=255, null=True, blank=True)
@@ -197,6 +200,47 @@ class EstimateItem(models.Model):
     discount = models.CharField(max_length=50, null=True, blank=True, default="0 %")
     tax = models.CharField(max_length=255, null=True, blank=True, default="Select a Tax")
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
+
+    def __str__(self):
+        return f"Item {self.item_details} in Sales Order {self.estimate.estimate_number}"
+
+
+
+################################# Sales Orders ######################################
+
+
+class SalesOrder(models.Model):
+    customer_name = models.ForeignKey(CustomUser, null=True, blank=True,on_delete=models.CASCADE)
+    request = models.ForeignKey(Request, null=True, blank=True,on_delete=models.CASCADE)
+    sales_order_number = models.CharField(max_length=100, blank=True)
+    reference_number = models.CharField(max_length=100, blank=True)
+    sales_order_date = models.CharField(max_length=100,null=True, blank=True)
+    expected_shipment_date = models.CharField(max_length=100,null=True, blank=True)
+    payment_terms = models.CharField(max_length=255, blank=True)
+    delivery_method = models.CharField(max_length=255, blank=True)
+    sales_person = models.CharField(max_length=255, blank=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    adjustment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    terms_and_conditions = models.TextField(blank=True)
+    create_retainer_invoice = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Sales Order {self.sales_order_number} - {self.request.company}"
+
+
+class SalesOrderItem(models.Model):
+    sales_order = models.ForeignKey(SalesOrder, related_name='items', on_delete=models.CASCADE)
+    item_details = models.CharField(max_length=255, blank=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount = models.CharField(max_length=50, blank=True, default="0 %")
+    tax = models.CharField(max_length=100, blank=True, default="Select a Tax")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"Item {self.item_details} in Sales Order {self.sales_order.sales_order_number}"
 
 
 
@@ -220,7 +264,7 @@ class InvoiceEstimate(models.Model):
     create_retainer_invoice = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Invoice {self.invoice_number} for {self.customer}"
+        return f"Invoice {self.invoice_number} for {self.request.company}"
     
 
 
