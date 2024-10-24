@@ -246,6 +246,9 @@ def Newestimates(request):
 
 ########################### Sales Orders #############################
 
+def SalesOrder1(request):
+    return render(request,"salesorder1.html")
+
 @csrf_exempt
 def Newsalesorder(request):
     requests = Request.objects.all()  # Fetch all Request objects
@@ -382,3 +385,15 @@ def Invoice3(request):
 
     # If it's a GET request, return the form
     return render(request, "invoice3.html", context)
+
+
+########################### Payment ################################
+
+def Payment1(request):
+    return render(request,"payment1.html")
+
+
+def Payment2(request):
+    return render(request,"payments2.html")
+def Newpayment(request):
+    return render(request,"newpayment.html")
