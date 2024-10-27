@@ -707,7 +707,7 @@
           <div id="sales-dropdown" class="dropdown-content show">
             <a href="#">Customers</a>
             <a href="#">Estimates</a>
-            <a href="#" class="active">Sales Orders</a>
+            <a href="/salesorder1/" class="active">Sales Orders</a>
             <a href="#">Invoices</a>
             <a href="#">Payments Received</a>
           </div>
@@ -1398,7 +1398,7 @@
                 // const jsonOutput = document.getElementById("jsonOutput"); // You'll need a <div id="jsonOutput"> in your HTML
                 // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
 
-                fetch("/salesorder/", {
+                fetch("/newsalesorder/", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

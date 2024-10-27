@@ -646,56 +646,9 @@
         color: #888;
         font-style: italic;
       }
-      
-      .open-add-form2{
-        position: absolute; width: 400px; height: 300px;z-index: 3;top: 275px;left: 750px; padding: 20px;padding-top: 0px;display: none;
-      }
-      .open-add-form{
-        position: absolute;
-        width: 400px; height: 300px;
-        z-index: 3;
-        top: 275px;
-        left: 450px;
-        display: none;
-      }
     </style>
   </head>
-  <body style="position: relative;">
-    <div class="open-add-form" >
-      <form onsubmit="handleSubmit1(event)">
-      <textarea placeholder="Enter Billing address here..." rows="10" cols="50" onchange="change(event)"></textarea>
-      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
-    </form>
-    
-    </div>
-    <div class="open-add-form2" >
-      <form onsubmit="handleSubmit2(event)">
-      <textarea placeholder="Enter shipping address here..." rows="10" cols="50"></textarea>
-      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
-    </form>
-    </div>
-    <script>
-      function handleSubmit1(e) {
-        e.preventDefault(); 
-        const text = document.querySelector(".address1");
-        const add = text.innerHTML = "";
-      const textarea = e.target.querySelector('textarea');
-      console.log(textarea.value); 
-      text.innerHTML = textarea.value;
-    document.querySelector(".open-add-form").style.display = "none";
-
-    }
-    function handleSubmit2(e) {
-        e.preventDefault(); 
-        const text = document.querySelector(".address2");
-        const add = text.innerHTML = "";
-      const textarea = e.target.querySelector('textarea');
-      console.log(textarea.value); 
-      text.innerHTML = textarea.value;
-    document.querySelector(".open-add-form2").style.display = "none";
-
-    }
-    </script>
+  <body>
     <div class="container">
       <button class="menu-toggle">☰</button>
       <aside class="sidebar">
@@ -754,9 +707,9 @@
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
             <a href="#">Customers</a>
-            <a href="/estimates/" class="active">Estimates</a>
+            <a href="#">Estimates</a>
             <a href="#">Sales Orders</a>
-            <a href="#">Invoices</a>
+            <a href="/invoice1/" class="active">Invoices</a>
             <a href="#">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
@@ -798,18 +751,8 @@
           </div>
         </div>
         <div class="cont">
-          <form class="containerr"  action="/submit-estimate" method="post">
-            <h1>New Estimate</h1>
-            {% if messages %}
-    <div class="container mt-4">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-
+          <form class="containerr">
+            <h1>New Invoice</h1>
             <div style="background-color: #f6f6f6; padding: 20px">
               <!-- address  -->
               <div class="address-details" style="margin-bottom: 20px">
@@ -827,7 +770,7 @@
                   <div class="input-container">
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
-                        <option>Select or add customer</option>
+                        <option>{{estimates.request.company}}</option>
                         {% for i in custoumers %}
                         <option>{{i.company}}</option>
                         {% endfor %}
@@ -851,110 +794,11 @@
                     </button>
                     <span class="currency">INR</span>
                   </div>
-                  <div class="row">
-                    <div class="col">
-                      <label
-                        >Billing Address
-                        <button type="button" class="edit-icon" onclick="OpenFormAdd()">✎</button>
-                    </label>
-                      <pre class="address1" style="font-style:oblique">
-Queen
-019 Marianna Mill Apt. 792
-075 Desmond
-Place Suite 660
-Goyettetown
-Delaware
-994-941
-Seychelles
-Phone: (463)-979-800
-Fax Number: 1-786-913-9473 x246
-                      </pre>
-                    </div>
-                    <div class="col">
-                      <label
-                        >Shipping Address
-                        <button type="button" class="edit-icon" onclick="OpenFormAdd2()">✎</button>
-                      </label>
-                      <script>
-                        function OpenFormAdd(){
-                          const form = document.querySelector(".open-add-form");
-            // Toggle visibility of the form
-            if (form.style.display === "flex") {
-                form.style.display = "none"; // Hide the form
-            } else {
-                form.style.display = "flex"; // Show the form
-            }
-                        }
-                        function OpenFormAdd2(){
-                          const form = document.querySelector(".open-add-form2");
-            // Toggle visibility of the form
-            if (form.style.display === "flex") {
-                form.style.display = "none"; // Hide the form
-            } else {
-                form.style.display = "flex"; // Show the form
-            }
-                        }
-                      </script>
-                      <pre class="address2" style="font-style:oblique">
-                        Queen
-                        019 Marianna Mill Apt. 792
-                        075 Desmond
-                        Place Suite 660
-                        Goyettetown
-                        Delaware
-                        994-941
-                        Seychelles
-                        Phone: (463)-979-800
-                        Fax Number: 1-786-913-9473 x246
-                                              </pre>
-                    </div>
                   </div>
-                  <div>
-                    <p>REMARKS</p>
-                    <p>placet aspernatur ratione quisquam</p>
-                  </div>
-                  <div>
-                    <p>
-                      GST Treatment:
-                      <strong style="font-size: small; font-weight: 600"
-                        >Registered Business-Regular</strong
-                      >
-                    </p>
-                  </div>
-                  <div>
-                    <p>
-                      GSTIN:
-                      <strong style="font-size: small; font-weight: 600"
-                        >33LDAFV3105H9Z5</strong
-                      >
-                    </p>
-                  </div>
-                </div>
               </div>
 
               <!-- place of supply  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="place-of-supply"
-                    style="font-size: 20px; font-weight: 600"
-                    >Place Of Supply</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <div class="custom-select">
-                      <select
-                        class="select-input"
-                        id="place-of-supply"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      >
-                        <option>Select place of supply</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
               <!-- end of place of supply  -->
             </div>
 
@@ -973,9 +817,9 @@ Fax Number: 1-786-913-9473 x246
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
-                    for="estimate"
+                    for="invoice"
                     style="font-size: 20px; font-weight: 600"
-                    >Estimate#</label
+                    >Invoice#</label
                   >
                 </div>
                 <div class="col1">
@@ -983,23 +827,23 @@ Fax Number: 1-786-913-9473 x246
                     <input
                       type="text"
                       class="single-input"
-                      id="estimate"
+                      id="invoice"
                       placeholder="EST-001"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                      value="EST-{{estimate_number}}"
+                      value="INVOICE-{{invoice_number}}"
                     />
                   </div>
                 </div>
               </div>
               <!-- end of estimate  -->
 
-              <!-- reference  -->
+              <!-- invoice  -->
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
-                    for="referecne"
+                    for="order-number"
                     style="font-size: 20px; font-weight: 600"
-                    >Referecne#</label
+                    >Order Number</label
                   >
                 </div>
                 <div class="col1">
@@ -1007,8 +851,9 @@ Fax Number: 1-786-913-9473 x246
                     <input
                       type="text"
                       class="single-input"
-                      id="referecne"
+                      id="order-number"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
+                      value="ORDER-{{order_number}}"
                     />
                   </div>
                 </div>
@@ -1017,50 +862,68 @@ Fax Number: 1-786-913-9473 x246
               <div
                 style="
                   display: flex;
-                  justify-content: space-between;
+                  justify-content: space-around;
                   width: 100%;
                 "
               >
                 <!-- estimate date  -->
-                <div class="address-details" style="width: 45%">
+                <div class="address-details" style="width: 25%">
                   <div>
                     <label
-                      for="Estimate-date"
+                      for="invoice-date"
                       style="font-size: 20px; font-weight: 600"
-                      >Estimate Date</label
+                      >Invoice Date</label
                     >
                   </div>
                   <div class="col1">
-                    <div class="input-container" style="position: relative">
+                    <div class="input-container" style="position: relative;width: 250px;">
                       <input
                         type="date"
                         class="single-input"
-                        id="Estimate-date"
+                        id="invoice-date"
                         style="border: 2px solid #d1d5db; border-radius: 10px"
-                        
+                      />
+                    </div>
+                  </div>
+                  <script>
+                    const today = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
+                    document.getElementById("invoice-date").value = today;   // Set the value of the input field
+                  </script>
+                </div>
+                <div class="address-details" style="width: 25%">
+                  <div>
+                    <label
+                      for="terms"
+                      style="font-size: 20px; font-weight: 600"
+                      >Terms</label
+                    >
+                  </div>
+                  <div class="col1">
+                    <div class="input-container" style="position: relative;width: 250px;">
+                      <input
+                        type="text"
+                        class="single-input"
+                        id="terms"
+                        style="border: 2px solid #d1d5db; border-radius: 10px"
                       />
                     </div>
                   </div>
                 </div>
-                <script>
-                  const today = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                  document.getElementById("Estimate-date").value = today;   // Set the value of the input field
-                </script>
 
-                <div class="address-details" style="width: 45%">
+                <div class="address-details" style="width: 25%">
                   <div>
                     <label
-                      for="expiry-date"
+                      for="due-date"
                       style="font-size: 20px; font-weight: 600"
-                      >Expiry Date</label
+                      >Due Date</label
                     >
                   </div>
                   <div class="col1">
-                    <div class="input-container" style="position: relative">
+                    <div class="input-container" style="position: relative;width: 250px;">
                       <input
                         type="date"
                         class="single-input"
-                        id="expiry-date"
+                        id="due-date"
                         style="border: 2px solid #d1d5db; border-radius: 10px"
                       />
                     </div>
@@ -1105,63 +968,11 @@ Fax Number: 1-786-913-9473 x246
               </div>
               <!-- end of sales person  -->
 
-              <!-- project name  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="project-name"
-                    style="font-size: 20px; font-weight: 600"
-                    >Project Name</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <select
-                      name="project-name"
-                      id="project-name"
-                      class="single-input"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">select or add sales person</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <!-- end of reference  -->
+              
             </div>
             <!-- end of third section  -->
 
-            <!-- fourth section  -->
-            <div
-              style="
-                padding: 20px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 30px;
-                border-bottom: 1px solid #d1d5db;
-              "
-            >
-              <!-- sales person  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label for="subject" style="font-size: 20px; font-weight: 600"
-                    >Subject</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <input
-                      type="text"
-                      class="single-input"
-                      id="subject"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- end of sales person  -->
-            </div>
+            
 
             <!-- section five  -->
 
@@ -1186,49 +997,32 @@ Fax Number: 1-786-913-9473 x246
                       <!-- Empty for delete icon -->
                     </tr>
                   </thead>
-                  <tbody class="add-row">
-                    <tr id="1">
+                  <tbody>
+                    {% if newinvoice %}
+                    {% for i in newinvoice %}
+                    <tr>
                       <td>
                         <input
                           type="text"
                           placeholder="Type or click to select an item"
+                          value="{{i.item_details}}"
                         />
                       </td>
-                      <td><input type="number" placeholder="0.00" value="0.00" /></td>
-                      <td><input type="number" placeholder="0.00" value="0.00" oninput="rate(event)" /></td>
-                      <td><input type="text" placeholder="0 %" value="0 %" oninput="discount(event)" /></td>
+                      <td><input type="number" value="{{i.quantity}}" disabled /></td>
+                      <td><input type="number" value="{{i.rate}}" disabled /></td>
+                      <td><input type="text" value="{{i.discount}}" disabled /></td>
                       <td>
                         <select disabled>
                           <option>Select a Tax</option>
                         </select>
                       </td>
-                      <td><input type="number" class="amount-class" value="0.00" oninput="subtotal(event)" placeholder="0.00" /></td>
-                      <td class="icon-delete"><button type="button">x</button></td>
+                      <td><input type="number" value="{{i.amount}}" disabled /></td>
+                      <td class="icon-delete"><button>x</button></td>
                     </tr>
-                    <script>
-                      // Global variable to hold the rate value
-                      let rateval = 0;
-                    
-                      // Function to capture the rate input
-                      function rate(e) {
-                        rateval = parseFloat(e.target.value) || 0; // Get the rate as a number
-                        calculateAmount();
-                      }
-                    
-                      // Function to capture the discount input and calculate the amount
-                      function discount(e) {
-                        const disc = e.target.value.replace('%', ''); // Remove the '%' symbol
-                        const discountPercentage = parseFloat(disc) || 0; // Parse as number
-                        calculateAmount(discountPercentage);
-                      }
-                    
-                      // Function to calculate and set the discounted amount
-                      function calculateAmount(discount = 0) {
-                        const amountElement = document.querySelector(".amount-class");
-                        const amountval = rateval - (rateval * discount / 100); // Calculate discounted amount
-                        amountElement.value = amountval.toFixed(2); // Set the calculated value with two decimal places
-                      }
-                    </script>
+                    {% endfor %}
+                    {% else %}
+                    <tr>No Invoices Found</tr>
+                    {% endif %}
                   </tbody>
                 </table>
               </div>
@@ -1337,8 +1131,8 @@ Fax Number: 1-786-913-9473 x246
                   "
                 >
                   <div style="display: flex">
-                    <button class="btn" type="button" onclick="addrow()">Add New Row</button>
-                    <button class="btn" type="button">Add Items in Bulk</button>
+                    <button class="btn dropdown">Add New Row</button>
+                    <button class="btn">Add Items in Bulk</button>
                   </div>
                   <!-- Customer Notes Section -->
                   <div>
@@ -1346,46 +1140,18 @@ Fax Number: 1-786-913-9473 x246
                     <textarea placeholder="Enter customer notes"></textarea>
                   </div>
                 </div>
-                <script>
-                  function addrow(){
-                    // console.log("Hi");
-                    let add = document.querySelector(".add-row");
-                    add.innerHTML += `<tr>
-                      <td>
-                        <input
-                          type="text"
-                          placeholder="Type or click to select an item"
-                        />
-                      </td>
-                      <td><input type="number" placeholder="0.00" value="0.00"  /></td>
-                      <td><input type="number" placeholder="0.00" value="0.00" /></td>
-                      <td><input type="text" placeholder="0 %" value="0 %"  /></td>
-                      <td>
-                        <select disabled>
-                          <option>Select a Tax</option>
-                        </select>
-                      </td>
-                      <td><input type="number" placeholder="0.00" value="0.00" oninput="subtotal(event)" /></td>
-                      <td class="icon-delete"><button type="button" onclick="deleteRow(this)">x</button></td>
-                    </tr>`;
-                  }
-                  function deleteRow(button) {
-    // Find the closest <tr> element containing the button and remove it
-    button.closest("tr").remove();
-  }
-                </script>
 
                 <div class="amount-section">
                     <div class="containerrr">
                         <div class="row">
                             <span>Sub Total</span>
-                            <input class="value" id="subTotal" value="0.00">
+                            <span class="value" id="subTotal">{{estimates.sub_total}}</span>
                         </div>
                         <div class="row">
                             
                               <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
                                 <span>Shipping Charges</span>
-                                <input type="text" id="shippingCharges" placeholder="0.00" class="">
+                                <input type="text" id="shippingCharges" placeholder="0.00" class="" value="{{estimates.shipping_charges}}">
                                 <span class="info-icon">ⓘ</span>
                               </div>
                               <span class="value" id="shippigcharges"></span>
@@ -1396,35 +1162,29 @@ Fax Number: 1-786-913-9473 x246
                             <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
                 
                                 <span>Adjustment</span>
-                                <input type="text" id="adjustment" placeholder="0.00" class="one">
+                                <input type="text" id="adjustment" placeholder="0.00" class="one" value="{{estimates.adjustment}}">
                                 <span class="info-icon">ⓘ</span>
                             </div>
                             <span class="value" id="adjustmentcharges"></span>
                         </div>
                         <div class="row total">
                             <span>Total ($)</span>
-                            <input class="value" id="total" value="0.00" />
+                            <span class="value" id="total">{{estimates.total}}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <script>
-              
-                
-                
-              
                 var adjcharge = document.getElementById('adjustmentcharges');
                 var shipcharge = document.getElementById('shippigcharges');
                 function calculateTotal() {
-                  let money = document.getElementById("subTotal");
-                money.value = document.querySelector(".amount-class").value;
                     
-                    const subTotal = parseFloat(document.getElementById('subTotal').value) || 0;
+                    const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
                     const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
                     const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
                     
                     const total = subTotal + shippingCharges + adjustment;
-                    document.getElementById('total').value = total.toFixed(2);
+                    document.getElementById('total').textContent = total.toFixed(2);
                     adjcharge.innerHTML=adjustment;
                     shipcharge.innerHTML=shippingCharges;
                     // Update the color of filled inputs
@@ -1519,67 +1279,68 @@ Fax Number: 1-786-913-9473 x246
             </style>
             <div class="button-container">
               <button class="save-draft">Save as Draft</button>
-              <button type="button" onclick="getFormData()">Save</button>
+              <button type="button" onclick="getInvoiceFormData()">Save Invoice</button>
               <button class="cancel">Cancel</button>
             </div>
-  
-    <!-- <div id="jsonOutput"></div> -->
+            <!-- <div id="jsonOutput"></div> -->
 
-    <script>
-    function getFormData() {
-        const form = document.querySelector('.containerr');
-        const jsonObject = {};
+            <script>
+              function getInvoiceFormData() {
+                console.log("Hi")
+                const form = document.querySelector('.containerr'); 
+                const jsonObject = {};
 
-        // Customer details
-        jsonObject.customerName = document.getElementById('customer-name').value;
-        jsonObject.billingAddress = document.querySelector('.address1').textContent.trim();
-        jsonObject.shippingAddress = document.querySelector('.address2').textContent.trim();
-        jsonObject.placeOfSupply = document.getElementById('place-of-supply').value;
+                // Customer Details
+                jsonObject.customerName = document.getElementById('customer-name').value.trim();
+                if (!jsonObject.customerName) {
+                    alert('Please enter a Customer Name.');
+                    return;
+                }
 
-        // Estimate details
-        jsonObject.estimateNumber = document.getElementById('estimate').value;
-        jsonObject.reference = document.getElementById('referecne').value;
-        jsonObject.estimateDate = document.getElementById('Estimate-date').value;
-        jsonObject.expiryDate = document.getElementById('expiry-date').value;
+                // Invoice Details
+                jsonObject.invoiceNumber = document.getElementById('invoice').value.trim();
+                jsonObject.orderNumber = document.getElementById('order-number').value.trim();
+                jsonObject.invoiceDate = document.getElementById('invoice-date').value;
+                jsonObject.terms = document.getElementById('terms').value.trim();
+                jsonObject.dueDate = document.getElementById('due-date').value;
 
-        // Sales and project details
-        jsonObject.salesPerson = document.getElementById('sales-person').value;
-        jsonObject.projectName = document.getElementById('project-name').value;
-        jsonObject.subject = document.getElementById('subject').value;
+                // Sales Person
+                jsonObject.salesPerson = document.getElementById('sales-person').value;
 
-        // Item details
-        jsonObject.items = [];
-        const itemRows = document.querySelectorAll('table tbody tr');
-        itemRows.forEach(row => {
-            const inputs = row.querySelectorAll('input, select');
-            // console.log(inputs[0].value);
-            jsonObject.items.push({
-              itemDetails: inputs[0].value.trim() || '', // Ensure no empty values
-                quantity: parseFloat(inputs[1].value) || 0, // Convert to float
-                rate: parseFloat(inputs[2].value) || 0, // Convert to float
-                discount: inputs[3].value.trim() || '', // Ensure no empty values
-                tax: inputs[4].value.trim() || 'Select a Tax', // Default value if empty
-                amount: parseFloat(inputs[5].value) || 0 // Convert to float
-            });
-        });
+                // Item Details 
+                jsonObject.items = [];
+                const itemRows = document.querySelectorAll('table tbody tr');
+                itemRows.forEach(row => {
+                    const inputs = row.querySelectorAll('input, select');
+                    jsonObject.items.push({
+                        itemDetails: inputs[0].value.trim(),
+                        quantity: parseFloat(inputs[1].value) || 0,
+                        rate: parseFloat(inputs[2].value) || 0,
+                        discount: inputs[3].value.trim(),
+                        tax: inputs[4].value,
+                        amount: parseFloat(inputs[5].value) || 0
+                    });
+                });
 
-        // Totals
-        jsonObject.subTotal = document.getElementById('subTotal').value;
-        jsonObject.shippingCharges = document.getElementById('shippingCharges').value;
-        jsonObject.adjustment = document.getElementById('adjustment').value;
-        jsonObject.total = document.getElementById('total').value;
-        // Terms and conditions
-        jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value;
-        jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked
-        // const jsonOutput = document.getElementById('jsonOutput');
-        // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+                // Totals 
+                jsonObject.subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
+                jsonObject.shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
+                jsonObject.adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
+                jsonObject.total = parseFloat(document.getElementById('total').textContent) || 0;
 
+                // Terms and Conditions
+                jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value.trim();
+                jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked; 
 
-        fetch('/newestimates/', {
+                // // Display the JSON
+                // const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
+                // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+
+                fetch('/newinvoice/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
+            // 'X-CSRFToken': '{{ csrf_token }}'
         },
         body: JSON.stringify(jsonObject)
     })
@@ -1590,31 +1351,9 @@ Fax Number: 1-786-913-9473 x246
     .catch((error) => {
         console.error('Error:', error);
     });
-}
-
-// Helper function to get the CSRF token
-// function getCookie(name) {
-//     let cookieValue = null;
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';');
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim();
-//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                 break;
-//             }
-//         }
-//     }
-//     return cookieValue;
-// }
-
-        // Display the JSON
-        // const jsonOutput = document.getElementById('jsonOutput');
-        // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
-    </script>
+            }
+            </script>
         </form>
-
-        
         </div>
       </main>
     </div>
@@ -1632,5 +1371,5 @@ Fax Number: 1-786-913-9473 x246
         });
       });
     </script>
- </body>
+  </body>
 </html>

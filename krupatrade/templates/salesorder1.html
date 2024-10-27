@@ -440,8 +440,8 @@
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
             <a href="#">Customers</a>
-            <a href="#" class="active">Estimates</a>
-            <a href="#">Sales Orders</a>
+            <a href="#">Estimates</a>
+            <a href="/salesorder1/" class="active">Sales Orders</a>
             <a href="#">Invoices</a>
             <a href="#">Payments Received</a>
           </div>
@@ -491,7 +491,12 @@
               </h1>
             </div>
             <div class="action-icons" style="display: flex; gap: 10px">
-              <button class="btn btn-primary">+ New</button>
+              <a
+                style="text-decoration: none"
+                href="/newsalesorder/"
+                class="btn btn-primary"
+                >+ New</a
+              >
               <a
                 style="
                   background-color: #f0f0f0;
@@ -526,8 +531,9 @@
               <tr>
                 <th><img src="images/table1.svg" alt="" /></th>
                 <th>DATE</th>
-                <th>Sales Order Number</th>
-                <th>Reference Number</th>
+                <th>Order Number</th>
+                <th>Refference Id</th>
+                <th>Customer Email</th>
                 <th>Company Name</th>
                 <th>Status</th>
                 <th>Amount</th>
@@ -537,54 +543,31 @@
               </tr>
             </thead>
             <tbody>
+              {% if salesorders %} {% for i in salesorders %}
               <tr>
                 <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="Estimate Number">EST-0003</td>
-                <td data-label="Reference Number">benja@gmail.com</td>
-                <td data-label="Customer Name">Mr. Joe</td>
-                <td data-label="Status">SENT</td>
-                <td data-label="Amount">0.00</td>
+                <td data-label="DATE">{{i.created_date}}</td>
+                <td data-label="Estimate Number">{{i.sales_order_number}}</td>
+                <td data-label="Estimate Number">{{i.reference_number}}</td>
+                <td data-label="Reference Number">{{i.request.email}}</td>
+                <td data-label="Customer Name">{{i.request.company}}</td>
+                <td data-label="Status">-</td>
+                <td data-label="Amount">{{i.total}}</td>
                 <td class="search-icon">
-                  <img src="images/clip.svg" alt="" />
+                  <!-- <img src="images/clip.svg" alt="" /> -->
+                  <a
+                    href="//"
+                    style="text-decoration: none"
+                    class="btn btn-primary"
+                    >Open</a
+                  >
                 </td>
               </tr>
+              {% endfor %} {% else %}
               <tr>
-                <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="Estimate Number">EST-0003</td>
-                <td data-label="Reference Number">benja@gmail.com</td>
-                <td data-label="Customer Name">Mr. Joe</td>
-                <td data-label="Status">ESTIMATE</td>
-                <td data-label="Amount">0.00</td>
-                <td class="search-icon">
-                  <img src="images/clip.svg" alt="" />
-                </td>
+                <h2>Sales orders Not found</h2>
               </tr>
-              <tr>
-                <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="Estimate Number">EST-0003</td>
-                <td data-label="Reference Number">benja@gmail.com</td>
-                <td data-label="Customer Name">Mr. Joe</td>
-                <td data-label="Status">EXPIRED</td>
-                <td data-label="Amount">0.00</td>
-                <td class="search-icon">
-                  <img src="images/clip.svg" alt="" />
-                </td>
-              </tr>
-              <tr>
-                <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="Estimate Number">EST-0003</td>
-                <td data-label="Reference Number">benja@gmail.com</td>
-                <td data-label="Customer Name">Mr. Joe</td>
-                <td data-label="Status">SENT</td>
-                <td data-label="Amount">0.00</td>
-                <td class="search-icon">
-                  <img src="images/clip.svg" alt="" />
-                </td>
-              </tr>
+              {% endif %}
             </tbody>
           </table>
           <script>

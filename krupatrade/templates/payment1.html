@@ -546,7 +546,7 @@
                 <th>PAYMENT#</th>
                 <th>TYPE</th>
                 <th>REFERENCE</th>
-                <th>CUSTOMER NAME</th>
+                <th>COMPANY NAME</th>
                 <th>INVOICE#</th>
                 <th>MODE</th>
                 <th>AMOUNT</th>
@@ -556,54 +556,24 @@
               </tr>
             </thead>
             <tbody>
+              {% if payments %} {% for i in payments %}
               <tr>
                 <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="DATE">{{i.created_date}}</td>
                 <td data-label="BRANCH">Head office</td>
                 <td data-label="PAYMENT#">123456</td>
                 <td data-label="TYPE">invoice payment</td>
-                <td data-label="REFERENCE">123452</td>
-                <td data-label="CUSTOMER NAME">Mr.Joe</td>
-                <td data-label="INVOICE#">INV-1234</td>
-                <td data-label="MODE">CASH</td>
-                <td data-label="AMOUNT">0.00</td>
+                <td data-label="REFERENCE">{{i.reference}}</td>
+                <td data-label="COMPANY NAME">{{i.request.company}}</td>
+                <td data-label="INVOICE#">{{i.reference_number}}</td>
+                <td data-label="MODE">{{i.payment_mode}}</td>
+                <td data-label="AMOUNT">{{i.total}}</td>
               </tr>
+              {% endfor %} {% else %}
               <tr>
-                <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="BRANCH">Head office</td>
-                <td data-label="PAYMENT#">123456</td>
-                <td data-label="TYPE">invoice payment</td>
-                <td data-label="REFERENCE">123456</td>
-                <td data-label="CUSTOMER NAME">Mr.Joe</td>
-                <td data-label="INVOICE#">INV-1234</td>
-                <td data-label="MODE">CASH</td>
-                <td data-label="AMOUNT">0.00</td>
+                <h2>Payments Not found</h2>
               </tr>
-              <tr>
-                <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="BRANCH">Head office</td>
-                <td data-label="PAYMENT#">123456</td>
-                <td data-label="TYPE">Mr.invoice paymen</td>
-                <td data-label="REFERENCE">123456</td>
-                <td data-label="CUSTOMER NAME">Mr.Joe</td>
-                <td data-label="INVOICE#">INV-1234</td>
-                <td data-label="MODE">CASH</td>
-                <td data-label="AMOUNT">0.00</td>
-              </tr>
-              <tr>
-                <td class="checkbox-cell"><input type="checkbox" /></td>
-                <td data-label="DATE">5 Aug 2024</td>
-                <td data-label="BRANCH">Head office</td>
-                <td data-label="PAYMENT#">123456</td>
-                <td data-label="TYPE">invoice payment</td>
-                <td data-label="REFERENCE">123456</td>
-                <td data-label="CUSTOMER NAME">Mr.Joe</td>
-                <td data-label="INVOICE#">INV-1234</td>
-                <td data-label="MODE">CASH</td>
-                <td data-label="AMOUNT">0.00</td>
-              </tr>
+              {% endif %}
             </tbody>
           </table>
           <script>

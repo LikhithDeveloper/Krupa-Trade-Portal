@@ -773,6 +773,9 @@
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
                         <option>Select or add customer</option>
+                        {% for i in customers %}
+                        <option>{{i.company}}</option>
+                        {% endfor %}
                       </select>
                     </div>
                     <button class="search-button" style="margin-right: 10px">
@@ -1334,7 +1337,7 @@
               <button type="button" onclick="getInvoiceFormData()">Save Payment/Advance</button>
               <button class="cancel">Cancel</button>
             </div>
-            <div id="jsonOutput"></div>
+            <!-- <div id="jsonOutput"></div> -->
 
             <script>
               function getInvoiceFormData() {
@@ -1370,8 +1373,21 @@
                 // ... (Get data for your terms & conditions, file upload, and email sections) ... 
           
                 // Display the JSON
-                const jsonOutput = document.getElementById('jsonOutput');
-                jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+                fetch('/newpayment/', {
+                  method: 'POST',
+                  headers: {
+                  'Content-Type': 'application/json',
+                  // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
+                },
+                body: JSON.stringify(jsonObject)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
+                });
               }
             </script>
 

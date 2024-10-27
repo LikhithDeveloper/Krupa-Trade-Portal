@@ -188,6 +188,8 @@ class Estimate(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, default=0.00)
     terms_and_conditions = models.TextField(null=True, blank=True)
     create_retainer_invoice = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now=True)
+    status = models.CharField(max_length=30,null=True,blank=True,default="SENT")
 
     def __str__(self):
         return f"New Estimates {self.estimate_number} - {self.request.company}"
@@ -225,6 +227,7 @@ class SalesOrder(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     terms_and_conditions = models.TextField(blank=True)
     create_retainer_invoice = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"Sales Order {self.sales_order_number} - {self.request.company}"
@@ -262,6 +265,7 @@ class InvoiceEstimate(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     terms_and_conditions = models.TextField(blank=True)
     create_retainer_invoice = models.BooleanField(default=False)
+    created_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return f"Invoice {self.invoice_number} for {self.request.company}"
@@ -281,3 +285,26 @@ class Item(models.Model):
         return self.item_details
 
 
+
+#################################### Payments #######################################
+
+class Payment(models.Model):
+    customer_name = models.ForeignKey(CustomUser, null=True, blank=True,on_delete=models.CASCADE)
+    request = models.ForeignKey(Request, null=True, blank=True,on_delete=models.CASCADE)
+    amount_received = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    bank_charge = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    payment_date = models.CharField(max_length = 30,null=True, blank=True)
+    payment_number = models.CharField(max_length=50, null=True, blank=True)
+    payment_mode = models.CharField(max_length=50, null=True, blank=True)
+    deposited_to = models.CharField(max_length=255, null=True, blank=True)
+    reference = models.CharField(max_length=255, null=True, blank=True)
+    tax_deducted = models.CharField(max_length=3, default='yes', null=True, blank=True)
+    reference_number = models.CharField(max_length=50, null=True, blank=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    shipping_charges = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    adjustment = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
+    created_date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return f"Payment by {self.customer_name} - {self.total}"

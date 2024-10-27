@@ -479,7 +479,7 @@ td {
                     <a href="#">Customers</a>
                     <a href="#">Estimates</a>
                     <a href="#">Sales Orders</a>
-                    <a href="#" class="active">Invoices</a>
+                    <a href="/invoice1/" class="active">Invoices</a>
                     <a href="#">Payments Received</a>
                 </div>
                 <div class="nav-item" data-dropdown="purchases-dropdown">
@@ -573,7 +573,7 @@ td {
                                 <th>DATE</th>
                                 <th>INVOICE#</th>
                                 <th>ORDER ID#</th>
-                                <th>CUSTOMER NAME</th>
+                                <th>COMPANY NAME</th>
                                 <th>STATUS</th>
                                 <th>DUE DATE</th>
                                 <th>AMOUNT</th>
@@ -582,63 +582,35 @@ td {
                             </tr>
                         </thead>
                         <tbody>
+                            {% if invoice %}
+                            {% for i in invoice %}
+                            <tr>
+                                <td class="checkbox-cell"><input type="checkbox"></td>
+                                <td data-label="DATE">{{i.created_date}}</td>
+                                <td data-label="INVOICE#">{{i.invoice_number}}</td>
+                                <td data-label="ORDER ID#">{{i.order_number}}</td>
+                                <td data-label="COMPANY NAME">{{i.request.company}}</td>
+                                <td data-label="STATUS" class="partially-paid">-</td>
+                                <td data-label="DUE DATE">{{i.due_date}}</td>
+                                <td data-label="AMOUNT">{{i.total}}</td>
+                                <td data-label="BALANCE DUE">-</td>   
+                                <td class="search-icon">
+                                    <!-- <img src="images/clip.svg" alt="" /> -->
+                                    <a
+                                      href="/invoice2/"
+                                      style="text-decoration: none"
+                                      class="btn btn-primary"
+                                      >Open</a
+                                    >
+                                  </td>                         
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <h2>No Invoices Found</h2>
+                            </tr>
+                            {% endif %}
                             
-                            <tr>
-                                <td class="checkbox-cell"><input type="checkbox"></td>
-                                <td data-label="DATE">5 Aug 2024</td>
-                                <td data-label="INVOICE#">EST-0003</td>
-                                <td data-label="ORDER ID#">123456</td>
-                                <td data-label="CUSTOMER NAME">Mr. Joe</td>
-                                <td data-label="STATUS" class="partially-paid">PARTIALLY PAID</td>
-                                <td data-label="DUE DATE">5 Aug 2024</td>
-                                <td data-label="AMOUNT">0.00</td>
-                                <td data-label="BALANCE DUE">0.00</td>                            
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell"><input type="checkbox"></td>
-                                <td data-label="DATE">5 Aug 2024</td>
-                                <td data-label="INVOICE#">EST-0003</td>
-                                <td data-label="ORDER ID#">123456</td>
-                                <td data-label="CUSTOMER NAME">Mr. Joe</td>
-                                <td data-label="STATUS" class="approved">APPROVED</td>
-                                <td data-label="DUE DATE">5 Aug 2024</td>
-                                <td data-label="AMOUNT">0.00</td>
-                                <td data-label="BALANCE DUE">0.00</td>                            
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell"><input type="checkbox"></td>
-                                <td data-label="DATE">5 Aug 2024</td>
-                                <td data-label="INVOICE#">EST-0003</td>
-                                <td data-label="ORDER ID#">123456</td>
-                                <td data-label="CUSTOMER NAME">Mr. Joe</td>
-                                <td data-label="STATUS" class="overdue">OVERDUE</td>
-                                <td data-label="DUE DATE">5 Aug 2024</td>
-                                <td data-label="AMOUNT">0.00</td>
-                                <td data-label="BALANCE DUE">0.00</td>                            
-                            </tr>
-                            <tr>
-                                <td class="checkbox-cell"><input type="checkbox"></td>
-                                <td data-label="DATE">5 Aug 2024</td>
-                                <td data-label="INVOICE#">EST-0003</td>
-                                <td data-label="ORDER ID#">123456</td>
-                                <td data-label="CUSTOMER NAME">Mr. Joe</td>
-                                <td data-label="STATUS" class="pending">PENDING</td>
-                                <td data-label="DUE DATE">5 Aug 2024</td>
-                                <td data-label="AMOUNT">0.00</td>
-                                <td data-label="BALANCE DUE">0.00</td>                            
-                            </tr>
-                            
-                            <tr>
-                                <td class="checkbox-cell"><input type="checkbox"></td>
-                                <td data-label="DATE">5 Aug 2024</td>
-                                <td data-label="INVOICE#">EST-0003</td>
-                                <td data-label="ORDER ID#">123456</td>
-                                <td data-label="CUSTOMER NAME">Mr. Joe</td>
-                                <td data-label="STATUS" class="draft">DRAFT</td>
-                                <td data-label="DUE DATE">5 Aug 2024</td>
-                                <td data-label="AMOUNT">0.00</td>
-                                <td data-label="BALANCE DUE">0.00</td>                            
-                            </tr>
                         </tbody>
                     </table>
                     <script>
