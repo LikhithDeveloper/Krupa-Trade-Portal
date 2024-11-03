@@ -705,11 +705,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
-            <a href="#">Estimates</a>
-            <a href="#">Sales Orders</a>
-            <a href="#" class="active">Invoices</a>
-            <a href="#">Payments Received</a>
+            <a href="/customerspage/" class="active">Customers</a>
+            <a href="/estimates/">Estimates</a>
+            <a href="/salesorder1/">Sales Orders</a>
+            <a href="/invoice1/">Invoices</a>
+            <a href="/payment1/">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -773,7 +773,7 @@
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
                         <option>Select or add customer</option>
-                        {% for i in customers %}
+                        {% for i in custoumers %}
                         <option>{{i.company}}</option>
                         {% endfor %}
                       </select>
@@ -819,7 +819,7 @@
 
 
 
-            <div class="address-details" style="width: 85%;justify-content: flex-start;">
+            <div class="address-details" style="width: 85%;justify-content: flex-start;height: 50px;">
               <div>
                 <label
                   for="amountreceived"
@@ -828,13 +828,13 @@
                 >
               </div>
               <div class="col1">
-                <div class="input-container" style="position: relative;width:600px;display: flex;flex-direction: column;">
+                <div class="input-container" style="position: relative;width:600px;display: flex;flex-direction: column;height: 80px;">
                   <input
                     type="text"
                     class="single-input"
                     id="amountreceived"
                     placeholder="INR"
-                    style="border: 2px solid #d1d5db; border-radius: 10px"
+                    style="border: 2px solid #d1d5db; border-radius: 10px; height: 70px;"
                   />
                   <div style="display: flex;width: 90px;">
                     <input type="checkbox" id="fullamount">
@@ -877,14 +877,14 @@
                 </div>
                 <div class="col1">
                   <div class="input-container" style="position: relative;width:600px">
-                    <select
+                    <input
+                      type="date"
                       name="sales-person"
                       id="paymentdate"
                       class="single-input"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">DD/MM/YYYY</option>
-                    </select>
+                    />
+                      
                   </div>
                 </div>
               </div>
@@ -894,19 +894,20 @@
                   <label
                     for="payment#"
                     style="font-size: 20px; font-weight: 600;width: 200px;"
-                    >Payment#</label
+                    >Payment Id #</label
                   >
                 </div>
                 <div class="col1">
                   <div class="input-container" style="position: relative;width:600px">
-                    <select
+                    <input
+                      type="text"
                       name="sales-person"
                       id="payment#"
                       class="single-input"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">payment1</option>
-                    </select>
+                      value="PAYMENT-{{payment_number}}"
+                    />
+                      
                   </div>
                 </div>
               </div>
@@ -928,6 +929,8 @@
                       style="border: 2px solid #d1d5db; border-radius: 10px"
                     >
                       <option value="">Select Payment Mode</option>
+                      <option>Online</option>
+                      <option>Offline</option>
                     </select>
                   </div>
                 </div>
@@ -943,14 +946,13 @@
                 </div>
                 <div class="col1">
                   <div class="input-container" style="position: relative;width:600px">
-                    <select
+                    <input
+                    type="text"
                       name="sales-person"
                       id="depositedto"
                       class="single-input"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">Select Deposite</option>
-                    </select>
+                    />
                   </div>
                 </div>
               </div>
@@ -1055,14 +1057,14 @@
                 </div>
                 <div class="col1">
                   <div class="input-container" style="position: relative;width:600px">
-                    <select
+                    <input
+                    type="text"
                       name="sales-person"
                       id="reference"
                       class="single-input"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">Accounts Payable</option>
-                    </select>
+                    />
+                      
                   </div>
                 </div>
               </div>

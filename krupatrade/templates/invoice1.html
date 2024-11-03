@@ -476,12 +476,12 @@ td {
                     <img src="images/dropdown.svg" alt="Arrow" class="arrow">
                 </div>
                 <div id="sales-dropdown" class="dropdown-content show">
-                    <a href="#">Customers</a>
-                    <a href="#">Estimates</a>
-                    <a href="#">Sales Orders</a>
+                    <a href="/customerspage/" >Customers</a>
+                    <a href="/estimates/">Estimates</a>
+                    <a href="/salesorder1/">Sales Orders</a>
                     <a href="/invoice1/" class="active">Invoices</a>
-                    <a href="#">Payments Received</a>
-                </div>
+                    <a href="/payment1/">Payments Received</a>
+                  </div>
                 <div class="nav-item" data-dropdown="purchases-dropdown">
                     <div>
                         <img src="images/purchaces.svg" alt="Purchases Icon" class="icon">
@@ -590,14 +590,14 @@ td {
                                 <td data-label="INVOICE#">{{i.invoice_number}}</td>
                                 <td data-label="ORDER ID#">{{i.order_number}}</td>
                                 <td data-label="COMPANY NAME">{{i.request.company}}</td>
-                                <td data-label="STATUS" class="partially-paid">-</td>
+                                <td data-label="STATUS" class="partially-paid">{{i.status}}</td>
                                 <td data-label="DUE DATE">{{i.due_date}}</td>
                                 <td data-label="AMOUNT">{{i.total}}</td>
                                 <td data-label="BALANCE DUE">-</td>   
                                 <td class="search-icon">
                                     <!-- <img src="images/clip.svg" alt="" /> -->
                                     <a
-                                      href="/invoice2/"
+                                      href="/invoice2/{{i.id}}"
                                       style="text-decoration: none"
                                       class="btn btn-primary"
                                       >Open</a

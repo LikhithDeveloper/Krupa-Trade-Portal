@@ -11,6 +11,12 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from krupa.models import Estimate, EstimateItem
+from io import BytesIO
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import uuid
+from django.conf import settings
+import os
 
 
 # Create your views here.
@@ -198,10 +204,10 @@ def Coverter_Invoice(request,id):
         invoice_number = int(num.split('-')[1])
         num2 = invoice.order_number
         order_number = int(num2.split('-')[1])
-        context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":invoice_number+1,"order_number":order_number+1}
+        context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":invoice_number+1,"order_number":order_number+1,"id":id}
     else:
-        context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":1,"order_number":1}
-    return render(request,"createinvoice.html",context)
+        context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":1,"order_number":1,"id":id}
+    return render(request,"createinvoiceestimates.html",context)
 
 
 @csrf_exempt
@@ -229,6 +235,7 @@ def Newestimates(request):  # sourcery skip: low-code-quality
             #     print(amount)  # Print the amount
 
             # Create the Estimate object
+            # print(data.createRetainerInvoice)
             estimate = Estimate.objects.create(
                 customer_name=customer_name1.profile,
                 request = customer_name1,
@@ -249,7 +256,8 @@ def Newestimates(request):  # sourcery skip: low-code-quality
                 terms_and_conditions=data.get('termsAndConditions', ''),
                 create_retainer_invoice=data.get('createRetainerInvoice', False)
             )
-            # print("hi")
+            
+            
 
             # Create the related EstimateItem objects
             for item in data['items']:
@@ -282,30 +290,81 @@ def SalesOrder1(request):
     context = {'salesorders': objs}
     return render(request,"salesorder1.html",context)
 
+def SalesOrder2(request,id):
+    data = SalesOrder.objects.get(id =id)
+    context = {"data":data,"id":id}
+    return render(request,"salesorder2.html",context)
+
+
+@csrf_exempt
+def Coverter_Invoice_sales(request,id):
+    objs1 = SalesOrder.objects.filter(id = id).first()
+    objs2 = SalesOrderItem.objects.filter(sales_order = objs1)
+    if invoice := InvoiceEstimate.objects.all().last():
+        num = invoice.invoice_number
+        invoice_number = int(num.split('-')[1])
+        num2 = invoice.order_number
+        order_number = int(num2.split('-')[1])
+        context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":invoice_number+1,"order_number":order_number+1,"id":id}
+    else:
+        context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":1,"order_number":1,"id":id}
+    return render(request,"createinvoice.html",context)
+import datetime
+
+def Create_invoice_sales(request):
+    sales = SalesOrder.objects.all()
+    params = {
+        'today':datetime.date.today(),
+        'sales':sales
+    }
+    new_invoice =  save_pdf(params)
+    return redirect(f'/media/{new_invoice}/')
+
+################## PDF GENERATE ###############
+def save_pdf(params: dict):
+    template = get_template("invoice.html")
+    html = template.render(params)
+    response = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
+    file_name = f"{uuid.uuid4()}.pdf"
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+    try:
+        # Save PDF file to the specified path
+        with open(file_path, 'wb+') as output:
+            pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+    except Exception as e:
+        print(f"Error saving PDF: {e}")
+        return None
+
+    return file_name
+
+
 @csrf_exempt
 def Newsalesorder(request):
-    requests = Request.objects.all()  # Fetch all Request objects
-    context = {"customers": requests}
+    requests = Request.objects.all()
+    if estimates := SalesOrder.objects.all().last():
+        num = estimates.sales_order_number
+        sales_number = int(num.split('-')[1])
+        # print(estimate_number)
+        context = {"custoumers":requests,"sales_number":sales_number+1}
+    else:
+        context = {"custoumers":requests,"sales_number":1}
 
     if request.method == "POST":
         try:
-            # Parse the JSON data from the request body
             data = json.loads(request.body)
-            print(data)
-
-            sales_order_date = data.get('salesOrderDate', None)
-            expected_shipment_date = data.get('expectedShipmentDate', None)
+            # print(data.get('salesOrderDate'))
             name = data.get('customerName', '')
             customer_name1 = Request.objects.get(company=name)
 
-            # Create the SalesOrder object
             sales_order = SalesOrder.objects.create(
                 customer_name=customer_name1.profile,
-                request = customer_name1,
+                request=customer_name1,
                 sales_order_number=data.get('salesOrderNumber', ''),
                 reference_number=data.get('referenceNumber', ''),
-                sales_order_date=sales_order_date,
-                expected_shipment_date=expected_shipment_date,
+                sales_order_date=data.get('salesOrderDate', None),
+                expected_shipment_date=data.get('expectedShipmentDate', None),
                 payment_terms=data.get('paymentTerms', ''),
                 delivery_method=data.get('deliveryMethod', ''),
                 sales_person=data.get('salesPerson', ''),
@@ -316,10 +375,10 @@ def Newsalesorder(request):
                 terms_and_conditions=data.get('termsAndConditions', ''),
                 create_retainer_invoice=data.get('createRetainerInvoice', False)
             )
-            sales_order.full_clean()
-
-            # Create the related SalesOrderItem objects
+            # print(data.get('items'))
+            # sales_order.full_clean()
             for item_data in data.get('items', []):
+                # print(item_data)
                 sales_order_item = SalesOrderItem.objects.create(
                     sales_order=sales_order,
                     item_details=item_data.get('itemDetails', ''),
@@ -331,16 +390,16 @@ def Newsalesorder(request):
                 )
                 sales_order_item.full_clean()
 
-            # On successful creation, send a success message and respond with success
             messages.success(request, "Sales order created successfully.")
             return JsonResponse({'message': 'Sales order created successfully'}, status=201)
 
-        except (Request.DoesNotExist, ValidationError):
+        except Request.DoesNotExist:
             return JsonResponse({'error': 'Customer not found'}, status=404)
+        except ValidationError as e:
+            return JsonResponse({'error': f'Validation Error: {str(e)}'}, status=400)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-    # If it's a GET request, return the form
     return render(request, "salesorder.html", context)
 
 
@@ -350,21 +409,59 @@ def Invoice1(request):
     context = {'invoice':objs}
     return render(request,"invoice1.html",context)
 
-def Invoice2(request):
-    return render(request,"invoice2.html")
+def Invoice2(request,id):
+    objs = InvoiceEstimate.objects.get(id = id)
+    context = {'objs':objs}
+    return render(request,"invoice2.html",context)
+
+
+def InvoiceReal(request):
+    sales = InvoiceEstimate.objects.all()
+    params = {
+        'today':datetime.date.today(),
+        'invoice':sales
+    }
+    new_invoice =  save_pdf2(params)
+    return redirect(f'/media/{new_invoice}/')
+
+def save_pdf2(params: dict):
+    template = get_template("invoice.html")
+    html = template.render(params)
+    response = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
+    file_name = f"{uuid.uuid4()}.pdf"
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+    try:
+        # Save PDF file to the specified path
+        with open(file_path, 'wb+') as output:
+            pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+    except Exception as e:
+        print(f"Error saving PDF: {e}")
+        return None
+
+    return file_name
 
 # from .models import Customer, Invoice, Item
 from django.core.exceptions import ValidationError
 @csrf_exempt
-def Invoice3(request):
+def Invoice3(request):  # sourcery skip: low-code-quality
     requests = Request.objects.all()
-    context = {"customers": requests}
-
+    if estimates := InvoiceEstimate.objects.all().last():
+        num = estimates.invoice_number
+        num2 = estimates.order_number
+        # print(num)
+        sales_number = int(num.split('-')[1])
+        order = int(num2.split('-')[1])
+        # print(estimate_number)
+        context = {"custoumers":requests,"invoice_number":sales_number+1,"order":order+1}
+    else:
+        context = {"custoumers":requests,"invoice_number":1,"order":1}
     if request.method == "POST":
         try:
             # Parse the JSON data from the request body
             data = json.loads(request.body)
-            print("Received data:", data)  # Debugging print
+            # print("Received data:", data)  # Debugging print
 
             # Get dates with fallback for empty strings
             invoice_date = data.get('invoiceDate') or None
@@ -395,6 +492,18 @@ def Invoice3(request):
                 terms_and_conditions=data.get('termsAndConditions', ''),
                 create_retainer_invoice=data.get('createRetainerInvoice', False)
             )
+            if(data.get('createRetainerInvoice') == True):
+                # print("entered")
+                if(data.get('hiddeninp1') == "estimates"):
+                    # print("hello")
+                    estimate = Estimate.objects.get(id = data.get('hiddeninp'))
+                    estimate.status = "Invoiced"
+                    estimate.save()
+                elif(data.get('hiddeninp2') == "sales"):
+                    # print("hi")
+                    estimate = SalesOrder.objects.get(id = data.get('hiddeninp'))
+                    estimate.satus = "Invoiced"
+                    estimate.save()
 
             # Create related Item objects for the invoice
             for item_data in data.get('items', []):
@@ -433,14 +542,52 @@ def Payment1(request):
     return render(request,"payment1.html",context)
 
 
-def Payment2(request):
-    return render(request,"payments2.html")
+def Payment2(request,id):
+    objs = Payment.objects.get(id = id)
+    context = {'objs':objs}
+    return render(request,"payments2.html",context)
+
+
+
+def PaymentInvoice(request):
+    pay = Payment.objects.all()
+    params = {
+        'today':datetime.date.today(),
+        'invoice':pay
+    }
+    new_invoice =  save_pdf3(params)
+    return redirect(f'/media/{new_invoice}/')
+
+def save_pdf3(params: dict):
+    template = get_template("invoice.html")
+    html = template.render(params)
+    response = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
+    file_name = f"{uuid.uuid4()}.pdf"
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+    try:
+        # Save PDF file to the specified path
+        with open(file_path, 'wb+') as output:
+            pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+    except Exception as e:
+        print(f"Error saving PDF: {e}")
+        return None
+
+    return file_name
 
 @csrf_exempt
 def Newpayment(request):
     # Fetch all Request objects for the context
     requests = Request.objects.all()
-    context = {"customers": requests}
+    if estimates := Payment.objects.all().last():
+        num = estimates.payment_number
+        # print(num)
+        sales_number = int(num.split('-')[1])
+        # print(estimate_number)
+        context = {"custoumers":requests,"payment_number":sales_number+1}
+    else:
+        context = {"custoumers":requests,"payment_number":1}
 
     if request.method == "POST":
         try:
@@ -495,3 +642,26 @@ def Newpayment(request):
     # For a GET request, render the HTML template with context
     return render(request,"newpayment.html",context)
 
+
+
+
+# ############### GENERATING PDF ############
+
+
+# def save_pdf(params: dict):
+#     template = get_template("invoice.html")
+#     html = template.render(params)
+#     response = BytesIO()
+#     pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
+#     file_name = f"{uuid.uuid4()}.pdf"
+#     file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+#     try:
+#         # Save PDF file to the specified path
+#         with open(file_path, 'wb+') as output:
+#             pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+#     except Exception as e:
+#         print(f"Error saving PDF: {e}")
+#         return None
+
+#     return file_name

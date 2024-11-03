@@ -439,11 +439,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
-            <a href="#">Estimates</a>
-            <a href="#">Sales Orders</a>
-            <a href="#">Invoices</a>
-            <a href="#" class="active">Payments Received</a>
+            <a href="/customerspage/">Customers</a>
+            <a href="/estimates/">Estimates</a>
+            <a href="/salesorder1/">Sales Orders</a>
+            <a href="/invoice1/">Invoices</a>
+            <a href="/payment1/" class="active">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -507,7 +507,12 @@
               </h1>
             </div>
             <div class="action-icons" style="display: flex; gap: 10px">
-              <button class="btn btn-primary">+ New</button>
+              <a
+                href="/newpayment/"
+                style="text-decoration: none"
+                class="btn btn-primary"
+                >+ New</a
+              >
               <a
                 style="
                   background-color: #f0f0f0;
@@ -568,6 +573,15 @@
                 <td data-label="INVOICE#">{{i.reference_number}}</td>
                 <td data-label="MODE">{{i.payment_mode}}</td>
                 <td data-label="AMOUNT">{{i.total}}</td>
+                <td class="search-icon">
+                  <!-- <img src="images/clip.svg" alt="" /> -->
+                  <a
+                    href="/payment2/{{i.id}}"
+                    style="text-decoration: none"
+                    class="btn btn-primary"
+                    >Open</a
+                  >
+                </td>
               </tr>
               {% endfor %} {% else %}
               <tr>

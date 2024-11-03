@@ -21,13 +21,12 @@
         min-height: 100vh;
       }
       .sidebar {
-        width: 300px;
+        width: 280px;
         background-color: #ffffff;
         color: #292f46;
         padding: 20px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
-        overflow-y: scroll;
       }
       .sidebar .dropdown-content {
         display: none;
@@ -658,6 +657,99 @@
         left: 450px;
         display: none;
       }
+
+
+      .btn {
+                  display: flex;
+                  align-items: center;
+                  padding: 8px 12px;
+                  background-color: #fff;
+                  border: 1px solid #ddd;
+                  border-radius: 4px;
+                  font-size: 14px;
+                  color: #333;
+                  cursor: pointer;
+                }
+                .btn:hover {
+                  background-color: #f8f8f8;
+                }
+                .btn::before {
+                  content: "+";
+                  display: inline-block;
+                  margin-right: 5px;
+                  font-size: 18px;
+                  color: #0099ff;
+                }
+                .dropdown::after {
+                  content: "▼";
+                  display: inline-block;
+                  margin-left: 5px;
+                  font-size: 10px;
+                  color: #666;
+                }
+                .containerrr {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .row > span:first-child {
+            color: #333;
+            font-weight: normal;
+        }
+        .containerrr input[type="text"] {
+            width: 80px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: right;
+            color: #333;
+            font-size: 14px;
+        }
+        .containerrr input[type="text"]::placeholder {
+            color: #999;
+        }
+        .info-icon {
+            color: #999;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .total {
+            font-weight: bold;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .apply-text {
+            color: #3498db;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            margin-left: 2px;
+        }
+        .value {
+            color: #999;
+            font-size: 14px;
+            text-align: right;
+            width: 80px;
+            display: inline-block;
+        }
+        .total .value {
+            color: #333;
+            font-weight: bold;
+        }
     </style>
   </head>
   <body style="position: relative;">
@@ -753,11 +845,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
+            <a href="/customerspage/">Customers</a>
             <a href="/estimates/" class="active">Estimates</a>
-            <a href="#">Sales Orders</a>
-            <a href="#">Invoices</a>
-            <a href="#">Payments Received</a>
+            <a href="/salesorder1/">Sales Orders</a>
+            <a href="/invoice1/">Invoices</a>
+            <a href="/payment1/">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -800,16 +892,6 @@
         <div class="cont">
           <form class="containerr"  action="/submit-estimate" method="post">
             <h1>New Estimate</h1>
-            {% if messages %}
-    <div class="container mt-4">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-
             <div style="background-color: #f6f6f6; padding: 20px">
               <!-- address  -->
               <div class="address-details" style="margin-bottom: 20px">
@@ -831,6 +913,7 @@
                         {% for i in custoumers %}
                         <option>{{i.company}}</option>
                         {% endfor %}
+
                       </select>
                     </div>
                     <button class="search-button" style="margin-right: 10px">
@@ -943,6 +1026,7 @@ Fax Number: 1-786-913-9473 x246
                 </div>
                 <div class="col1">
                   <div class="input-container" style="position: relative">
+
                     <div class="custom-select">
                       <select
                         class="select-input"
@@ -1037,15 +1121,10 @@ Fax Number: 1-786-913-9473 x246
                         class="single-input"
                         id="Estimate-date"
                         style="border: 2px solid #d1d5db; border-radius: 10px"
-                        
                       />
                     </div>
                   </div>
                 </div>
-                <script>
-                  const today = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                  document.getElementById("Estimate-date").value = today;   // Set the value of the input field
-                </script>
 
                 <div class="address-details" style="width: 45%">
                   <div>
@@ -1188,155 +1267,25 @@ Fax Number: 1-786-913-9473 x246
                   </thead>
                   <tbody class="add-row">
                     <tr id="1">
-                      <td>
-                        <input
-                          type="text"
-                          placeholder="Type or click to select an item"
-                        />
-                      </td>
-                      <td><input type="number" placeholder="0.00" value="0.00" /></td>
-                      <td><input type="number" placeholder="0.00" value="0.00" oninput="rate(event)" /></td>
-                      <td><input type="text" placeholder="0 %" value="0 %" oninput="discount(event)" /></td>
-                      <td>
-                        <select disabled>
-                          <option>Select a Tax</option>
-                        </select>
-                      </td>
-                      <td><input type="number" class="amount-class" value="0.00" oninput="subtotal(event)" placeholder="0.00" /></td>
-                      <td class="icon-delete"><button type="button">x</button></td>
+                        <td><input type="text" placeholder="Type or click to select an item" /></td>
+                        <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                        <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                        <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    
+                        <td>
+                          <select disabled><option>Select a Tax</option></select>
+                        </td>
+                        <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                        <td class="icon-delete"><button type="button" onclick="">x</button></td>
                     </tr>
-                    <script>
-                      // Global variable to hold the rate value
-                      let rateval = 0;
+                </tbody>
                     
-                      // Function to capture the rate input
-                      function rate(e) {
-                        rateval = parseFloat(e.target.value) || 0; // Get the rate as a number
-                        calculateAmount();
-                      }
-                    
-                      // Function to capture the discount input and calculate the amount
-                      function discount(e) {
-                        const disc = e.target.value.replace('%', ''); // Remove the '%' symbol
-                        const discountPercentage = parseFloat(disc) || 0; // Parse as number
-                        calculateAmount(discountPercentage);
-                      }
-                    
-                      // Function to calculate and set the discounted amount
-                      function calculateAmount(discount = 0) {
-                        const amountElement = document.querySelector(".amount-class");
-                        const amountval = rateval - (rateval * discount / 100); // Calculate discounted amount
-                        amountElement.value = amountval.toFixed(2); // Set the calculated value with two decimal places
-                      }
-                    </script>
-                  </tbody>
-                </table>
-              </div>
-              <style>
-                .btn {
-                  display: flex;
-                  align-items: center;
-                  padding: 8px 12px;
-                  background-color: #fff;
-                  border: 1px solid #ddd;
-                  border-radius: 4px;
-                  font-size: 14px;
-                  color: #333;
-                  cursor: pointer;
-                }
-                .btn:hover {
-                  background-color: #f8f8f8;
-                }
-                .btn::before {
-                  content: "+";
-                  display: inline-block;
-                  margin-right: 5px;
-                  font-size: 18px;
-                  color: #0099ff;
-                }
-                .dropdown::after {
-                  content: "▼";
-                  display: inline-block;
-                  margin-left: 5px;
-                  font-size: 10px;
-                  color: #666;
-                }
-                .containerrr {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            width: 100%;
-            height: 40vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        .row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .row > span:first-child {
-            color: #333;
-            font-weight: normal;
-        }
-        .containerrr input[type="text"] {
-            width: 80px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            text-align: right;
-            color: #333;
-            font-size: 14px;
-        }
-        .containerrr input[type="text"]::placeholder {
-            color: #999;
-        }
-        .info-icon {
-            color: #999;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-        .total {
-            font-weight: bold;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        .apply-text {
-            color: #3498db;
-            font-size: 12px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            margin-left: 2px;
-        }
-        .value {
-            color: #999;
-            font-size: 14px;
-            text-align: right;
-            width: 80px;
-            display: inline-block;
-        }
-        .total .value {
-            color: #333;
-            font-weight: bold;
-        }
-              </style>
-              <!-- Sub Total Section -->
-              <div class="totals-section">
-                <div
-                  class="notes-section"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    height: 40vh;
-                  "
-                >
-                  <div style="display: flex">
+            </table>
+        </div>
+        <!-- Sub Total Section -->
+        <div class="totals-section">
+            <div class="notes-section" style="display: flex;flex-direction: column;justify-content: space-between;height: 40vh;">
+                <div style="display: flex">
                     <button class="btn" type="button" onclick="addrow()">Add New Row</button>
                     <button class="btn" type="button">Add Items in Bulk</button>
                   </div>
@@ -1346,97 +1295,122 @@ Fax Number: 1-786-913-9473 x246
                     <textarea placeholder="Enter customer notes"></textarea>
                   </div>
                 </div>
-                <script>
-                  function addrow(){
-                    // console.log("Hi");
-                    let add = document.querySelector(".add-row");
-                    add.innerHTML += `<tr>
-                      <td>
-                        <input
-                          type="text"
-                          placeholder="Type or click to select an item"
-                        />
-                      </td>
-                      <td><input type="number" placeholder="0.00" value="0.00"  /></td>
-                      <td><input type="number" placeholder="0.00" value="0.00" /></td>
-                      <td><input type="text" placeholder="0 %" value="0 %"  /></td>
-                      <td>
-                        <select disabled>
-                          <option>Select a Tax</option>
-                        </select>
-                      </td>
-                      <td><input type="number" placeholder="0.00" value="0.00" oninput="subtotal(event)" /></td>
-                      <td class="icon-delete"><button type="button" onclick="deleteRow(this)">x</button></td>
-                    </tr>`;
-                  }
-                  function deleteRow(button) {
-    // Find the closest <tr> element containing the button and remove it
-    button.closest("tr").remove();
-  }
-                </script>
+                <!-- Total Amount Section -->                           
 
-                <div class="amount-section">
-                    <div class="containerrr">
-                        <div class="row">
-                            <span>Sub Total</span>
-                            <input class="value" id="subTotal" value="0.00">
+
+            <div class="amount-section">
+                <div class="containerrr">
+                    <div class="row">
+                        <span>Sub Total</span>
+                        <span class="value" id="subTotal">0.00</span>
+                    </div>
+                    <div class="row">
+                        
+                          <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
+                            <span>Shipping Charges</span>
+                            <input type="text" id="shippingCharges" placeholder="0.00" class="">
+                            <span class="info-icon">ⓘ</span>
+                          </div>
+                          <span class="value" id="shippigcharges"></span>
+                        
+                    </div>
+                    <div class="apply-text">Apply Tax on Shipping Charge</div>
+                    <div class="row">
+                        <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
+            
+                            <span>Adjustment</span>
+                            <input type="text" id="adjustment" placeholder="0.00" class="one">
+                            <span class="info-icon">ⓘ</span>
                         </div>
-                        <div class="row">
-                            
-                              <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                                <span>Shipping Charges</span>
-                                <input type="text" id="shippingCharges" placeholder="0.00" class="">
-                                <span class="info-icon">ⓘ</span>
-                              </div>
-                              <span class="value" id="shippigcharges"></span>
-                            
-                        </div>
-                        <div class="apply-text">Apply Tax on Shipping Charge</div>
-                        <div class="row">
-                            <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                
-                                <span>Adjustment</span>
-                                <input type="text" id="adjustment" placeholder="0.00" class="one">
-                                <span class="info-icon">ⓘ</span>
-                            </div>
-                            <span class="value" id="adjustmentcharges"></span>
-                        </div>
-                        <div class="row total">
-                            <span>Total ($)</span>
-                            <input class="value" id="total" value="0.00" />
-                        </div>
+                        <span class="value" id="adjustmentcharges"></span>
+                    </div>
+                    <div class="row total">
+                        <span>Total ($)</span>
+                        <span class="value" id="total">0.00</span>
                     </div>
                 </div>
             </div>
-            <script>
-              
+        </div>
+        <script>
+                                                       
+            let globalTotalAmount = 0;
+
+            function calculateAmount(row) {
+                const rateInput = row.querySelector('.rate-input');
+                const discountInput = row.querySelector('.discount-input');
+                const amountElement = row.querySelector('.amount-class');
+
+                const rate = parseFloat(rateInput.value) || 0;
+                const discount = parseFloat(discountInput.value.replace('%', '')) || 0;
+                const amountval = rate - (rate * discount / 100);
+
+                amountElement.value = amountval.toFixed(2); 
+                updateTotalAmount(); 
+            }
+
+            function updateTotalAmount() {
+                const amountElements = document.querySelectorAll('.amount-class');
+                globalTotalAmount = 0;
                 
+                amountElements.forEach(element => {
+                    globalTotalAmount += parseFloat(element.value) || 0;
+                });
                 
-              
-                var adjcharge = document.getElementById('adjustmentcharges');
-                var shipcharge = document.getElementById('shippigcharges');
-                function calculateTotal() {
-                  let money = document.getElementById("subTotal");
-                money.value = document.querySelector(".amount-class").value;
-                    
-                    const subTotal = parseFloat(document.getElementById('subTotal').value) || 0;
-                    const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                    const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                    
-                    const total = subTotal + shippingCharges + adjustment;
-                    document.getElementById('total').value = total.toFixed(2);
-                    adjcharge.innerHTML=adjustment;
-                    shipcharge.innerHTML=shippingCharges;
-                    // Update the color of filled inputs
-                    document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
-                    document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
+                // Update the display
+                const displayElement = document.getElementById('subTotal');
+                if (displayElement) {
+                    displayElement.textContent = globalTotalAmount.toFixed(2);
                 }
                 
-                document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
-                document.getElementById('adjustment').addEventListener('input', calculateTotal);
-        
-                calculateTotal();
-            </script>
+                console.log('Total Amount:', globalTotalAmount.toFixed(2)); 
+                return globalTotalAmount;
+            }
+
+            function addrow() {
+                let add = document.querySelector(".add-row");
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td><input type="text" placeholder="Type or click to select an item" /></td>
+                    <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                    <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    <td>
+                        <select disabled><option>Select a Tax</option></select>
+                    </td>
+                    <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                    <td class="icon-delete"><button type="button" onclick="deleteRow(this)">x</button></td>
+                `;
+                add.appendChild(newRow);
+            }
+
+            function deleteRow(button) {
+                button.closest("tr").remove();
+                updateTotalAmount(); 
+            }
+
+   
+            var adjcharge = document.getElementById('adjustmentcharges');
+            var shipcharge = document.getElementById('shippigcharges');
+            function calculateTotal() {
+                
+                const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
+                const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
+                const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
+                
+                const total = subTotal + shippingCharges - adjustment;
+                document.getElementById('total').textContent = total.toFixed(2);
+                adjcharge.innerHTML=adjustment;
+                shipcharge.innerHTML=shippingCharges;
+                // Update the color of filled inputs
+                document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
+                document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
+            }
+            
+            document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
+            document.getElementById('adjustment').addEventListener('input', calculateTotal);
+    
+            calculateTotal();
+        </script>
               </div>
 
               <div class="tc-main-container">
@@ -1523,7 +1497,7 @@ Fax Number: 1-786-913-9473 x246
               <button class="cancel">Cancel</button>
             </div>
   
-    <!-- <div id="jsonOutput"></div> -->
+    <!-- <div id="jsonOutput" style="width: 500px;"></div> -->
 
     <script>
     function getFormData() {
@@ -1549,32 +1523,33 @@ Fax Number: 1-786-913-9473 x246
 
         // Item details
         jsonObject.items = [];
-        const itemRows = document.querySelectorAll('table tbody tr');
-        itemRows.forEach(row => {
-            const inputs = row.querySelectorAll('input, select');
-            // console.log(inputs[0].value);
-            jsonObject.items.push({
-              itemDetails: inputs[0].value.trim() || '', // Ensure no empty values
-                quantity: parseFloat(inputs[1].value) || 0, // Convert to float
-                rate: parseFloat(inputs[2].value) || 0, // Convert to float
-                discount: inputs[3].value.trim() || '', // Ensure no empty values
-                tax: inputs[4].value.trim() || 'Select a Tax', // Default value if empty
-                amount: parseFloat(inputs[5].value) || 0 // Convert to float
-            });
-        });
+    const allRows = document.querySelectorAll('.add-row tr'); // Select all rows in the tbody
+    
+    allRows.forEach(row => {
+        const item = {
+            itemDetails: row.querySelector('input[placeholder="Type or click to select an item"]')?.value?.trim() || '',
+            quantity: parseFloat(row.querySelector('td:nth-child(2) input')?.value) || 0,
+            rate: parseFloat(row.querySelector('.rate-input')?.value) || 0,
+            discount: row.querySelector('.discount-input')?.value?.trim() || '0 %',
+            tax: row.querySelector('select')?.value || 'Select a Tax',
+            amount: parseFloat(row.querySelector('.amount-class')?.value) || 0
+        };
+        
+        // Only add rows that have at least one field filled out
+        if (item.itemDetails || item.quantity > 0 || item.rate > 0 || item.discount !== '0 %' || item.amount > 0) {
+            jsonObject.items.push(item);
+        }
+    });
 
         // Totals
-        jsonObject.subTotal = document.getElementById('subTotal').value;
+        jsonObject.subTotal = document.getElementById('subTotal').textContent;
         jsonObject.shippingCharges = document.getElementById('shippingCharges').value;
         jsonObject.adjustment = document.getElementById('adjustment').value;
-        jsonObject.total = document.getElementById('total').value;
+        jsonObject.total = document.getElementById('total').textContent;
+
         // Terms and conditions
         jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value;
-        jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked
-        // const jsonOutput = document.getElementById('jsonOutput');
-        // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
-
-
+        jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked;
         fetch('/newestimates/', {
         method: 'POST',
         headers: {
@@ -1590,27 +1565,10 @@ Fax Number: 1-786-913-9473 x246
     .catch((error) => {
         console.error('Error:', error);
     });
-}
-
-// Helper function to get the CSRF token
-// function getCookie(name) {
-//     let cookieValue = null;
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';');
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim();
-//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                 break;
-//             }
-//         }
-//     }
-//     return cookieValue;
-// }
-
         // Display the JSON
         // const jsonOutput = document.getElementById('jsonOutput');
         // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+    }
     </script>
         </form>
 

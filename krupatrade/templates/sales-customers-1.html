@@ -482,11 +482,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#" class="active">Customers</a>
-            <a href="#">Estimates</a>
-            <a href="#">Sales Orders</a>
-            <a href="#">Invoices</a>
-            <a href="#">Payments Received</a>
+            <a href="/customerspage/" class="active">Customers</a>
+            <a href="/estimates/">Estimates</a>
+            <a href="/salesorder1/">Sales Orders</a>
+            <a href="/invoice1/">Invoices</a>
+            <a href="/payment1/">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -586,6 +586,38 @@
                 <td data-label="EMAIL">{{ i.email }}</td>
                 <td data-label="WORK PHONE">{{ i.mobile_number }}</td>
                 <td data-label="RECEIVABLE(BYC)">{{ i.quantity }}</td>
+                {% if i.manager %}
+                <form method="post">
+                  {% csrf_token %}
+                  <td data-label="MANAGER INFO">
+                    <input name="id" style="display: none" value="{{i.id}}" />
+                    <select class="dropbtn" name="manager">
+                      <option class="drop-opt">{{i.manager}}</option>
+                      {% if manager%} {% for j in manager %}
+                      <option class="drop-opt">{{j.displayname}}</option>
+                      {% endfor %} {% endif %}
+                    </select>
+                  </td>
+                  <td class="search-icon">
+                    <!-- <img src="images/search.svg" alt="" /> -->
+                    <button
+                      style="
+                        width: 100px;
+                        height: 30px;
+                        border: none;
+                        background-color: #00a9f0;
+                        border-radius: 4px;
+                        cursor: pointer;
+                      "
+                      type="submit"
+                    >
+                      Add Manager
+                    </button>
+                  </td>
+                </form>
+              </tr>
+                
+                {% else %}
                 <form method="post">
                   {% csrf_token %}
                   <td data-label="MANAGER INFO">
@@ -615,6 +647,7 @@
                   </td>
                 </form>
               </tr>
+              {% endif %}
               {% endfor %} {% else %}
               <tr>
                 <td colspan="8">Customers not available</td>

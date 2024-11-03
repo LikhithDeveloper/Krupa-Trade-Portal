@@ -708,8 +708,8 @@
           <div id="sales-dropdown" class="dropdown-content show">
             <a href="#">Customers</a>
             <a href="#">Estimates</a>
-            <a href="/salesorder1/" class="active">Sales Orders</a>
-            <a href="/invoice1/" >Invoices</a>
+            <a href="#">Sales Orders</a>
+            <a href="/invoice1/" class="active">Invoices</a>
             <a href="#">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
@@ -1218,7 +1218,7 @@
                       checked
                     />
                     <input style="display: none;" id="hidden-inp" value="{{id}}">
-                    <input style="display: none;" id="hidden-inp2" value="sales">
+                    <input style="display: none;" id="hidden-inp1" value="estimates">
                     <label for="tc-create-invoice"
                       >Creating Invoice From Estimate</label
                     >
@@ -1335,10 +1335,8 @@
                 // Terms and Conditions
                 jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value.trim();
                 jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked; 
-                console.log(document.getElementById('hidden-inp2').value)
-
                 jsonObject.hiddeninp = document.getElementById('hidden-inp').value;
-                jsonObject.hiddeninp2 = document.getElementById('hidden-inp2').value;
+                jsonObject.hiddeninp1 = document.getElementById('hidden-inp1').value;
 
                 // // Display the JSON
                 // const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML

@@ -119,6 +119,15 @@ def create_orders(sender, instance, created, **kwargs):
         except Products.DoesNotExist:
             print(f"Product with name {instance.product_name} does not exist.")
 
+
+
+class CompanyInfo(models.Model):
+    user = models.OneToOneField(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
+    company_name = models.CharField(max_length=30,null=True,blank=True)
+    pan = models.CharField(max_length=30,null=True,blank=True)
+    gstno = models.CharField(max_length=30,null=True,blank=True)
+    cinno = models.CharField(max_length=30,null=True,blank=True)
+
 class SupportTicket(models.Model):
     order_id = models.CharField(max_length=10, unique=True, editable=False, blank=True)
     profile = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -145,6 +154,7 @@ class UserAddress(models.Model):
     street_address = models.TextField(null=True,blank=True)
     city = models.TextField(null=True,blank=True)
     state = models.CharField(max_length=30,null=True,blank=True)
+
 
 
 class Invoice(models.Model):
@@ -228,6 +238,7 @@ class SalesOrder(models.Model):
     terms_and_conditions = models.TextField(blank=True)
     create_retainer_invoice = models.BooleanField(default=False)
     created_date = models.DateField(auto_now=True)
+    satus = models.CharField(max_length=30,null=True,blank=True,default="SENT")
 
     def __str__(self):
         return f"Sales Order {self.sales_order_number} - {self.request.company}"
@@ -266,6 +277,7 @@ class InvoiceEstimate(models.Model):
     terms_and_conditions = models.TextField(blank=True)
     create_retainer_invoice = models.BooleanField(default=False)
     created_date = models.DateField(auto_now=True)
+    status = models.CharField(max_length=30,null=True,blank=True, default="PENDING")
 
     def __str__(self):
         return f"Invoice {self.invoice_number} for {self.request.company}"

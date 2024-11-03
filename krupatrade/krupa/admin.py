@@ -1,5 +1,5 @@
 from django.contrib import admin
-# from .models import CustomUser, Category, Products, Subcategory, Orders, Request, SupportTicket, UserAddress, Invoice, Estimate, EstimateItem
+# from .models import CustomUser, Category, Products, Subcategory, Orders, Request, SupportTicket, UserAddress, Invoice, Estimate, EstimateItem, SalesOrderItem
 from .models import*
 # Register your models here.
 
@@ -18,5 +18,6 @@ admin.site.register(InvoiceEstimate)
 admin.site.register(Item)
 admin.site.register(SalesOrder)
 admin.site.register(Payment)
-
+admin.site.register(SalesOrderItem)
+admin.site.register(CompanyInfo)
 

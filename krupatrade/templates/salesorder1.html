@@ -439,11 +439,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
-            <a href="#">Estimates</a>
+            <a href="/customerspage/">Customers</a>
+            <a href="/estimates/">Estimates</a>
             <a href="/salesorder1/" class="active">Sales Orders</a>
-            <a href="#">Invoices</a>
-            <a href="#">Payments Received</a>
+            <a href="/invoice1/">Invoices</a>
+            <a href="/payment1/">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -551,12 +551,12 @@
                 <td data-label="Estimate Number">{{i.reference_number}}</td>
                 <td data-label="Reference Number">{{i.request.email}}</td>
                 <td data-label="Customer Name">{{i.request.company}}</td>
-                <td data-label="Status">-</td>
+                <td data-label="Status">{{i.satus}}</td>
                 <td data-label="Amount">{{i.total}}</td>
                 <td class="search-icon">
                   <!-- <img src="images/clip.svg" alt="" /> -->
                   <a
-                    href="//"
+                    href="/salesorder2/{{i.id}}"
                     style="text-decoration: none"
                     class="btn btn-primary"
                     >Open</a

@@ -705,11 +705,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
-            <a href="#">Estimates</a>
-            <a href="#">Sales Orders</a>
+            <a href="/customerspage/">Customers</a>
+            <a href="/estimates/">Estimates</a>
+            <a href="/salesorder1/">Sales Orders</a>
             <a href="/invoice1/" class="active">Invoices</a>
-            <a href="#">Payments Received</a>
+            <a href="/payment1/">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -770,6 +770,7 @@
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
                         <option>Select or add customer</option>
+                        <!-- <option>{{estimates.request.company}}</option> -->
                         {% for i in custoumers %}
                         <option>{{i.company}}</option>
                         {% endfor %}
@@ -829,6 +830,7 @@
                       id="invoice"
                       placeholder="EST-001"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
+                      value="INVOICE-{{invoice_number}}"
                     />
                   </div>
                 </div>
@@ -851,6 +853,7 @@
                       class="single-input"
                       id="order-number"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
+                      value="ORDER-{{order}}"
                     />
                   </div>
                 </div>
@@ -990,26 +993,20 @@
                       <!-- Empty for delete icon -->
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <input
-                          type="text"
-                          placeholder="Type or click to select an item"
-                        />
-                      </td>
-                      <td><input type="number" value="0.00" disabled /></td>
-                      <td><input type="number" value="0.00" disabled /></td>
-                      <td><input type="text" value="0 %" disabled /></td>
-                      <td>
-                        <select disabled>
-                          <option>Select a Tax</option>
-                        </select>
-                      </td>
-                      <td><input type="number" value="0.00" disabled /></td>
-                      <td class="icon-delete"><button>x</button></td>
+                  <tbody class="add-row">
+                    <tr id="1">
+                        <td><input type="text" placeholder="Type or click to select an item" /></td>
+                        <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                        <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                        <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    
+                        <td>
+                          <select disabled><option>Select a Tax</option></select>
+                        </td>
+                        <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                        <td class="icon-delete"><button type="button" onclick="">x</button></td>
                     </tr>
-                  </tbody>
+                </tbody>
                 </table>
               </div>
               <style>
@@ -1117,7 +1114,7 @@
                   "
                 >
                   <div style="display: flex">
-                    <button class="btn dropdown">Add New Row</button>
+                    <button class="btn" type="button" onclick="addrow()">Add New Row</button>
                     <button class="btn">Add Items in Bulk</button>
                   </div>
                   <!-- Customer Notes Section -->
@@ -1161,31 +1158,88 @@
                 </div>
             </div>
             <script>
-                var adjcharge = document.getElementById('adjustmentcharges');
-                var shipcharge = document.getElementById('shippigcharges');
-                function calculateTotal() {
-                    
-                    const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
-                    const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                    const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                    
-                    const total = subTotal + shippingCharges + adjustment;
-                    document.getElementById('total').textContent = total.toFixed(2);
-                    adjcharge.innerHTML=adjustment;
-                    shipcharge.innerHTML=shippingCharges;
-                    // Update the color of filled inputs
-                    document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
-                    document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
-                }
-                
-                document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
-                document.getElementById('adjustment').addEventListener('input', calculateTotal);
-        
-                calculateTotal();
-            </script>
+                                                                       
+              let globalTotalAmount = 0;
+
+              function calculateAmount(row) {
+                  const rateInput = row.querySelector('.rate-input');
+                  const discountInput = row.querySelector('.discount-input');
+                  const amountElement = row.querySelector('.amount-class');
+
+                  const rate = parseFloat(rateInput.value) || 0;
+                  const discount = parseFloat(discountInput.value.replace('%', '')) || 0;
+                  const amountval = rate - (rate * discount / 100);
+
+                  amountElement.value = amountval.toFixed(2); 
+                  updateTotalAmount(); 
+              }
+
+              function updateTotalAmount() {
+                  const amountElements = document.querySelectorAll('.amount-class');
+                  globalTotalAmount = 0;
+                  
+                  amountElements.forEach(element => {
+                      globalTotalAmount += parseFloat(element.value) || 0;
+                  });
+                  
+                  // Update the display
+                  const displayElement = document.getElementById('subTotal');
+                  if (displayElement) {
+                      displayElement.textContent = globalTotalAmount.toFixed(2);
+                  }
+                  
+                  console.log('Total Amount:', globalTotalAmount.toFixed(2)); 
+                  return globalTotalAmount;
+              }
+
+              function addrow() {
+                  let add = document.querySelector(".add-row");
+                  const newRow = document.createElement('tr');
+                  newRow.innerHTML = `
+                      <td><input type="text" placeholder="Type or click to select an item" /></td>
+                      <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                      <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                      <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                      <td>
+                          <select disabled><option>Select a Tax</option></select>
+                      </td>
+                      <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                      <td class="icon-delete"><button type="button" onclick="deleteRow(this)">x</button></td>
+                  `;
+                  add.appendChild(newRow);
+              }
+
+              function deleteRow(button) {
+                  button.closest("tr").remove();
+                  updateTotalAmount(); 
+              }
+
+     
+              var adjcharge = document.getElementById('adjustmentcharges');
+              var shipcharge = document.getElementById('shippigcharges');
+              function calculateTotal() {
+                  
+                  const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
+                  const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
+                  const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
+                  
+                  const total = subTotal + shippingCharges - adjustment;
+                  document.getElementById('total').textContent = total.toFixed(2);
+                  adjcharge.innerHTML=adjustment;
+                  shipcharge.innerHTML=shippingCharges;
+                  // Update the color of filled inputs
+                  document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
+                  document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
+              }
+              
+              document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
+              document.getElementById('adjustment').addEventListener('input', calculateTotal);
+      
+              calculateTotal();
+          </script>
               </div>
 
-              <div class="tc-main-container">
+              <div class="tc-main-container" style="padding: 30px;">
                 <div class="tc-form-section">
                   <h2 class="tc-section-title">Terms & Conditions</h2>
                   <textarea
@@ -1268,11 +1322,10 @@
               <button type="button" onclick="getInvoiceFormData()">Save Invoice</button>
               <button class="cancel">Cancel</button>
             </div>
-            <!-- <div id="jsonOutput"></div> -->
+            <div id="jsonOutput" style="width: 500px;"></div>
 
             <script>
               function getInvoiceFormData() {
-                console.log("Hi")
                 const form = document.querySelector('.containerr'); 
                 const jsonObject = {};
 
@@ -1293,19 +1346,24 @@
                 // Sales Person
                 jsonObject.salesPerson = document.getElementById('sales-person').value;
 
-                // Item Details 
+                // Item Details - Updated to handle all rows including dynamically added ones
                 jsonObject.items = [];
-                const itemRows = document.querySelectorAll('table tbody tr');
-                itemRows.forEach(row => {
-                    const inputs = row.querySelectorAll('input, select');
-                    jsonObject.items.push({
-                        itemDetails: inputs[0].value.trim(),
-                        quantity: parseFloat(inputs[1].value) || 0,
-                        rate: parseFloat(inputs[2].value) || 0,
-                        discount: inputs[3].value.trim(),
-                        tax: inputs[4].value,
-                        amount: parseFloat(inputs[5].value) || 0
-                    });
+                const allRows = document.querySelectorAll('.add-row tr'); // Select all rows in the tbody
+                
+                allRows.forEach(row => {
+                    const item = {
+                        itemDetails: row.querySelector('input[placeholder="Type or click to select an item"]')?.value?.trim() || '',
+                        quantity: parseFloat(row.querySelector('td:nth-child(2) input')?.value) || 0,
+                        rate: parseFloat(row.querySelector('.rate-input')?.value) || 0,
+                        discount: row.querySelector('.discount-input')?.value?.trim() || '0 %',
+                        tax: row.querySelector('select')?.value || 'Select a Tax',
+                        amount: parseFloat(row.querySelector('.amount-class')?.value) || 0
+                    };
+                    
+                    // Only add rows that have at least one field filled out
+                    if (item.itemDetails || item.quantity > 0 || item.rate > 0 || item.discount !== '0 %' || item.amount > 0) {
+                        jsonObject.items.push(item);
+                    }
                 });
 
                 // Totals 
@@ -1318,9 +1376,9 @@
                 jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value.trim();
                 jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked; 
 
-                // // Display the JSON
-                // const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
-                // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+                // Display the JSON
+                const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
+                jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
 
                 fetch('/newinvoice/', {
         method: 'POST',
@@ -1357,5 +1415,5 @@
         });
       });
     </script>
-  </body>
+  </body>
 </html>

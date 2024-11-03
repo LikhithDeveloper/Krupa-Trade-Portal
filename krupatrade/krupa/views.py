@@ -155,7 +155,7 @@ def products_view(requset):  # sourcery skip: avoid-builtin-shadow
 def request_view(request,id):
     profile = CustomUser.objects.filter(id=id).first()
     requests = Request.objects.filter(profile=profile)
-    print(requests)
+    # print(requests)
     context = {'id':id ,'requests':requests}
     return render(request,"request.html",context)
 
@@ -196,12 +196,53 @@ def support_ticket_view_2(request,id):
 
 
 @login_required
-def account_view(request,id):
-    data = CustomUser.objects.get(id = id)
-    address = UserAddress.objects.filter(profile = data).first()
-    print(address)
-    context = {'data':data,'address':address,'id':id}
-    return render(request,"accounts.html",context)
+def account_view(request, id):
+    data = CustomUser.objects.get(id=id)
+    req = Request.objects.filter(profile=data)
+    info = CompanyInfo.objects.filter(user=data).first()
+
+    if request.method == "POST":
+        data1 = request.POST
+        
+        # Handle Company Info Form Submission
+        if 'company_name' in data1:
+            if CompanyInfo.objects.filter(user=data).exists():
+                cmpy_info = CompanyInfo.objects.filter(user=data).first()
+                cmpy_info.company_name = data1.get('company_name')
+                cmpy_info.pan = data1.get('pan_number')
+                cmpy_info.gstno = data1.get('gst_number')
+                cmpy_info.cinno = data1.get('cin_number')
+                messages.success(request, "Company info updated successfully.")
+            else:
+                cmpy_info = CompanyInfo.objects.create(
+                    user=data,
+                    company_name=data1.get('company_name'),
+                    pan=data1.get('pan_number'),
+                    gstno=data1.get('gst_number'),
+                    cinno=data1.get('cin_number')
+                )
+                messages.success(request, "Company info created successfully.")
+            cmpy_info.save()
+            info = cmpy_info  # Update `info` after saving or creating company info
+
+        # Handle Address Form Submission
+        elif 'address_type' in data1:  # Check for the address form
+            address1 = UserAddress.objects.create(
+                profile=data,
+                company_name=data1.get('company-n'),  # Adjust based on your need
+                address_type=data1.get('address_type'),
+                street_address=data1.get('street_address'),
+                city=data1.get('city'),
+                state=data1.get('state')
+            )
+            address1.save()
+
+        return redirect("accounts", id=id)
+
+    address = UserAddress.objects.filter(profile=data)
+    context = {'data': data, 'address': address, 'id': id, 'req': req, 'info': info}
+    return render(request, "accounts.html", context)
+
 
 
 @login_required
