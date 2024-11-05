@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Krupa Corporation</title>
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f6f6f6;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 280px;
+            background-color: #ffffff;
+            color: #292F46;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .sidebar .dropdown-content {
+            display: none;
+            flex-direction: column;
+            
+        }
+        .sidebar .dropdown-content a {
+            padding: 15px;
+            color: #292F46;
+            background-color: #f7f4f4;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 15px;
+            text-align: center;
+            border-radius: 10px;
+            transition: background-color 0.2s;
+        }
+        .sidebar .dropdown-content .active {
+            background-color: #00A1ff;
+            color: white;
+        }
+        .sidebar .dropdown-content.show {
+            display: flex;
+        }
+        .logo {
+            width: 100%;
+            max-width: 180px;
+            margin-bottom: 30px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            color: #292F46;
+            text-decoration: none;
+            background-color: #f7f4f4;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+        }
+        .nav-item.active {
+            background-color: #E5E8Eb;
+            color: #252525;
+            
+        }
+        .drop-active{
+            border: 1px solid #00A1ff;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+        .arrow.down {
+            transform: rotate(-90deg);
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: black;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .cont {
+            padding: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: fixed;
+                height: 100%;
+                z-index: 1000;
+                left: -250px;
+                transition: left 0.3s ease;
+            }
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                z-index: 1001;
+            }
+            .sidebar.show {
+                left: 0;
+            }
+        }
+        .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;  /* Adjusted for better spacing */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.search-bar {
+    display: flex;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 300px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    background-color: #DEE2E6;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-bar button {
+    padding: 10px;
+    background-color: #DEE2E6;
+    border: none;
+    cursor: pointer;
+}
+
+.top-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.top-icons .icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+    }
+    
+    .search-bar {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .top-icons {
+        width: 100%;
+        justify-content: flex-end;  
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 10px;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .top-icons {
+        gap: 10px; 
+    }
+}
+
+.main-content {
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        margin-left: 0;
+    }
+    .sidebar.show + .main-content {
+        margin-left: 250px;
+    }
+}
+
+.top-bar {
+    position: relative;
+    margin-top: 0;
+    margin-left: 0;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.cont {
+           display: flex;
+           height: 90vh;
+           color: white;
+           gap: 5px;
+        }
+        .one{
+            position: relative;
+            width: 40%;
+            height: 90vh;
+            
+        }
+       
+        .list-header {
+            padding: 25px 15px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .list-header h1 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .refresh-icon {
+            
+            
+            position: relative;
+            cursor: pointer;
+        }
+
+        .vendor-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .vendor-item {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            background: #e3f2fd;
+        }
+
+        .vendor-name {
+            color: #333;
+        }
+
+        .vendor-amount {
+            color: #666;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #999;
+            margin-right: 15px;
+            border-radius: 3px;
+        }
+
+        .vendor-details {
+            display: flex;
+            align-items: center;
+        }
+
+        .two{
+            position: relative;
+            width: 60%;
+            background-color: white;
+        }
+
+        .container-purchase {
+            display: flex;
+            max-width: 100%;
+            margin: 20px auto;
+            background: white;
+            border-radius: 4px;
+            height: 90vh;
+        }
+
+        /* Sidebar Styles */
+        .container-purchase .sidebarr {
+            width: 300px;
+            border-right: 1px solid #eee;
+            padding: 20px;
+        }
+
+        .container-purchase .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            color: #666;
+        }
+
+        .container-purchase .profile-image {
+            width: 50px;
+            height: 50px;
+            background: #eee;
+            border-radius: 50%;
+           
+        }
+
+        .profile-info h2 {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 10px;
+        }
+
+        .section-header {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .section-header h3 {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 0;
+        }
+
+        .section-content.expanded {
+            max-height: 500px;
+            padding: 15px 0;
+            transition: max-height 0.3s ease-in;
+        }
+
+        .container-purchase .arrow {
+            border: solid #666;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(-135deg);
+            margin-top: 3px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header.collapsed .arrow {
+            transform: rotate(45deg);
+            margin-top: -3px;
+        }
+
+        /* Address Item Styles */
+        .address-item {
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .add-address {
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .details-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .details-label {
+            width: 120px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .details-value {
+            font-size: 13px;
+            color: #333;
+        }
+
+        /* Main Content Styles */
+        .container-purchase .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #2196F3;
+            border-bottom-color: #2196F3;
+        }
+
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 1px solid #eee;
+        }
+
+        .table td {
+            padding: 12px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        /*transaction styles */
+        .nav-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .nav-header::after {
+            content: '▼';
+            font-size: 12px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #f32d2d;
+            margin-bottom: 20px;
+            padding: 16px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .content-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .badge-new {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+        }
+
+        .table-head {
+            text-align: left;
+            font-weight: 500;
+            color: #333;
+            padding: 8px 12px;
+            font-size: 14px;
+            background: #f8f8f8;
+        }
+
+        .table-data {
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .section-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .link-view {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .link-add {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .pager {
+            color: #666;
+        }
+
+        .status-paid {
+            color: #4CAF50;
+        }
+
+        .message-empty {
+            text-align: center;
+            padding: 12px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+
+        
+        
+
+        /* Mail List Styles */
+        .mail-list {
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+
+        .mail-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mail-item:last-child {
+            border-bottom: none;
+        }
+
+        .mail-icon {
+            width: 40px;
+            height: 40px;
+            background: #e3f2fd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2196F3;
+        }
+
+        /* Statement Styles */
+        .statement-download {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="menu-toggle">☰</button>
+        <aside class="sidebar" style="overflow-y: scroll">
+            <img src="images/krupa.svg" alt="Logo" class="logo">
+            <nav style="height: 80vh; display: flex; flex-direction: column;">
+                <div class="nav-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <img src="images/dashboard-light.svg" alt="Dashboard Icon" class="icon">
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+                <div class="nav-item" data-dropdown="products-dropdown">
+                    <div>
+                        <img src="images/products-dark.svg" alt="Products Icon" class="icon">
+                        <span>Products</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div id="products-dropdown" class="dropdown-content">
+                    <a href="#">Products List</a>
+                    <a href="#">Category List</a>
+                </div>
+                <div class="nav-item" data-dropdown="leads-dropdown">
+                    <div>
+                        <img src="images/leads.svg" alt="Leads Icon" class="icon">
+                        <span>Leads</span>
+                    </div>
+                </div>
+                <div class="nav-item" data-dropdown="users-dropdown">
+                    <div>
+                        <img src="images/user-dark.svg" alt="Users Icon" class="icon">
+                        <span>Users</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div class="nav-item " data-dropdown="sales-dropdown">
+                    <div>
+                        <img src="images/sales-dark.svg" alt="Sales Icon" class="icon">
+                        <span>Sales</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div id="sales-dropdown" class="dropdown-content">
+                    <a href="#">Customers</a>
+                    <a href="#">Estimates</a>
+                    <a href="#">Sales Orders</a>
+                    <a href="#">Invoices</a>
+                    <a href="#" class="active">Payments Received</a>
+                </div>
+                <div class="nav-item drop-active active" data-dropdown="purchases-dropdown">
+                    <div>
+                        <img src="images/purchaces.svg" alt="Purchases Icon" class="icon">
+                        <span>Purchases</span>
+                    </div>
+                    <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+                </div>
+                <div id="purchases-dropdown" class="dropdown-content show">
+                    <a href="/vendors1/" class="active">Vendors</a>
+                    <a href="#">Expanses</a>
+                    <a href="#">Recurring Expanses</a>
+                    <a href="#">Purchase Orders</a>
+                    <a href="#">Bills</a>
+                    <a href="#" >Payment Mode</a>
+                </div>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search term">
+                    <button>
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                    </button>
+                </div>
+                <div class="top-icons">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"></path></svg>
+                </div>
+            </div>
+            <div class="cont">
+                <div class="one" style="height: 90vh;background-color: white;">
+                    <div class="list-header">
+                        <h1>Vendors list</h1>
+                        <div class="refresh-icon"><img src="images/reload.svg" alt=""></div>
+                    </div>
+                    <ul class="vendor-list">
+                        <li class="vendor-item">
+                            <div class="vendor-details">
+                                <input type="checkbox" class="checkbox">
+                                
+                            </div>
+                          <div style="display: flex;flex-direction: column;">
+                            <span class="vendor-name">Rishitha</span>
+                            <span class="vendor-amount">₹0.00</span>
+                          </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="two">
+                    <div class="headd" style="display: flex;width: 95%;justify-content: space-between;margin: 0 auto;padding: 10px;">
+                    <h1 style="color: black;">Rishitha</h1>
+                    <img src="images/cross.svg" alt="">
+                    </div>
+                    <div class="container-purchase">
+                        <div class="sidebarr"  style="background-color: #f6f6f6;color: black;overflow-y: scroll;">
+                            <div class="profile-section">
+                                <div class="profile-image"></div>
+                                <div class="profile-info">
+                                    <h2>{{objs.firstname}}</h2>
+                                    <p>{{objs.vendoremail}}</p>
+                                </div>
+                            </div>
+                
+                            <!-- Address Section -->
+                            <div class="section">
+                                <div class="section-header">
+                                    <h3>Address</h3>
+                                    <span class="arrow"></span>
+                                </div>
+                                <div class="section-content expanded">
+                                    <div class="address-item">
+                                        <strong>Billing Address</strong><br>
+                                        <!-- <p>{{objs.billingattention}}</p> -->
+                                        <p>{{objs.billingcountry}}</p>
+                                        <p>{{objs.billingaddress1}}</p>
+                                        <p>{{objs.billingaddress2}}</p>
+                                        <p>{{objs.billingcity}}</p>
+                                        <p>{{objs.billingstate}}</p>
+                                        <p>{{objs.billingpincode}}</p>
+                                        <p>{{objs.billingphone}}</p>
+                                        <a href="#" class="add-address">Add new address</a>
+                                    </div>
+                                    <div class="address-item">
+                                        <strong>Shipping Address</strong><br>
+                                        <p>{{objs.shippingattention}}</p>
+<p>{{objs.shippingcountry}}</p>
+<p>{{objs.shippingaddress1}}</p>
+<p>{{objs.shippingaddress2}}</p>
+<p>{{objs.shippingcity}}</p>
+<p>{{objs.shippingstate}}</p>
+<p>{{objs.shippingpincode}}</p>
+<p>{{objs.shippingphone}}</p>
+<a href="#" class="add-address">Add new address</a>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Other Details Section -->
+                            <div class="section">
+                                <div class="section-header">
+                                    <h3>Other Details</h3>
+                                    <span class="arrow"></span>
+                                </div>
+                                <div class="section-content expanded">
+                                    <div class="details-row">
+                                        <div class="details-label">Default Currency</div>
+                                        <div class="details-value">INR</div>
+                                    </div>
+                                    <div class="details-row">
+                                        <div class="details-label">Portal Status</div>
+                                        <div class="details-value">Disabled</div>
+                                    </div>
+                                    <div class="details-row">
+                                        <div class="details-label">Portal Language</div>
+                                        <div class="details-value">English</div>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Record Info Section -->
+                            <div class="section">
+                                <div class="section-header">
+                                    <h3>Record Info</h3>
+                                    <span class="arrow"></span>
+                                </div>
+                                <div class="section-content expanded">
+                                    <div class="details-row">
+                                        <div class="details-label">Created ID</div>
+                                        <div class="details-value">USR000000000002788</div>
+                                    </div>
+                                    <div class="details-row">
+                                        <div class="details-label">Created on</div>
+                                        <div class="details-value">03/08/2024</div>
+                                    </div>
+                                    <div class="details-row">
+                                        <div class="details-label">Created by</div>
+                                        <div class="details-value">Balchithra</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="main-content">
+                            <div class="tabs">
+                                <div class="tab  active" data-tab="overview">Overview</div>
+                                <div class="tab" data-tab="transactions">Transactions</div>
+                                <div class="tab" data-tab="mails">Mails</div>
+                                <div class="tab" data-tab="statement">Statement</div>
+                            </div>
+                
+                            <!-- Overview Tab Content -->
+                            <div class="tab-content active" id="overview">
+                                <div style="display: flex;flex-direction: column;padding: 10px 0;gap: 10px;margin-bottom: 20px;">
+                                    <p style="color: #666">payment due period</p>
+                                    <p style="color: black">Due on Receipt</p>
+                                </div>
+                                
+                                <h1 style="font-weight: 100;color: black;">Receivables</h1>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Currency</th>
+                                            <th>Outstanding Receivables</th>
+                                            <th>Unused Credits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>INR - Indian Rupee</td>
+                                            <td>₹0.00</td>
+                                            <td>₹0.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                
+                            <!-- Transactions Tab Content -->
+                            <div class="tab-content" id="transactions">
+                                <div class="nav-header">
+                                    Go to transactions
+                                </div>
+                            
+                                <div class="content-section">
+                                    <div class="content-header">
+                                        <span class="content-title">Invoices</span>
+                                        <span class="badge-new">New</span>
+                                    </div>
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-head">Date</th>
+                                                <th class="table-head">Invoice number</th>
+                                                <th class="table-head">Order Number</th>
+                                                <th class="table-head">Amount</th>
+                                                <th class="table-head">Balance</th>
+                                                <th class="table-head">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-data">03/08/24</td>
+                                                <td class="table-data">789456123</td>
+                                                <td class="table-data">-</td>
+                                                <td class="table-data">₹500.00</td>
+                                                <td class="table-data">₹0.00</td>
+                                                <td class="table-data status-paid">Paid</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="section-footer">
+                                        <div>Total Count: <a href="#" class="link-view">View</a></div>
+                                        <div class="pager">< 1-1 ></div>
+                                    </div>
+                                </div>
+                            
+                                <div class="content-section">
+                                    <div class="content-header">
+                                        <span class="content-title">Sales Orders</span>
+                                        <span class="badge-new">New</span>
+                                    </div>
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-head">Sales Order#</th>
+                                                <th class="table-head">Reference Number</th>
+                                                <th class="table-head">Date</th>
+                                                <th class="table-head">Shipment Date</th>
+                                                <th class="table-head">Amount</th>
+                                                <th class="table-head">Status</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div class="message-empty">
+                                        There are no Sales Orders - <a href="#" class="link-add">Add New</a>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- Mails Tab Content -->
+                            <div class="tab-content" id="mails">
+                                <div class="nav-header">
+                                    Go to transactions
+                                </div>
+                            
+                                <div class="content-section">
+                                    <div class="content-header">
+                                        <span class="content-title">Invoices</span>
+                                        <span class="badge-new">New</span>
+                                    </div>
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-head">Date</th>
+                                                <th class="table-head">Invoice number</th>
+                                                <th class="table-head">Order Number</th>
+                                                <th class="table-head">Amount</th>
+                                                <th class="table-head">Balance</th>
+                                                <th class="table-head">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="table-data">03/08/24</td>
+                                                <td class="table-data">789456123</td>
+                                                <td class="table-data">-</td>
+                                                <td class="table-data">₹500.00</td>
+                                                <td class="table-data">₹0.00</td>
+                                                <td class="table-data status-paid">Paid</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="section-footer">
+                                        <div>Total Count: <a href="#" class="link-view">View</a></div>
+                                        <div class="pager">< 1-1 ></div>
+                                    </div>
+                                </div>
+                            
+                                
+                                    
+                                </div>
+                            </div>
+                
+                            <!-- Statement Tab Content -->
+                            <div class="tab-content" id="statement">
+                                
+                            </div>
+                        </div>
+                    </div>
+                
+                    <script>
+                        // Tab switching functionality
+                        document.querySelectorAll('.tab').forEach(tab => {
+                            tab.addEventListener('click', () => {
+                                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                                tab.classList.add('active');
+                                document.getElementById(tab.dataset.tab).classList.add('active');
+                            });
+                        });
+                
+                        // Enhanced dropdown functionality for sections
+                        document.querySelectorAll('.section-header').forEach(header => {
+                            header.addEventListener('click', () => {
+                                const content = header.nextElementSibling;
+                                const isExpanded = content.classList.contains('expanded');
+                                
+                                // Toggle the collapsed state of the header
+                                header.classList.toggle('collapsed');
+                                
+                                // Toggle the expanded state of the content
+                                content.classList.toggle('expanded');
+                                
+                                // Optional: Animate scroll height
+                                if (isExpanded) {
+                                    content.style.maxHeight = '0px';
+                                } else {
+                                    content.style.maxHeight = content.scrollHeight + 'px';
+                                }
+                            });
+                        });
+                
+                        // Initialize all sections as expanded by default
+                        document.querySelectorAll('.section-content').forEach(content => {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        });
+                    </script>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('show');
+        });
+        document.querySelectorAll('.nav-item[data-dropdown]').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdownId = item.getAttribute('data-dropdown');
+                const dropdown = document.getElementById(dropdownId);
+                dropdown.classList.toggle('show');
+                const arrow = item.querySelector('.arrow');
+                arrow.classList.toggle('down');
+            });
+        });
+    </script>
+</body>
+</html>

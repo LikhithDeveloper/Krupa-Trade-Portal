@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Krupa Corporation</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Quicksand", sans-serif;
+        background-color: #f6f6f6;
+        color: #333;
+      }
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 280px;
+        background-color: #ffffff;
+        color: #292f46;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .sidebar .dropdown-content {
+        display: none;
+        flex-direction: column;
+      }
+      .sidebar .dropdown-content a {
+        padding: 15px;
+        color: #292f46;
+        background-color: #f7f4f4;
+        margin-bottom: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 15px;
+        text-align: center;
+        border-radius: 10px;
+        transition: background-color 0.2s;
+      }
+      .sidebar .dropdown-content .active {
+        background-color: #00a1ff;
+        color: white;
+      }
+      .sidebar .dropdown-content.show {
+        display: flex;
+      }
+      .logo {
+        width: 100%;
+        max-width: 180px;
+        margin-bottom: 30px;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        margin-bottom: 5px;
+        color: #292f46;
+        text-decoration: none;
+        background-color: #f7f4f4;
+        font-size: 17px;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        justify-content: space-between;
+        transition: background-color 0.2s;
+      }
+      .nav-item.active {
+        background-color: #e5e8eb;
+        color: #252525;
+      }
+      .drop-active {
+        border: 1px solid #00a1ff;
+      }
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+      .arrow {
+        transition: transform 0.3s ease;
+      }
+      .arrow.down {
+        transform: rotate(-90deg);
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: black;
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .cont {
+        padding: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 250px;
+        }
+        .menu-toggle {
+          display: block;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          flex-direction: column;
+        }
+        .sidebar {
+          position: fixed;
+          height: 100%;
+          z-index: 1000;
+          left: -250px;
+          transition: left 0.3s ease;
+        }
+        .menu-toggle {
+          display: block;
+          position: fixed;
+          top: 15px;
+          left: 15px;
+          z-index: 1001;
+        }
+        .sidebar.show {
+          left: 0;
+        }
+      }
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px; /* Adjusted for better spacing */
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+
+      .search-bar {
+        display: flex;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+
+      .search-bar input {
+        flex-grow: 1;
+        padding: 10px 15px;
+        border: none;
+        background-color: #dee2e6;
+        font-size: 14px;
+        outline: none;
+      }
+
+      .search-bar button {
+        padding: 10px;
+        background-color: #dee2e6;
+        border: none;
+        cursor: pointer;
+      }
+
+      .top-icons {
+        display: flex;
+        gap: 15px;
+      }
+
+      .top-icons .icon {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+
+      /* Responsive design for smaller screens */
+      @media (max-width: 768px) {
+        .top-bar {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 10px 20px;
+        }
+
+        .search-bar {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+
+        .top-icons {
+          width: 100%;
+          justify-content: flex-end;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .top-bar {
+          padding: 10px;
+        }
+
+        .search-bar {
+          width: 100%;
+        }
+
+        .top-icons {
+          gap: 10px;
+        }
+      }
+
+      .main-content {
+        flex-grow: 1;
+        transition: margin-left 0.3s ease;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          margin-left: 250px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .main-content {
+          margin-left: 0;
+        }
+        .sidebar.show + .main-content {
+          margin-left: 250px;
+        }
+      }
+
+      .top-bar {
+        position: relative;
+        margin-top: 0;
+        margin-left: 0;
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      .cont {
+        overflow-y: scroll;
+        height: 90vh;
+        overflow-x: hidden;
+      }
+      .containerr {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px;
+        background-color: white;
+      }
+      .address-details {
+        display: flex;
+        width: 750px;
+        justify-content: space-between;
+        gap: 30px;
+      }
+      .input-container {
+        display: flex;
+        align-items: stretch;
+        width: 400px;
+        height: 36px;
+        border-radius: 10px;
+      }
+      .custom-select {
+        position: relative;
+        flex-grow: 1;
+      }
+      .select-input {
+        width: 100%;
+        height: 100%;
+        padding: 0 30px 0 10px;
+        border: 1px solid #d1d5db;
+        border-right: none;
+        border-radius: 4px 0 0 4px;
+        appearance: none;
+        -webkit-appearance: none;
+        background: white
+          url('data:image/svg+xml;utf8,<svg fill="%236B7280" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 7l3-3 3 3m0 6l-3 3-3-3" stroke="%236B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+          no-repeat right 8px center;
+        font-size: 14px;
+        color: #374151;
+      }
+      .single-input {
+        width: 100%;
+        height: 100%;
+        padding: 0 30px 0 10px;
+      }
+      .select-input:focus,
+      .single-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 1px #3b82f6;
+      }
+      .search-button {
+        background-color: #3b82f6;
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .search-button:hover {
+        background-color: #2563eb;
+      }
+      .currency {
+        background-color: #f3f4f6;
+        border: 1px solid #d1d5db;
+
+        padding: 0 10px;
+        font-size: 14px;
+        border-radius: 0 4px 4px 0;
+        display: flex;
+        align-items: center;
+        color: #374151;
+        font-weight: 500;
+      }
+      a {
+        text-decoration: none;
+      }
+      .row {
+        display: flex;
+        gap: 20px;
+      }
+      .col {
+        flex: 1;
+      }
+      .col-auto {
+        flex: 0 0 auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .table-header label {
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .bulk-link {
+        color: #007bff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .table-wrapper {
+        margin-top: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+      }
+
+      thead th {
+        background-color: #f7f7f7;
+        padding: 12px 10px;
+        font-size: 14px;
+        font-weight: 500;
+        border-bottom: 2px solid #ddd;
+        text-align: left;
+      }
+
+      tbody td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        width: 100%;
+        font-size: 14px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      select {
+        padding-right: 25px;
+      }
+
+      .icon-delete button {
+        background-color: transparent;
+        border: none;
+        color: #ff0000;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .icon-delete button:hover {
+        color: #cc0000;
+      }
+
+      .totals-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .notes-section {
+        flex: 1;
+        margin-right: 20px;
+      }
+
+      .notes-section label {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .notes-section textarea {
+        width: 100%;
+        height: 50px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .amount-section {
+        flex: 1;
+      }
+
+      .line-item {
+        margin-bottom: 15px;
+      }
+
+      .line-item label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      .line-item input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: #fff;
+      }
+
+      .line-item a {
+        font-size: 12px;
+        color: #007bff;
+        text-decoration: none;
+        margin-top: 5px;
+        display: block;
+      }
+
+      .line-item a:hover {
+        text-decoration: underline;
+      }
+
+      .grand-total label {
+        font-size: 18px;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .grand-total input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #fff;
+        color: #333;
+      }
+
+      .info-mark {
+        background-color: #ddd;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        text-align: center;
+        font-size: 12px;
+        line-height: 18px;
+        color: black;
+        cursor: pointer;
+      }
+
+      .info-mark:hover {
+        background-color: #ccc;
+      }
+
+      @media (max-width: 768px) {
+        .totals-section {
+          flex-direction: column;
+        }
+
+        .notes-section,
+        .amount-section {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .amount-section {
+          margin-left: 0;
+        }
+
+        .line-item input,
+        .grand-total input {
+          font-size: 16px;
+        }
+      }
+
+      .extra-notes,
+      .terms-wrapper,
+      .email-wrapper,
+      .attachment-wrapper {
+        margin-top: 20px;
+      }
+
+      .extra-notes label,
+      .terms-wrapper label,
+      .email-wrapper label,
+      .attachment-wrapper label {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      .extra-notes textarea,
+      .terms-wrapper textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .email-wrapper button,
+      .attachment-wrapper button {
+        padding: 8px 12px;
+        background-color: #007bff;
+        border: none;
+        color: white;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .email-wrapper button:hover,
+      .attachment-wrapper button:hover {
+        background-color: #0056b3;
+      }
+      .tc-main-container {
+        display: flex;
+        justify-content: space-between;
+      }
+      .tc-form-section {
+        flex: 2;
+        margin-right: 20px;
+      }
+      .tc-file-upload-section {
+        flex: 1;
+        text-align: right;
+      }
+      .tc-section-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .tc-input-textarea {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .tc-info-icon {
+        color: #888;
+        font-size: 18px;
+        cursor: help;
+      }
+      .tc-checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .tc-checkbox-wrapper input {
+        margin-right: 10px;
+      }
+      .tc-upload-button {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .tc-upload-info-text {
+        font-size: 12px;
+        color: #888;
+        margin-top: 5px;
+      }
+      .tc-email-section {
+        margin-top: 20px;
+      }
+      .tc-add-new-button {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .tc-no-contacts-message {
+        color: #888;
+        font-style: italic;
+      }
+      .button-container {
+                display: flex;
+                gap: 10px;
+              }
+              button {
+                padding: 8px 16px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+              }
+              button:hover {
+                opacity: 0.8;
+              }
+              .save-draft {
+                background-color: #fff;
+                color: #333;
+              }
+              .save-draft:hover {
+                background-color: #f0f0f0;
+              }
+              .save-as-draft {
+                background-color: #0099ff;
+                color: white;
+                border-color: #0088ee;
+              }
+              .save-as-draft:hover {
+                background-color: #0088ee;
+              }
+              .cancel {
+                background-color: #fff;
+                color: #333;
+              }
+              .cancel:hover {
+                background-color: #f0f0f0;
+              }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="menu-toggle">☰</button>
+      <aside class="sidebar" style="overflow-y: scroll">
+        <img src="images/krupa.svg" alt="Logo" class="logo" />
+        <nav style="height: 80vh; display: flex; flex-direction: column;">
+          <div class="nav-item" style="display: flex; justify-content: space-between;">
+              <div>
+                  <img src="images/dashboard-light.svg" alt="Dashboard Icon" class="icon">
+                  <span>Dashboard</span>
+              </div>
+          </div>
+          <div class="nav-item" data-dropdown="products-dropdown">
+              <div>
+                  <img src="images/products-dark.svg" alt="Products Icon" class="icon">
+                  <span>Products</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div id="products-dropdown" class="dropdown-content">
+              <a href="#">Products List</a>
+              <a href="#">Category List</a>
+          </div>
+          <div class="nav-item" data-dropdown="leads-dropdown">
+              <div>
+                  <img src="images/leads.svg" alt="Leads Icon" class="icon">
+                  <span>Leads</span>
+              </div>
+          </div>
+          <div class="nav-item" data-dropdown="users-dropdown">
+              <div>
+                  <img src="images/user-dark.svg" alt="Users Icon" class="icon">
+                  <span>Users</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div class="nav-item " data-dropdown="sales-dropdown">
+              <div>
+                  <img src="images/sales-dark.svg" alt="Sales Icon" class="icon">
+                  <span>Sales</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div id="sales-dropdown" class="dropdown-content">
+              <a href="#">Customers</a>
+              <a href="#">Estimates</a>
+              <a href="#">Sales Orders</a>
+              <a href="#">Invoices</a>
+              <a href="#" class="active">Payments Received</a>
+          </div>
+          <div class="nav-item drop-active active" data-dropdown="purchases-dropdown">
+              <div>
+                  <img src="images/purchaces.svg" alt="Purchases Icon" class="icon">
+                  <span>Purchases</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div id="purchases-dropdown" class="dropdown-content show">
+            <a href="/vendors1/" class="active">Vendors</a>
+              <a href="#">Expanses</a>
+              <a href="#">Recurring Expanses</a>
+              <a href="#">Purchase Orders</a>
+              <a href="#">Bills</a>
+              <a href="#" >Payment Mode</a>
+          </div>
+      </nav>
+      </aside>
+      <main class="main-content">
+        <div class="top-bar">
+          <div class="search-bar">
+            <input type="text" placeholder="Search term" />
+            <button>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div class="top-icons">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              ></path>
+            </svg>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+        <div class="cont">
+          <form class="containerr">
+            <div style="display: flex; gap: 30px;">
+                <h1>New Vendor</h1>
+            </div>
+            <div style="background-color: #f6f6f6; padding: 20px;display: flex;flex-direction: column;gap: 20px;">
+              
+
+                <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                    <div>
+                      <label
+                        for="namee"
+                        style="font-size: 20px; font-weight: 600;width: 250px;"
+                        >Primary Contact</label
+                      >
+                    </div>
+                    <div class="col1" style="display: flex;justify-content: space-around;width: 600px;">
+                        <div class="input-container" style="position: relative;width:150px">
+                            <select
+                              name="sales-person"
+                              id="salutation"
+                              class="single-input"
+                              style="border: 2px solid #d1d5db; border-radius: 10px"
+                            >
+                              <option value="">salutation</option>
+                              <option value="Mr">Mr.</option>
+                              <option value="Mrs">Mrs.</option>
+                            </select>
+                          </div>
+                      <div class="input-container" style="position: relative;width:200px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="firstname"
+                          placeholder="First Name"
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                      <div class="input-container" style="position: relative;width:200px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="lastname"
+                          placeholder="Last Name"
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+       
+              
+                  
+                  
+                  <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                    <div>
+                      <label
+                        for="companyname"
+                        style="font-size: 20px; font-weight: 600;width: 250px;"
+                        >Company Name</label
+                      >
+                    </div>
+                    <div class="col1">
+                      <div class="input-container" style="position: relative;width:400px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="companyname"
+                          
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                    <div>
+                      <label
+                        for="vendorname"
+                        style="font-size: 20px; font-weight: 600;width: 250px;"
+                        >Vendor Display Name</label
+                      >
+                    </div>
+                    <div class="col1">
+                      <div class="input-container" style="position: relative;width:400px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="vendorname"
+                          
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                    <div>
+                      <label
+                        for="vendoremail"
+                        style="font-size: 20px; font-weight: 600;width: 250px;"
+                        >Vendor Email</label
+                      >
+                    </div>
+                    <div class="col1">
+                      <div class="input-container" style="position: relative;width:400px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="vendoremail"
+                          placeholder="example@gmail.com"
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                    <div>
+                      <label
+                        for="vendorphone"
+                        style="font-size: 20px; font-weight: 600;width: 250px;"
+                        >Vendor Phone</label
+                      >
+                    </div>
+                    <div class="col1" style="display: flex;width: 400px;justify-content: space-between;">
+                      <div class="input-container" style="position: relative;width:190px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="vendorphone1"
+                          placeholder="Workphone"
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                      <div class="input-container" style="position: relative;width:190px">
+                        <input
+                          type="text"
+                          class="single-input"
+                          id="vendorphone2"
+                          placeholder="Workphone"
+                          style="border: 2px solid #d1d5db; border-radius: 10px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+              <!-- end of place of supply  -->
+            </div>
+            
+
+            <!-- second section  -->
+            <style>
+              .vendor-tabs-wrapper {
+                border-bottom: 1px solid #dee2e6;
+                margin-bottom: 25px;
+              }
+              .vendor-section-active .address-details{
+                margin-bottom: 30px;
+              }
+              .vendor-tabs-list {
+                display: flex;
+                gap: 25px;
+                list-style: none;
+                padding: 0 15px;
+                margin: 0;
+              }
+              
+              .vendor-tab-btn {
+                padding: 8px 0;
+                cursor: pointer;
+                font-size: 13px;
+                color: #444;
+                border: none;
+                background: none;
+                position: relative;
+              }
+              
+              .vendor-tab-btn.vendor-tab-active {
+                color: #008cff;
+              }
+              
+              .vendor-tab-btn.vendor-tab-active::after {
+                content: '';
+                position: absolute;
+                bottom: -1px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: #008cff;
+              }
+              
+              .vendor-form-wrapper {
+                padding: 0 15px;
+                max-width: 600px;
+              }
+              
+              /* Hide all form sections by default */
+              .vendor-form-section {
+                display: none;
+              }
+              
+              /* Show only active section */
+              .vendor-form-section.vendor-section-active {
+                display: block;
+              }
+             
+              
+              .tc-upload-info-text {
+                color: #666;
+                font-size: 12px;
+                margin-top: 5px;
+              }
+              </style>
+              
+              <div class="vendor-tabs-wrapper">
+                  <div class="vendor-tabs-list">
+                      <button type="button" class="vendor-tab-btn vendor-tab-active" data-tab="other-details">Other Details</button>
+                      <button type="button" class="vendor-tab-btn" data-tab="address">Address</button>
+                      <button type="button" class="vendor-tab-btn" data-tab="contact">Contact Persons</button>
+                      <button type="button" class="vendor-tab-btn" data-tab="bank">Bank Details</button>
+                      <button type="button" class="vendor-tab-btn" data-tab="custom">Custom Fields</button>
+                      <button type="button" class="vendor-tab-btn" data-tab="reporting">Reporting Tags</button>
+                      <button type="button" class="vendor-tab-btn" data-tab="remarks">Remarks</button>
+                  </div>
+              </div>
+              
+              <div class="vendor-form-wrapper">
+                  <!-- Other Details Form -->
+                  <div id="other-details" class="vendor-form-section vendor-section-active">
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;margin-bottom: 30px;">
+                      <div>
+                        <label
+                          for="gsttreatment"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >GST Treatment</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <select
+                            name="sales-person"
+                            id="gsttreatment"
+                            class="single-input"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          >
+                            <option value="">Select a GST Treatment</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+          
+          
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="sos"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Source Of Supply</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <select
+                            name="sos"
+                            id="sos"
+                            class="single-input"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          >
+                            <option value="">Select Source Of Supply</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+          
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="pan"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >PAN</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <input
+                            type="text"
+                            class="single-input"
+                            id="pan"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          />
+                        </div>
+                      </div>
+                    </div>
+          
+          
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="currency"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Currency</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <select
+                            name="currency"
+                            id="currency"
+                            class="single-input"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          >
+                            <option value="">Select Source Of Supply</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    
+          
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="openingbalance"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Opening Balance</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <input
+                            type="text"
+                            class="single-input"
+                            id="openingbalance"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          />
+                        </div>
+                      </div>
+                    </div>
+          
+                    
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="paymentterms"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Payment Terms</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <select
+                            name="paymentterms"
+                            id="paymentterms"
+                            class="single-input"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          >
+                            <option value="">Select Paymebt Terms</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+          
+                    
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="pricelist"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Price List</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <select
+                            name="pricelist"
+                            id="pricelist"
+                            class="single-input"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          >
+                            <option value="">Select Source Of Supply</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+          
+                    
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="enableportal"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Enable Portal?</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px;display: flex;align-items: center;gap: 10px;">
+                          <input type="checkbox" id="enableportal" style="width: 15px;height: 15px;">
+                          Allow portal access to this vendor
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="portallanguage"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Portal Language</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="input-container" style="position: relative;width:400px">
+                          <select
+                            name="portallanguage"
+                            id="portallanguage"
+                            class="single-input"
+                            style="border: 2px solid #d1d5db; border-radius: 10px"
+                          >
+                            <option value="">Select Portal Language</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+          
+                    
+                    <div class="address-details" style="width: 85%;justify-content: flex-start;">
+                      <div>
+                        <label
+                          for="documents"
+                          style="font-size: 20px; font-weight: 600;width: 250px;"
+                          >Documents</label
+                        >
+                      </div>
+                      <div class="col1">
+                        <div class="tc-file-upload-section">
+                          <input type="file" class="tc-upload-button" id="document"></input>
+                          <p class="tc-upload-info-text">
+                            You can upload a maximum of 5 files, 10MB each
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                      <!-- Add other fields for Other Details section -->
+                  </div>
+              
+                  <!-- Address Form -->
+                  <div id="address" class="vendor-form-section">
+                      <div style="display: flex;width: 1600px;gap: 30px;">
+                        <div style="width: 40%;">
+                          <h2>Billing Address</h2>
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="billingattention"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Attention</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="billingattention"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="billingcountry"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Country/Region</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <select
+                                  name="billingcountry"
+                                  id="billingcountry"
+                                  class="single-input"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                >
+                                  <option value="">Select</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;height: 200px;">
+                            <div>
+                              <label
+                                for="billingaddress"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Address</label
+                              >
+                            </div>
+                            <div class="col1" style="height: 200px;">
+                              <div class="input-container" style="position: relative;width:400px;display: flex;flex-direction: column;gap: 20px;height: 200px;">
+                               <textarea name="billingaddress" id="billingaddress1" style="height: 100px;"></textarea>
+                               <textarea name="billingaddress" id="billingaddress2" style="height: 100px;"></textarea>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="billingcity"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >City</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="billingcity"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="billingstate"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >State</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="billingstate"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="billingpincode"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Pin Code</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="billingpincode"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="billingPhone"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Phone</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="number"
+                                  class="single-input"
+                                  id="billingPhone"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                        <div style="width: 40%;">
+                          <h2>Shipping Address</h2>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="shippingattention"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Attention</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="shippingattention"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="shippingcountry"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Country/Region</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <select
+                                  name="shippingcountry"
+                                  id="shippingcountry"
+                                  class="single-input"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                >
+                                  <option value="">Select</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;height: 200px;">
+                            <div>
+                              <label
+                                for="shippingaddress"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Address</label
+                              >
+                            </div>
+                            <div class="col1" style="height: 200px;">
+                              <div class="input-container" style="position: relative;width:400px;display: flex;flex-direction: column;gap: 20px;height: 200px;">
+                               <textarea name="shippingaddress" id="shippingaddress1" style="height: 100px;"></textarea>
+                               <textarea name="shippingaddress" id="shippingaddress2" style="height: 100px;"></textarea>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="shippingcity"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >City</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="shippingcity"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="shippingstate"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >State</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="shippingstate"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="shippingpincode"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Pin Code</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="text"
+                                  class="single-input"
+                                  id="shippingpincode"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="address-details" style="width: 800px;justify-content: flex-start;">
+                            <div>
+                              <label
+                                for="shippingphone"
+                                style="font-size: 20px; font-weight: 600;width: 200px;"
+                                >Phone</label
+                              >
+                            </div>
+                            <div class="col1">
+                              <div class="input-container" style="position: relative;width:400px">
+                                <input
+                                  type="number"
+                                  class="single-input"
+                                  id="shippingphone"
+                                  style="border: 2px solid #d1d5db; border-radius: 10px"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                      </div>
+                      <!-- Add other address fields -->
+                  </div>
+              
+                  <!-- Contact Form -->
+                  <div id="contact" class="vendor-form-section">
+                      
+                      <!-- Add other contact fields -->
+                  </div>
+              
+                  <!-- Add other form sections -->
+              </div>
+              
+              <div class="button-container">
+                  <button type="button" class="save-draft">Save as Draft</button>
+                  <button type="button" class="save-payment" onclick="getInvoiceFormData()">Save Payment/Advance</button>
+                  <button type="button" class="cancel">Cancel</button>
+              </div>
+              
+              <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  const tabs = document.querySelectorAll('.vendor-tab-btn');
+                  
+                  tabs.forEach(tab => {
+                      tab.addEventListener('click', function() {
+                          // Remove active class from all tabs
+                          tabs.forEach(t => t.classList.remove('vendor-tab-active'));
+                          
+                          // Add active class to clicked tab
+                          this.classList.add('vendor-tab-active');
+                          
+                          // Hide all form sections
+                          document.querySelectorAll('.vendor-form-section').forEach(section => {
+                              section.classList.remove('vendor-section-active');
+                          });
+                          
+                          // Show the selected form section
+                          const tabId = this.getAttribute('data-tab');
+                          const activeSection = document.getElementById(tabId);
+                          if (activeSection) {
+                              activeSection.classList.add('vendor-section-active');
+                          }
+                      });
+                  });
+              });
+              </script>
+            <div id="jsonOutput" style="width: 600px;"></div>
+
+            <script>
+              function getInvoiceFormData() {
+                const form = document.querySelector('.containerr');
+                const jsonObject = {};
+          
+                
+                jsonObject.salutation = document.getElementById('salutation').value;
+                jsonObject.firstname = document.getElementById('firstname').value;
+                jsonObject.lastname = document.getElementById('lastname').value;
+                jsonObject.companyname = document.getElementById('companyname').value;
+                jsonObject.vendoremail = document.getElementById('vendoremail').value;
+                jsonObject.vendorphone1 = document.getElementById('vendorphone1').value;
+                jsonObject.vendorphone2 = document.getElementById('vendorphone2').value; 
+          
+                // second section
+                jsonObject.gst_Treatment = document.getElementById('gsttreatment').value; 
+                jsonObject.sourceofsupply = document.getElementById('sos').value; 
+                jsonObject.pan = document.getElementById('pan').value; 
+                jsonObject.currency = document.getElementById('currency').value; 
+                jsonObject.openingbalance = document.getElementById('openingbalance').value; 
+                jsonObject.paymentterms = document.getElementById('paymentterms').value; 
+                jsonObject.pricelist = document.getElementById('pricelist').value; 
+                jsonObject.enableportal = document.getElementById('enableportal').value; 
+                jsonObject.portallanguage = document.getElementById('portallanguage').value; 
+                jsonObject.documents = document.getElementById('document').value;
+
+                //bililing-address
+                jsonObject.billingattention = document.getElementById('billingattention').value; 
+                jsonObject.billingcountry = document.getElementById('billingcountry').value; 
+                jsonObject.billingaddress1 = document.getElementById('billingaddress1').value; 
+                jsonObject.billingaddress2 = document.getElementById('billingaddress2').value; 
+                jsonObject.billingcity = document.getElementById('billingcity').value; 
+                jsonObject.billingstate = document.getElementById('billingstate').value; 
+                jsonObject.billingpincode = document.getElementById('billingpincode').value; 
+                jsonObject.billingphone = document.getElementById('billingPhone').value; 
+                
+                //shipping address
+
+                jsonObject.shippingattention = document.getElementById('shippingattention').value; 
+                jsonObject.shippingcountry = document.getElementById('shippingcountry').value; 
+                jsonObject.shippingaddress1 = document.getElementById('shippingaddress1').value; 
+                jsonObject.shippingaddress2 = document.getElementById('shippingaddress2').value; 
+                jsonObject.shippingcity = document.getElementById('shippingcity').value; 
+                jsonObject.shippingstate = document.getElementById('shippingstate').value; 
+                jsonObject.shippingpincode = document.getElementById('shippingpincode').value; 
+                jsonObject.shippingphone = document.getElementById('shippingphone').value; 
+                
+              // console.log("Hi")
+                // ... (Get data for your terms & conditions, file upload, and email sections) ... 
+          
+                // Display the JSON
+                const jsonOutput = document.getElementById('jsonOutput');
+                jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+                fetch('/vendors3/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
+        },
+        body: JSON.stringify(jsonObject)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+              }
+            </script>
+
+
+
+        </form>
+        </div>
+      </main>
+    </div>
+    <script>
+      document.querySelector(".menu-toggle").addEventListener("click", () => {
+        document.querySelector(".sidebar").classList.toggle("show");
+      });
+      document.querySelectorAll(".nav-item[data-dropdown]").forEach((item) => {
+        item.addEventListener("click", () => {
+          const dropdownId = item.getAttribute("data-dropdown");
+          const dropdown = document.getElementById(dropdownId);
+          dropdown.classList.toggle("show");
+          const arrow = item.querySelector(".arrow");
+          arrow.classList.toggle("down");
+        });
+      });
+    </script>
+  </body>
+</html>

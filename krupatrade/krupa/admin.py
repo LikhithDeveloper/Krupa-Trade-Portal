@@ -20,4 +20,11 @@ admin.site.register(SalesOrder)
 admin.site.register(Payment)
 admin.site.register(SalesOrderItem)
 admin.site.register(CompanyInfo)
+admin.site.register(Vendor)
+admin.site.register(Purchase)
+admin.site.register(PurchaseItem)
+admin.site.register(Bill)
+admin.site.register(BillItem)
+
+
 

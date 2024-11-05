@@ -243,148 +243,140 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       }
       .cont {
-        display: grid;
-        grid-template-columns: 0.5fr 1.5fr;
-        grid-template-rows: 0.2fr 0.2fr 2.6fr;
-        grid-auto-flow: row;
-        grid-template-areas:
-          "one two"
-          "three four"
-          "three five";
-      }
-      .one {
-        grid-area: one;
-      }
-      .two {
-        grid-area: two;
-      }
-      .three {
-        grid-area: three;
-      }
-      .four {
-        grid-area: four;
-      }
-      .five {
-        grid-area: five;
-      }
-      .one,
-      .two,
-      .three,
-      .four,
-      .five {
-        border: 1px solid #eaeaea;
+        max-width: 1400px;
+        margin: 20px auto;
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
       }
       .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px;
+        padding: 10px 20px;
         border-bottom: 1px solid #e0e0e0;
       }
-      .dropdown {
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+      .tabs {
+        display: flex;
+        gap: 30px;
       }
-      .three {
-        padding: 10px 0px;
-      }
-      .document-info {
-        background-color: #eaf0f5;
-        padding: 20px;
-      }
-      .button {
+      .tab {
         padding: 5px 10px;
-        margin-left: 5px;
-        background-color: #f8f8f8;
-        border: 1px solid #ccc;
+        cursor: pointer;
+        color: #777;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .tab.active {
+        color: #2196f3;
+        border-bottom: 2px solid #2196f3;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+      .btn {
+        padding: 5px 10px;
+        border: none;
         border-radius: 4px;
         cursor: pointer;
+        font-size: 14px;
       }
-      .blue-button {
-        background-color: #0099ff;
+      .btn-primary {
+        background-color: #2196f3;
         color: white;
-        border: none;
       }
-      .document-row {
-        display: flex;
-        align-items: center;
+      .btn-icon {
+        background-color: transparent;
+        color: #777;
+        font-size: 18px;
+      }
+      .table-container {
+        width: 100%;
+        overflow-x: visible;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
         border-bottom: 1px solid #e0e0e0;
+        font-size: 14px;
       }
-      .document-row .button1 {
-        padding: 10px 20px;
-        background-color: #efefef;
-        border: 1px solid #dadada;
-        font-size: medium;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        height: 50px;
+
+      th {
+        color: black;
+        font-weight: 700;
       }
-      .document-info {
-        display: flex;
-        align-items: center;
+
+      td {
+        color: #333;
       }
-      .checkbox {
-        margin-right: 10px;
+
+      .checkbox-cell {
+        width: 40px;
       }
-      .document-details {
-        display: flex;
-        flex-direction: column;
+
+      .search-icon {
+        width: 40px;
       }
-      .document-name {
-        font-weight: bold;
-      }
-      .document-date {
-        color: #666;
-        font-size: 0.9em;
-      }
-      .document-amount {
-        font-weight: bold;
-      }
-      .document-status {
-        font-size: 0.8em;
-        color: #0099ff;
-      }
-      .preview-area {
-        padding: 20px;
-        text-align: center;
-        background-color: #f8f8f8;
-        height: 100%;
-      }
-      .preview-placeholder {
-        width: 200px;
-        height: 250px;
-        margin: 0 auto;
-        background-color: #e0e0e0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        color: #666;
-        border: 1px solid #ccc;
-      }
-      .button2 {
-        display: flex;
-        padding: 10px;
-        border: none;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-      }
-      .button2 p {
-        font-size: medium;
-      }
+
       @media (max-width: 768px) {
-        .cont {
-          grid-template-columns: 1fr;
-          grid-template-areas:
-            "one"
-            "two"
-            "three"
-            "four"
-            "five";
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+
+        thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+        }
+
+        tr {
+          border: 1px solid #ccc;
+          margin-bottom: 10px;
+        }
+
+        td {
+          border: none;
+          position: relative;
+          padding-left: 50%;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          min-height: 40px;
+        }
+
+        td:before {
+          position: absolute;
+          top: 6px;
+          left: 6px;
+          width: 45%;
+          padding-right: 10px;
+          white-space: nowrap;
+          content: attr(data-label);
+          font-weight: bold;
+        }
+
+        .checkbox-cell,
+        .search-icon {
+          padding-left: 12px;
+          text-align: left;
+        }
+
+        .checkbox-cell:before,
+        .search-icon:before {
+          display: none;
         }
       }
     </style>
@@ -392,7 +384,7 @@
   <body>
     <div class="container">
       <button class="menu-toggle">☰</button>
-      <aside class="sidebar">
+      <aside class="sidebar" style="overflow-y: scroll">
         <img src="images/krupa.svg" alt="Logo" class="logo" />
         <nav style="height: 80vh; display: flex; flex-direction: column">
           <div
@@ -436,24 +428,24 @@
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
-          <div
-            class="nav-item drop-active active"
-            data-dropdown="sales-dropdown"
-          >
+          <div class="nav-item" data-dropdown="sales-dropdown">
             <div>
               <img src="images/sales-dark.svg" alt="Sales Icon" class="icon" />
               <span>Sales</span>
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
-          <div id="sales-dropdown" class="dropdown-content show">
-            <a href="/customerspage/">Customers</a>
-            <a href="/estimates/">Estimates</a>
-            <a href="/salesorder1/">Sales Orders</a>
-            <a href="/invoice1/" class="active">Invoices</a>
-            <a href="/payment1/">Payments Received</a>
+          <div id="sales-dropdown" class="dropdown-content">
+            <a href="#">Customers</a>
+            <a href="#">Estimates</a>
+            <a href="#">Sales Orders</a>
+            <a href="#">Invoices</a>
+            <a href="#" class="active">Payments Received</a>
           </div>
-          <div class="nav-item" data-dropdown="purchases-dropdown">
+          <div
+            class="nav-item drop-active active"
+            data-dropdown="purchases-dropdown"
+          >
             <div>
               <img
                 src="images/purchaces.svg"
@@ -463,6 +455,14 @@
               <span>Purchases</span>
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
+          </div>
+          <div id="purchases-dropdown" class="dropdown-content show">
+            <a href="/vendors1/" class="active">Vendors</a>
+            <a href="#">Expanses</a>
+            <a href="#">Recurring Expanses</a>
+            <a href="#">Purchase Orders</a>
+            <a href="#">Bills</a>
+            <a href="#">Payment Mode</a>
           </div>
         </nav>
       </aside>
@@ -491,196 +491,134 @@
             </svg>
           </div>
         </div>
+
         <div class="cont">
-          <div
-            class="one"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 0 10px;
-            "
-          >
-            <select
-              class="dropdown"
-              style="border: none; background-color: transparent"
-            >
-              <option>All Invoices</option>
-            </select>
-            <div>
+          <div class="header">
+            <div class="tabs">
+              <h1 style="font-size: 24px; font-weight: 700; color: #000000">
+                All Vendors
+              </h1>
+            </div>
+            <div class="action-icons" style="display: flex; gap: 10px">
               <a
-                href="/newinvoice/"
-                class="button blue-button"
-                style="padding: 10px; text-decoration: none"
+                href="/vendors3/"
+                style="text-decoration: none"
+                class="btn btn-primary"
+                >+ New</a
               >
-                + NEW ▼
-              </a>
-              <button
-                class="button"
-                style="padding: 10px; width: 40px; height: 40px"
-              >
-                ⋮
-              </button>
-            </div>
-          </div>
-          <div class="two">
-            <div class="header">
-              <span class="document-id">EST-0001</span>
-              <div style="display: flex">
-                <button class="button2">
-                  <img src="images/link.svg" alt="" />
-                  <p>Attach Files</p>
-                </button>
-                <button class="button2">
-                  <img src="images/messages.svg" alt="" />
-                  <p>Comments & History</p>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="three">
-            <div class="document-info">
-              <input type="checkbox" class="checkbox" />
-              <div class="document-details" style="width: 90%; gap: 5px">
-                <div
-                  style="
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                  "
-                >
-                  <span class="document-name">{{objs.request.company}}</span>
-                  <span class="document-name">{{objs.total}}</span>
-                </div>
-                <span class="document-date"
-                  >{{objs.invoice_number}}<br />
-                  {{objs.invoice_date}}</span
-                >
-                <span class="document-status">SENT ✓</span>
-              </div>
-            </div>
-          </div>
-          <div class="four">
-            <div class="document-row" style="display: flex">
-              <button class="button1">
-                <img src="images/edit.svg" alt="" />
-                <p>Edit</p>
-              </button>
-              <button class="button1">
-                <img src="images/estimate-message.svg" alt="" />
-                <p>Send</p>
-              </button>
-              <button class="button1">
-                <img src="images/share.svg" alt="" />
-                <p>Share</p>
-              </button>
               <a
-                class="button1"
-                href="/realinvoice/{{id}}"
-                style="text-decoration: none; color: black"
-                >PDF/Print</a
-              >
-              <button class="button1">
-                <img src="images/convert.svg" alt="" />
-                <p>Convert</p>
-              </button>
-              <button class="button1">⋮</button>
+                style="
+                  background-color: #f0f0f0;
+                  padding: 3px;
+                  height: 30px;
+                  width: 30px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 5px;
+                  border: 1px solid #c2c2cd;
+                "
+                ><img src="images/threedots.svg" alt=""
+              /></a>
+              <a
+                style="
+                  background-color: #fc8f31;
+                  padding: 3px;
+                  height: 30px;
+                  width: 30px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 5px;
+                "
+                ><img src="images/question.svg" alt=""
+              /></a>
             </div>
           </div>
-          <style>
-            .estimate-container {
-              background-color: white;
-              border-radius: 8px;
-              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-                0 1px 2px rgba(0, 0, 0, 0.24);
-              padding: 16px;
-              display: flex;
-              align-items: center;
-              width: 100%;
-            }
-            .icon-wrapper {
-              background-color: #e8e8e8;
-              border-radius: 50%;
-              width: 40px;
-              height: 40px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin-right: 16px;
-            }
-            .estimate-content {
-              flex-grow: 1;
-              display: flex;
-            }
-            .estimate-title {
-              font-weight: bold;
-              text-align: start;
-              margin-bottom: 4px;
-            }
-            .estimate-description {
-              color: #666;
-              font-size: 14px;
-            }
-            .button-group {
-              display: flex;
-              gap: 8px;
-            }
-            .estimate-button {
-              padding: 8px 16px;
-              border-radius: 4px;
-              font-size: 14px;
-              cursor: pointer;
-              border: none;
-            }
-            .button-primary {
-              background-color: #1a73e8;
-              color: white;
-            }
-            .button-secondary {
-              background-color: white;
-              color: #1a73e8;
-              border: 1px solid #1a73e8;
-            }
-          </style>
-          <div class="five">
-            <div
-              class="preview-area"
-              style="display: flex; flex-direction: column; gap: 20px"
-            >
-              <div class="estimate-container">
-                <div class="estimate-content">
-                  <div class="icon-wrapper">✉</div>
-                  <div
-                    style="
-                      display: flex;
-                      flex-direction: column;
-                      justify-content: start;
-                    "
+          <table>
+            <thead>
+              <tr>
+                <th><img src="images/table1.svg" alt="" /></th>
+                <th>NAME</th>
+                <th>COMPANY</th>
+                <th>EMAIL</th>
+                <th>WORK PHONE</th>
+                <th>PAYABLES</th>
+                <th>UNUSED CREDITS</th>
+                <th class="search-icon">
+                  <img src="images/search.svg" alt="" style="scale: 1.2" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in objs %}
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="NAME">{{i.firstname}}</td>
+                <td data-label="COMPANY">{{i.companyname}}</td>
+                <td data-label="EMAIL">{{i.vendoremail}}</td>
+                <td data-label="WORK PHONE">{{i.vendorphone1}}</td>
+                <td data-label="PAYABLES">0.00</td>
+                <td data-label="UNUSED CREDITS">0.00</td>
+                <td class="search-icon">
+                  <!-- <img src="images/clip.svg" alt="" /> -->
+                  <a
+                    href="/vendors2/{{i.id}}/"
+                    style="text-decoration: none"
+                    class="btn btn-primary"
+                    >Open</a
                   >
-                    <div class="estimate-title">Send the estimate</div>
-                    <div class="estimate-description">
-                      Go ahead and email this estimate to your customer or
-                      simply mark it as sent.
-                    </div>
-                  </div>
-                </div>
-                <div class="button-group">
-                  <button class="estimate-button button-primary">
-                    Send Estimate
-                  </button>
-                  <button class="estimate-button button-secondary">
-                    Mark as Sent
-                  </button>
-                </div>
-              </div>
-              <div
-                class="preview-placeholder"
-                style="width: 100%; height: 70vh; overflow-y: scroll"
-              >
-                SAMPLE PDF
-              </div>
-            </div>
-          </div>
+                </td>
+              </tr>
+              {% endfor %}
+
+              <!-- <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="NAME">Vendor1</td>
+                <td data-label="COMPANY">Company 1</td>
+                <td data-label="EMAIL">abc@gmail.com</td>
+                <td data-label="WORK PHONE">9966455185</td>
+                <td data-label="PAYABLES">0.00</td>
+                <td data-label="UNUSED CREDITS">0.00</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="NAME">Vendor1</td>
+                <td data-label="COMPANY">Company 1</td>
+                <td data-label="EMAIL">abc@gmail.com</td>
+                <td data-label="WORK PHONE">9966455185</td>
+                <td data-label="PAYABLES">0.00</td>
+                <td data-label="UNUSED CREDITS">0.00</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="NAME">Vendor1</td>
+                <td data-label="COMPANY">Company 1</td>
+                <td data-label="EMAIL">abc@gmail.com</td>
+                <td data-label="WORK PHONE">9966455185</td>
+                <td data-label="PAYABLES">0.00</td>
+                <td data-label="UNUSED CREDITS">0.00</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="NAME">Vendor1</td>
+                <td data-label="COMPANY">Company 1</td>
+                <td data-label="EMAIL">abc@gmail.com</td>
+                <td data-label="WORK PHONE">9966455185</td>
+                <td data-label="PAYABLES">0.00</td>
+                <td data-label="UNUSED CREDITS">0.00</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="NAME">Vendor1</td>
+                <td data-label="COMPANY">Company 1</td>
+                <td data-label="EMAIL">abc@gmail.com</td>
+                <td data-label="WORK PHONE">9966455185</td>
+                <td data-label="PAYABLES">0.00</td>
+                <td data-label="UNUSED CREDITS">0.00</td>
+              </tr> -->
+            </tbody>
+          </table>
         </div>
       </main>
     </div>

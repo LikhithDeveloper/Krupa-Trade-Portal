@@ -1,3 +1,4 @@
+from email.utils import parsedate
 from django.shortcuts import render,HttpResponse,redirect
 from krupa.models import *
 from admin_panel.models import Managers
@@ -193,13 +194,23 @@ def Estimates2(request,id):
     objs = Estimate.objects.get(id = id)
     context = {'data':objs,'id':id}
     return render(request,"Estimates2.html",context)
+
+@csrf_exempt
+def Coverter_Sales(request,id):
+    objs1 = Estimate.objects.filter(id = id).first()
+    objs2 = EstimateItem.objects.filter(estimate = objs1)
+    if sales := SalesOrder.objects.all().last():
+        num = sales.sales_order_number
+        sales_number = int(num.split('-')[1])
+        context = {"newinvoice":objs2,'estimates':objs1,"sales_number":sales_number+1,"id":id}
+    else:
+        context = {"newinvoice":objs2,'estimates':objs1,"sales_number":1,"id":id}
+    return render(request,"estimatesTosales.html",context)
 @csrf_exempt
 def Coverter_Invoice(request,id):
     objs1 = Estimate.objects.filter(id = id).first()
     objs2 = EstimateItem.objects.filter(estimate = objs1)
-    invoice = InvoiceEstimate.objects.all().last()
-    print(invoice)
-    if invoice:
+    if invoice := InvoiceEstimate.objects.all().last():
         num = invoice.invoice_number
         invoice_number = int(num.split('-')[1])
         num2 = invoice.order_number
@@ -209,9 +220,37 @@ def Coverter_Invoice(request,id):
         context = {"newinvoice":objs2,'estimates':objs1,"invoice_number":1,"order_number":1,"id":id}
     return render(request,"createinvoiceestimates.html",context)
 
+def Create_invoice_estimates(request,id):
+    sales = Estimate.objects.get(id = id)
+    params = {
+        'today':datetime.date.today(),
+        'sales':sales
+    }
+    new_invoice =  save_pdf0(params)
+    return redirect(f'/media/{new_invoice}/')
+
+################## PDF GENERATE ###############
+def save_pdf0(params: dict):
+    template = get_template("invoice.html")
+    html = template.render(params)
+    response = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), response)
+    file_name = f"{uuid.uuid4()}.pdf"
+    file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+
+    try:
+        # Save PDF file to the specified path
+        with open(file_path, 'wb+') as output:
+            pisa.pisaDocument(BytesIO(html.encode('UTF-8')), output)
+    except Exception as e:
+        print(f"Error saving PDF: {e}")
+        return None
+
+    return file_name
+
 
 @csrf_exempt
-def Newestimates(request):  # sourcery skip: low-code-quality
+def Newestimates(request):   # sourcery skip: avoid-builtin-shadow
     requests = Request.objects.all()
     if estimates := Estimate.objects.all().last():
         num = estimates.estimate_number
@@ -227,8 +266,13 @@ def Newestimates(request):  # sourcery skip: low-code-quality
             estimate_date = data.get('estimateDate', None) if data.get('estimateDate') else None
             expiry_date = data.get('expiryDate', None) if data.get('expiryDate') else None
             name = data.get('customerName', '')
+            id = int(name.split('-')[1])
+            # print(id)
             # print(estimate_date)
-            customer_name1 = Request.objects.get(company = name)
+            customer_name1 = Request.objects.get(id = id)
+            # print(customer_name1.request)
+            # print(customer_name1.price)
+            # print(customer_name1)
             # print(customer_name1)
             # for item in data.get('items', []):
             #     amount = item.get('itemDetails', 0.00)  # Get the amount for the current item, default to 0.00 if not found
@@ -257,7 +301,14 @@ def Newestimates(request):  # sourcery skip: low-code-quality
                 create_retainer_invoice=data.get('createRetainerInvoice', False)
             )
             
-            
+            # print("Before saving:")
+            # print("customer_name1.price =", float(data.get('total', 0.00)))
+            # print("customer_name1.request =", True)
+
+            # Update the customer's price and request status
+            customer_name1.price = float(data.get('total', 0.00))
+            customer_name1.request = True
+            customer_name1.save()
 
             # Create the related EstimateItem objects
             for item in data['items']:
@@ -311,8 +362,8 @@ def Coverter_Invoice_sales(request,id):
     return render(request,"createinvoice.html",context)
 import datetime
 
-def Create_invoice_sales(request):
-    sales = SalesOrder.objects.all()
+def Create_invoice_sales(request,id):
+    sales = SalesOrder.objects.get(id = id)
     params = {
         'today':datetime.date.today(),
         'sales':sales
@@ -357,10 +408,13 @@ def Newsalesorder(request):
             # print(data.get('salesOrderDate'))
             name = data.get('customerName', '')
             customer_name1 = Request.objects.get(company=name)
+            estimate_id = data.get('hiddeninp')
+            estimate = Estimate.objects.get(id=estimate_id) if estimate_id else None
 
             sales_order = SalesOrder.objects.create(
                 customer_name=customer_name1.profile,
                 request=customer_name1,
+                estimate = estimate,
                 sales_order_number=data.get('salesOrderNumber', ''),
                 reference_number=data.get('referenceNumber', ''),
                 sales_order_date=data.get('salesOrderDate', None),
@@ -411,12 +465,12 @@ def Invoice1(request):
 
 def Invoice2(request,id):
     objs = InvoiceEstimate.objects.get(id = id)
-    context = {'objs':objs}
+    context = {'objs':objs,'id':id}
     return render(request,"invoice2.html",context)
 
 
-def InvoiceReal(request):
-    sales = InvoiceEstimate.objects.all()
+def InvoiceReal(request,id):
+    sales = InvoiceEstimate.objects.get(id = id)
     params = {
         'today':datetime.date.today(),
         'invoice':sales
@@ -461,7 +515,7 @@ def Invoice3(request):  # sourcery skip: low-code-quality
         try:
             # Parse the JSON data from the request body
             data = json.loads(request.body)
-            # print("Received data:", data)  # Debugging print
+            print("Received data:", data)  # Debugging print
 
             # Get dates with fallback for empty strings
             invoice_date = data.get('invoiceDate') or None
@@ -473,12 +527,20 @@ def Invoice3(request):  # sourcery skip: low-code-quality
                 customer_name1 = Request.objects.get(company=name)
             except Request.DoesNotExist:
                 return JsonResponse({'error': 'Customer not found'}, status=404)
-            print(data.get('invoiceDate'))
-
+            # print(Estimate.objects.get(id = data.get('hiddeninp')))
+            if data.get('hiddeninp2') == 'sales':
+                estimate_id = data.get('hiddeninp')
+                estimate_obj = SalesOrder.objects.get(id=estimate_id) if estimate_id else None
+                estimate = estimate_obj.estimate
+            else:
+                estimate_id = data.get('hiddeninp')
+                estimate = Estimate.objects.get(id=estimate_id) if estimate_id else None
+            print(estimate)
             # Create the InvoiceEstimate object
             invoice = InvoiceEstimate.objects.create(
                 customer_name=customer_name1.profile,
                 request=customer_name1,
+                estimate = estimate,
                 invoice_number=data.get('invoiceNumber', ''),
                 order_number=data.get('orderNumber', ''),
                 invoice_date=invoice_date,
@@ -665,3 +727,232 @@ def Newpayment(request):
 #         return None
 
 #     return file_name
+
+
+
+#######################################   VENDORS PAGES   ###########################################
+
+def Vendors1(request):
+    objs = Vendor.objects.all()
+    context = {'objs':objs}
+    return render(request,"vendors1.html",context)
+
+def Vendors2(request,id):
+    objs = Vendor.objects.get(id = id)
+    context = {'objs':objs}
+    return render(request,"vendors2.html",context)
+
+@csrf_exempt
+def Vendors3(request):  # sourcery skip: extract-method
+    if request.method == "POST":
+        try:
+            # Parse JSON data from the request body
+            data = json.loads(request.body)
+            print(data)
+
+            # Helper function to safely convert strings to float
+            def parse_float(value, default=0.0):
+                try:
+                    return float(value)
+                except (TypeError, ValueError):
+                    return default
+
+            # Create a new Vendor instance with parsed data
+            vendor = Vendor.objects.create(
+                salutation=data.get('salutation', ''),
+                firstname=data.get('firstname', ''),
+                lastname=data.get('lastname', ''),
+                companyname=data.get('companyname', ''),
+                vendoremail=data.get('vendoremail', ''),
+                vendorphone1=data.get('vendorphone1', ''),
+                vendorphone2=data.get('vendorphone2', ''),
+                gst_Treatment=data.get('gst_Treatment', ''),
+                sourceofsupply=data.get('sourceofsupply', ''),
+                pan=data.get('pan', ''),
+                currency=data.get('currency', ''),
+                openingbalance=parse_float(data.get('openingbalance', '0.00')),
+                paymentterms=data.get('paymentterms', ''),
+                pricelist=data.get('pricelist', ''),
+                enableportal=data.get('enableportal', '') == 'on',
+                portallanguage=data.get('portallanguage', ''),
+                documents=data.get('documents', ''),
+                billingattention=data.get('billingattention', ''),
+                billingcountry=data.get('billingcountry', ''),
+                billingaddress1=data.get('billingaddress1', ''),
+                billingaddress2=data.get('billingaddress2', ''),
+                billingcity=data.get('billingcity', ''),
+                billingstate=data.get('billingstate', ''),
+                billingpincode=data.get('billingpincode', ''),
+                billingphone=data.get('billingphone', ''),
+                shippingattention=data.get('shippingattention', ''),
+                shippingcountry=data.get('shippingcountry', ''),
+                shippingaddress1=data.get('shippingaddress1', ''),
+                shippingaddress2=data.get('shippingaddress2', ''),
+                shippingcity=data.get('shippingcity', ''),
+                shippingstate=data.get('shippingstate', ''),
+                shippingpincode=data.get('shippingpincode', ''),
+                shippingphone=data.get('shippingphone', '')
+            )
+            vendor.full_clean()  # Validates the Vendor instance
+
+            # If successful, return success message
+            messages.success(request, "Vendor created successfully.")
+            return JsonResponse({'message': 'Vendor created successfully'}, status=201)
+
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    return render(request, "vendors3.html")
+
+
+def Purchases1(request):
+    objs = Purchase.objects.all()
+    context = {'objs':objs}
+    return render(request,"purchases1.html",context)
+
+def Purchases2(request,id):
+    objs = Purchase.objects.get(id = id)
+    context = {'objs':objs}
+    return render(request,"purchases2.html",context)
+
+@csrf_exempt
+def PurchasesToBill(request,id):
+    return render(request,"PurchasesToBill.html")
+
+
+@csrf_exempt
+def Purchases3(request):
+    vendors = Vendor.objects.all()
+    if purchase := Purchase.objects.all().last():
+        num = purchase.purchase_order
+        # print(num)
+        sales_number = int(num.split('-')[1])
+        # print(estimate_number)
+        context = {"objs":vendors,"purchase_number":sales_number+1}
+    else:
+        context = {"objs":vendors,"purchase_number":1}
+    
+    if request.method == "POST":
+        try:
+            # Parse JSON data from the request body
+            data = json.loads(request.body)
+            vendor = Vendor.objects.get(companyname=data.get('vendorName', 'Select or add Vendor'))
+            
+            # Create Purchase instance
+            invoice = Purchase.objects.create(
+                vendor_name=vendor.companyname,
+                source_of_supply=data.get('SourceOfSupply', ''),
+                destination_of_supply=data.get('DestinationOfSupply', ''),
+                purchase_order=data.get('purchaseorder', ''),
+                reference=data.get('reference', ''),
+                date=data.get('date', ''),
+                expected_delivery_date=data.get('expected_delivery_date', ''),
+                payment_terms=data.get('paymentterms', ''),
+                item_tax=data.get('itemtax', 'none'),
+                price_list=data.get('pricelist', 'none'),
+                discount=data.get('discount', 'none'),
+                sub_total=float(data.get('subTotal', '0.00')),
+                shipping_charges=float(data.get('shippingCharges', '0.00')),
+                adjustment=float(data.get('adjustment', '0.00')),
+                total=float(data.get('total', '0.00')),
+            )
+            
+            # Create associated PurchaseItems
+            for item_data in data.get('items', []):
+                PurchaseItem.objects.create(
+                    invoice=invoice,
+                    item_details=item_data.get('item_details', ''),
+                    quantity=int(item_data.get('quantity', 0)),
+                    rate=float(item_data.get('rate', '0.00')),
+                    discount=float(item_data.get('discount', '0.00')),
+                    tax=item_data.get('tax', ''),
+                    amount=float(item_data.get('amount', '0.00')),
+                )
+            
+            return JsonResponse({'message': 'Invoice created successfully'}, status=201)
+        
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return render(request, "purchases3.html", context)
+
+
+def Bills1(request):
+    objs = Bill.objects.all()
+    context = {'objs':objs}
+    return render(request,"bills1.html",context)
+
+def Bills2(request,id):
+    objs = Bill.objects.get(id = id)
+    # print(objs.vendor_name)
+    context = {'objs':objs}
+    return render(request,"bills2.html",context)
+
+@csrf_exempt
+def Bills3(request):
+    vendors = Vendor.objects.all()
+    if last_bill := Bill.objects.all().last():
+        print(last_bill.bill_number)
+        bill1 = last_bill.bill_number
+        bill_number = int(bill1.split('-')[1])
+        # print(bill_number)
+        context = {"objs": vendors, "bill_number": bill_number+1}
+    else:
+        context = {"objs": vendors, "bill_number": 1}
+
+    if request.method == "POST":
+        try:
+            # Parse JSON data from the request body
+            data = json.loads(request.body)
+            print(data)
+            vendor = Vendor.objects.get(companyname=data.get('vendorName', 'Select or add Vendor'))
+
+            # Create Bill instance
+            bill = Bill.objects.create(
+                vendor_name=vendor.companyname,
+                source_of_supply=data.get('SourceOfSupply', ''),
+                destination_of_supply=data.get('DestinationOfSupply', ''),
+                bill_number=data.get('bill', ''),
+                reference=data.get('ordernumber', ''),
+                bill_date=data.get('billdate', ''),
+                due_date=data.get('duedate', ''),
+                payment_terms=data.get('paymentterms', ''),
+                item_tax=data.get('itemtax', 'none'),
+                price_list=data.get('pricelist', 'none'),
+                discount=data.get('discount', 'none'),
+                sub_total=float(data.get('subTotal', '0.00')),
+                shipping_charges=float(data.get('shippingCharges', '0.00')),
+                adjustment=float(data.get('adjustment', '0.00')),
+                total=float(data.get('total', '0.00')),
+            )
+
+            # Create associated BillItems
+            for item_data in data.get('items', []):
+                BillItem.objects.create(
+                    bill=bill,
+                    item_details=item_data.get('itemDetails', ''),
+                    quantity=int(item_data.get('quantity', 0)),
+                    rate=float(item_data.get('rate', '0.00')),
+                    discount=float(item_data.get('discount', '0.00')),
+                    tax=item_data.get('tax', ''),
+                    amount=float(item_data.get('amount', '0.00')),
+                )
+
+            return JsonResponse({'message': 'Bill created successfully'}, status=201)
+
+        except Vendor.DoesNotExist:
+            return JsonResponse({'error': 'Vendor not found'}, status=404)
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    return render(request, "bills3.html", context)

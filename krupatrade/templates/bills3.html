@@ -21,13 +21,12 @@
         min-height: 100vh;
       }
       .sidebar {
-        width: 300px;
+        width: 280px;
         background-color: #ffffff;
         color: #292f46;
         padding: 20px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
-        overflow-y: scroll;
       }
       .sidebar .dropdown-content {
         display: none;
@@ -646,388 +645,21 @@
         color: #888;
         font-style: italic;
       }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <button class="menu-toggle">☰</button>
-      <aside class="sidebar">
-        <img src="images/krupa.svg" alt="Logo" class="logo" />
-        <nav style="height: 80vh; display: flex; flex-direction: column">
-          <div
-            class="nav-item"
-            style="display: flex; justify-content: space-between"
-          >
-            <div>
-              <img
-                src="images/dashboard-light.svg"
-                alt="Dashboard Icon"
-                class="icon"
-              />
-              <span>Dashboard</span>
-            </div>
-          </div>
-          <div class="nav-item" data-dropdown="products-dropdown">
-            <div>
-              <img
-                src="images/products-dark.svg"
-                alt="Products Icon"
-                class="icon"
-              />
-              <span>Products</span>
-            </div>
-            <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
-          </div>
-          <div id="products-dropdown" class="dropdown-content">
-            <a href="#">Products List</a>
-            <a href="#">Category List</a>
-          </div>
-          <div class="nav-item" data-dropdown="leads-dropdown">
-            <div>
-              <img src="images/leads.svg" alt="Leads Icon" class="icon" />
-              <span>Leads</span>
-            </div>
-          </div>
-          <div class="nav-item" data-dropdown="users-dropdown">
-            <div>
-              <img src="images/user-dark.svg" alt="Users Icon" class="icon" />
-              <span>Users</span>
-            </div>
-            <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
-          </div>
-          <div
-            class="nav-item drop-active active"
-            data-dropdown="sales-dropdown"
-          >
-            <div>
-              <img src="images/sales-dark.svg" alt="Sales Icon" class="icon" />
-              <span>Sales</span>
-            </div>
-            <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
-          </div>
-          <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
-            <a href="#">Estimates</a>
-            <a href="#">Sales Orders</a>
-            <a href="/invoice1/" class="active">Invoices</a>
-            <a href="#">Payments Received</a>
-          </div>
-          <div class="nav-item" data-dropdown="purchases-dropdown">
-            <div>
-              <img
-                src="images/purchaces.svg"
-                alt="Purchases Icon"
-                class="icon"
-              />
-              <span>Purchases</span>
-            </div>
-            <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
-          </div>
-        </nav>
-      </aside>
-      <main class="main-content">
-        <div class="top-bar">
-          <div class="search-bar">
-            <input type="text" placeholder="Search term" />
-            <button>
-              <svg class="icon" viewBox="0 0 24 24">
-                <path
-                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <div class="top-icons">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-              ></path>
-            </svg>
-            <svg class="icon" viewBox="0 0 24 24">
-              <path
-                d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
-              ></path>
-            </svg>
-          </div>
-        </div>
-        <div class="cont">
-          <form class="containerr">
-            <h1>New Invoice</h1>
-            <div style="background-color: #f6f6f6; padding: 20px">
-              <!-- address  -->
-              <div class="address-details" style="margin-bottom: 20px">
-                <div>
-                  <label
-                    for="customer-name"
-                    style="font-size: 20px; font-weight: 600"
-                    >Customer Name</label
-                  >
-                </div>
-                <div
-                  class="col1"
-                  style="display: flex; flex-direction: column; gap: 30px"
-                >
-                  <div class="input-container">
-                    <div class="custom-select">
-                      <select class="select-input" id="customer-name">
-                        <option>{{estimates.request.company}}</option>
-                        {% for i in custoumers %}
-                        <option>{{i.company}}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <button class="search-button" style="margin-right: 10px">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <circle cx="8" cy="8" r="6" />
-                        <line x1="18" y1="18" x2="14" y2="14" />
-                      </svg>
-                    </button>
-                    <span class="currency">INR</span>
-                  </div>
-                  </div>
-              </div>
+      
+      .open-add-form2{
+        position: absolute; width: 400px; height: 300px;z-index: 3;top: 275px;left: 750px; padding: 20px;padding-top: 0px;display: none;
+      }
+      .open-add-form{
+        position: absolute;
+        width: 400px; height: 300px;
+        z-index: 3;
+        top: 275px;
+        left: 450px;
+        display: none;
+      }
 
-              <!-- place of supply  -->
-              
-              <!-- end of place of supply  -->
-            </div>
 
-            <!-- second section  -->
-            <div
-              style="
-                padding: 20px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 30px;
-                border-bottom: 1px solid #d1d5db;
-              "
-            >
-              <!-- estimate  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="invoice"
-                    style="font-size: 20px; font-weight: 600"
-                    >Invoice#</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <input
-                      type="text"
-                      class="single-input"
-                      id="invoice"
-                      placeholder="EST-001"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                      value="INVOICE-{{invoice_number}}"
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- end of estimate  -->
-
-              <!-- invoice  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="order-number"
-                    style="font-size: 20px; font-weight: 600"
-                    >Order Number</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <input
-                      type="text"
-                      class="single-input"
-                      id="order-number"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                      value="ORDER-{{order_number}}"
-                    />
-                  </div>
-                </div>
-              </div>
-              <!-- end of reference  -->
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-around;
-                  width: 100%;
-                "
-              >
-                <!-- estimate date  -->
-                <div class="address-details" style="width: 25%">
-                  <div>
-                    <label
-                      for="invoice-date"
-                      style="font-size: 20px; font-weight: 600"
-                      >Invoice Date</label
-                    >
-                  </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative;width: 250px;">
-                      <input
-                        type="date"
-                        class="single-input"
-                        id="invoice-date"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
-                  </div>
-                  <script>
-                    const today = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                    document.getElementById("invoice-date").value = today;   // Set the value of the input field
-                  </script>
-                </div>
-                <div class="address-details" style="width: 25%">
-                  <div>
-                    <label
-                      for="terms"
-                      style="font-size: 20px; font-weight: 600"
-                      >Terms</label
-                    >
-                  </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative;width: 250px;">
-                      <input
-                        type="text"
-                        class="single-input"
-                        id="terms"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="address-details" style="width: 25%">
-                  <div>
-                    <label
-                      for="due-date"
-                      style="font-size: 20px; font-weight: 600"
-                      >Due Date</label
-                    >
-                  </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative;width: 250px;">
-                      <input
-                        type="date"
-                        class="single-input"
-                        id="due-date"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- end of second section  -->
-
-            <!-- third section  -->
-            <div
-              style="
-                padding: 20px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 30px;
-                border-bottom: 1px solid #d1d5db;
-              "
-            >
-              <!-- sales person  -->
-              <div class="address-details" style="width: 45%">
-                <div>
-                  <label
-                    for="sales-person"
-                    style="font-size: 20px; font-weight: 600"
-                    >Sales Person</label
-                  >
-                </div>
-                <div class="col1">
-                  <div class="input-container" style="position: relative">
-                    <select
-                      name="sales-person"
-                      id="sales-person"
-                      class="single-input"
-                      style="border: 2px solid #d1d5db; border-radius: 10px"
-                    >
-                      <option value="">select or add sales person</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <!-- end of sales person  -->
-
-              
-            </div>
-            <!-- end of third section  -->
-
-            
-
-            <!-- section five  -->
-
-            <div style="padding: 0 100px">
-              <div class="table-header">
-                <label>Select Price List</label>
-                <a href="#" class="bulk-link">Bulk Actions</a>
-              </div>
-
-              <!-- Item Table -->
-              <div class="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>ITEM DETAILS</th>
-                      <th>QUANTITY</th>
-                      <th>RATE</th>
-                      <th>DISCOUNT</th>
-                      <th>TAX</th>
-                      <th>AMOUNT</th>
-                      <th></th>
-                      <!-- Empty for delete icon -->
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% if newinvoice %}
-                    {% for i in newinvoice %}
-                    <tr>
-                      <td>
-                        <input
-                          type="text"
-                          placeholder="Type or click to select an item"
-                          value="{{i.item_details}}"
-                        />
-                      </td>
-                      <td><input type="number" value="{{i.quantity}}" disabled /></td>
-                      <td><input type="number" value="{{i.rate}}" disabled /></td>
-                      <td><input type="text" value="{{i.discount}}" disabled /></td>
-                      <td>
-                        <select disabled>
-                          <option>Select a Tax</option>
-                        </select>
-                      </td>
-                      <td><input type="number" value="{{i.amount}}" disabled /></td>
-                      <td class="icon-delete"><button>x</button></td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>No Invoices items Found</tr>
-                    {% endif %}
-                  </tbody>
-                </table>
-              </div>
-              <style>
-                .btn {
+      .btn {
                   display: flex;
                   align-items: center;
                   padding: 8px 12px;
@@ -1118,112 +750,627 @@
             color: #333;
             font-weight: bold;
         }
-              </style>
-              <!-- Sub Total Section -->
-              <div class="totals-section">
+    </style>
+  </head>
+  <body style="position: relative;">
+    <div class="open-add-form" >
+      <form onsubmit="handleSubmit1(event)">
+      <textarea placeholder="Enter Billing address here..." rows="10" cols="50" onchange="change(event)"></textarea>
+      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
+    </form>
+    
+    </div>
+    <div class="open-add-form2" >
+      <form onsubmit="handleSubmit2(event)">
+      <textarea placeholder="Enter shipping address here..." rows="10" cols="50"></textarea>
+      <button style="width: 100%;border: none;border-radius: 4px;background-color: #0088ee;">Submit</button>
+    </form>
+    </div>
+    <script>
+      function handleSubmit1(e) {
+        e.preventDefault(); 
+        const text = document.querySelector(".address1");
+        const add = text.innerHTML = "";
+      const textarea = e.target.querySelector('textarea');
+      console.log(textarea.value); 
+      text.innerHTML = textarea.value;
+    document.querySelector(".open-add-form").style.display = "none";
+
+    }
+    function handleSubmit2(e) {
+        e.preventDefault(); 
+        const text = document.querySelector(".address2");
+        const add = text.innerHTML = "";
+      const textarea = e.target.querySelector('textarea');
+      console.log(textarea.value); 
+      text.innerHTML = textarea.value;
+    document.querySelector(".open-add-form2").style.display = "none";
+
+    }
+    </script>
+    <div class="container">
+      <button class="menu-toggle">☰</button>
+      <aside class="sidebar" style="overflow-y: scroll">
+        <img src="images/krupa.svg" alt="Logo" class="logo" />
+        <nav style="height: 80vh; display: flex; flex-direction: column;">
+          <div class="nav-item" style="display: flex; justify-content: space-between;">
+              <div>
+                  <img src="images/dashboard-light.svg" alt="Dashboard Icon" class="icon">
+                  <span>Dashboard</span>
+              </div>
+          </div>
+          <div class="nav-item" data-dropdown="products-dropdown">
+              <div>
+                  <img src="images/products-dark.svg" alt="Products Icon" class="icon">
+                  <span>Products</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div id="products-dropdown" class="dropdown-content">
+              <a href="#">Products List</a>
+              <a href="#">Category List</a>
+          </div>
+          <div class="nav-item" data-dropdown="leads-dropdown">
+              <div>
+                  <img src="images/leads.svg" alt="Leads Icon" class="icon">
+                  <span>Leads</span>
+              </div>
+          </div>
+          <div class="nav-item" data-dropdown="users-dropdown">
+              <div>
+                  <img src="images/user-dark.svg" alt="Users Icon" class="icon">
+                  <span>Users</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div class="nav-item " data-dropdown="sales-dropdown">
+              <div>
+                  <img src="images/sales-dark.svg" alt="Sales Icon" class="icon">
+                  <span>Sales</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div id="sales-dropdown" class="dropdown-content">
+              <a href="#">Customers</a>
+              <a href="#">Estimates</a>
+              <a href="#">Sales Orders</a>
+              <a href="#">Invoices</a>
+              <a href="#">Payments Received</a>
+          </div>
+          <div class="nav-item drop-active active" data-dropdown="purchases-dropdown">
+              <div>
+                  <img src="images/purchaces.svg" alt="Purchases Icon" class="icon">
+                  <span>Purchases</span>
+              </div>
+              <img src="images/dropdown.svg" alt="Arrow" class="arrow">
+          </div>
+          <div id="purchases-dropdown" class="dropdown-content show">
+            <a href="/vendors1/">Vendors</a>
+              <a href="#">Expanses</a>
+              <a href="#">Recurring Expanses</a>
+              <a href="#">Purchase Orders</a>
+              <a href="#" class="active">Bills</a>
+              <a href="#" >Payment Mode</a>
+          </div>
+      </nav>
+      </aside>
+      <main class="main-content">
+        <div class="top-bar">
+          <div class="search-bar">
+            <input type="text" placeholder="Search term" />
+            <button>
+              <svg class="icon" viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div class="top-icons">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              ></path>
+            </svg>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+        <div class="cont">
+          <form class="containerr"  action="/submit-estimate" method="post">
+            <h1>New BILL</h1>
+            <div style="background-color: #f6f6f6; padding: 20px">
+              <!-- address  -->
+              <div class="address-details" style="margin-bottom: 20px;gap: 0;">
+                <div>
+                  <label
+                    for="vendorname"
+                    style="font-size: 20px; font-weight: 600;width: 250px;"
+                    >Vendor Name</label
+                  >
+                </div>
                 <div
-                  class="notes-section"
-                  style="
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    height: 40vh;
-                  "
+                  class="col1"
+                  style="display: flex; flex-direction: column; gap: 30px"
                 >
-                  <div style="display: flex">
-                    <button class="btn dropdown">Add New Row</button>
-                    <button class="btn">Add Items in Bulk</button>
+                  <div class="input-container">
+                    <div class="custom-select">
+                      <select class="select-input" id="vendorname">
+                        <option>Select or add Vendor</option>
+                        {% for i in objs %}
+                        <option>{{i}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <button class="search-button" style="margin-right: 10px">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <circle cx="8" cy="8" r="6" />
+                        <line x1="18" y1="18" x2="14" y2="14" />
+                      </svg>
+                    </button>
                   </div>
-                  <!-- Customer Notes Section -->
+                  
+        
                   <div>
-                    <label>Customer Notes</label>
-                    <textarea placeholder="Enter customer notes"></textarea>
+                    <p>
+                      GST Treatment:
+                      <strong style="font-size: small; font-weight: 600"
+                        >Registered Business-Regular</strong
+                      >
+                    </p>
+                  </div>
+                  <div>
+                    <p>
+                      GSTIN:
+                      <strong style="font-size: small; font-weight: 600"
+                        >33LDAFV3105H9Z5</strong
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- place of supply  -->
+              <div class="address-details" style="width: 45%;margin-bottom: 30px;">
+                <div>
+                  <label
+                    for="sourceofsupply"
+                    style="font-size: 20px; font-weight: 600;width: 250px;"
+                    >Source Of Supply</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <div class="custom-select">
+                      <select
+                        class="select-input"
+                        id="sourceofsupply"
+                        style="border: 2px solid #d1d5db; border-radius: 10px"
+                      >
+                        <option></option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="destinationofsupply"
+                    style="font-size: 20px; font-weight: 600;width: 250px;"
+                    >Destination Of Supply</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <div class="custom-select">
+                      <select
+                        class="select-input"
+                        id="destinationofsupply"
+                        style="border: 2px solid #d1d5db; border-radius: 10px"
+                      >
+                        <option></option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end of place of supply  -->
+            </div>
+
+            <!-- second section  -->
+            <div
+              style="
+                padding: 20px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                border-bottom: 1px solid #d1d5db;
+              "
+            >
+              <!-- estimate  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="bill"
+                    style="font-size: 20px; font-weight: 600"
+                    >Bill#</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="bill"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                      value="BILL-{{bill_number}}"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- end of estimate  -->
+
+              <!-- reference  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="ordernumber"
+                    style="font-size: 20px; font-weight: 600"
+                    >Order Number</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="ordernumber"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- end of reference  -->
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  width: 100%;
+                "
+              >
+                <!-- estimate date  -->
+                <div class="address-details" style="width: 45%">
+                  <div>
+                    <label
+                      for="billdate"
+                      style="font-size: 20px; font-weight: 600"
+                      >Bill Date</label
+                    >
+                  </div>
+                  <div class="col1">
+                    <div class="input-container" style="position: relative">
+                      <input
+                        type="date"
+                        class="single-input"
+                        id="billdate"
+                        style="border: 2px solid #d1d5db; border-radius: 10px"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div class="amount-section">
-                    <div class="containerrr">
-                        <div class="row">
-                            <span>Sub Total</span>
-                            <span class="value" id="subTotal">{{estimates.sub_total}}</span>
+                <div class="address-details" style="width: 45%">
+                  <div>
+                    <label
+                      for="duedate"
+                      style="font-size: 20px; font-weight: 600"
+                      >Due Date</label
+                    >
+                  </div>
+                  <div class="col1">
+                    <div class="input-container" style="position: relative">
+                      <input
+                        type="date"
+                        class="single-input"
+                        id="duedate"
+                        style="border: 2px solid #d1d5db; border-radius: 10px"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="paymentterms"
+                    style="font-size: 20px; font-weight: 600"
+                    >Payment Terms</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="paymentterms"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end of second section  -->
+
+            <style>
+              
+              .ui-container {
+                  display: flex;
+                  align-items: center;
+                  width: 1200px;
+                  justify-content: space-between;
+                  gap: 20px;
+                  margin: 0 auto;
+                  color: black;
+                  font-size: 14px;
+                  color: #555;
+              }
+              .dropdown-section {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+              }
+              .dropdown-section label{
+                font-size: 20px;
+              }
+              /* .dropdown-section img {
+                  width: 20px;
+                  height: 20px;
+              } */
+              .dropdown-section select {
+                  font-size: 14px;
+                  border: none;
+                  background: none;
+                  padding: 30px;
+                  color: #555;
+                  cursor: pointer;
+                  appearance: none; /* Removes default arrow on some browsers */
+                  padding: 5px 0;
+              }
+             
+              .dropdown-section select:focus {
+                  outline: none;
+              }
+              /* Separator line */
+              .vertical-divider {
+                  width: 2px;
+                  height: 20px;
+                  background-color: #ddd;
+              }
+          </style>  
+<div class="ui-container">
+  <div class="dropdown-section">
+      <img src="images/taxpreference.svg" alt="Item Tax Icon">
+      <label for="item-tax">Item Tax Preference </label>
+
+      <select id="item-tax" style="width: 100px;">
+        <option value="none" selected hidden>▼</option>
+          <option value="tax1">Tax 1</option>
+          <option value="tax2">Tax 2</option>
+      </select>
+  </div>
+  
+  <div class="vertical-divider"></div>
+  
+  <div class="dropdown-section">
+      <img src="images/discount.svg" alt="Discount Icon">
+      <label for="discount">Discount Type</label>
+      <select id="discount">
+          <option value="none" selected hidden>▼</option>
+          <option value="discount1">Discount 1</option>
+          <option value="discount2">Discount 2</option>
+      </select>
+  </div>
+  
+  <div class="vertical-divider"></div>
+  
+  <div class="dropdown-section">
+      <img src="images/pricelist.svg" alt="Price List Icon">
+      <label for="price-list">Select Price List</label>
+      <select id="price-list">
+          <option value="none" selected hidden>▼</option>
+          <option value="price1">Price List 1</option>
+          <option value="price2">Price List 2</option>
+      </select>
+  </div>
+</div>
+
+
+            <!-- section five  -->
+
+            <div style="padding: 0 100px">
+              <div class="table-header">
+                <label>Select Price List</label>
+                <a href="#" class="bulk-link">Bulk Actions</a>
+              </div>
+
+              <!-- Item Table -->
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>ITEM DETAILS</th>
+                      <th>QUANTITY</th>
+                      <th>RATE</th>
+                      <th>DISCOUNT</th>
+                      <th>TAX</th>
+                      <th>AMOUNT</th>
+                      <th></th>
+                      <!-- Empty for delete icon -->
+                    </tr>
+                  </thead>
+                  <tbody class="add-row">
+                    <tr id="1">
+                        <td><input type="text" placeholder="Type or click to select an item" /></td>
+                        <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                        <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                        <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    
+                        <td>
+                          <select disabled><option>Select a Tax</option></select>
+                        </td>
+                        <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                        <td class="icon-delete"><button type="button" onclick="">x</button></td>
+                    </tr>
+                </tbody>
+                    
+            </table>
+        </div>
+        <!-- Sub Total Section -->
+        <div class="totals-section">
+            <div class="notes-section" style="display: flex;flex-direction: column;justify-content: space-between;height: 40vh;">
+                <div style="display: flex">
+                    <button class="btn" type="button" onclick="addrow()">Add New Row</button>
+                  </div>
+                  
+                </div>
+                <!-- Total Amount Section -->                           
+
+
+            <div class="amount-section">
+                <div class="containerrr">
+                    <div class="row">
+                        <span>Sub Total</span>
+                        <span class="value" id="subTotal">0.00</span>
+                    </div>
+                    <div class="row">
+                        
+                          <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
+                            <span>Shipping Charges</span>
+                            <input type="text" id="shippingCharges" placeholder="0.00" class="">
+                            <span class="info-icon">ⓘ</span>
+                          </div>
+                          <span class="value" id="shippigcharges"></span>
+                        
+                    </div>
+                    <div class="apply-text">Apply Tax on Shipping Charge</div>
+                    <div class="row">
+                        <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
+            
+                            <span>Adjustment</span>
+                            <input type="text" id="adjustment" placeholder="0.00" class="one">
+                            <span class="info-icon">ⓘ</span>
                         </div>
-                        <div class="row">
-                            
-                              <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                                <span>Shipping Charges</span>
-                                <input type="text" id="shippingCharges" placeholder="0.00" class="" value="{{estimates.shipping_charges}}">
-                                <span class="info-icon">ⓘ</span>
-                              </div>
-                              <span class="value" id="shippigcharges"></span>
-                            
-                        </div>
-                        <div class="apply-text">Apply Tax on Shipping Charge</div>
-                        <div class="row">
-                            <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                
-                                <span>Adjustment</span>
-                                <input type="text" id="adjustment" placeholder="0.00" class="one" value="{{estimates.adjustment}}">
-                                <span class="info-icon">ⓘ</span>
-                            </div>
-                            <span class="value" id="adjustmentcharges"></span>
-                        </div>
-                        <div class="row total">
-                            <span>Total ($)</span>
-                            <span class="value" id="total">{{estimates.total}}</span>
-                        </div>
+                        <span class="value" id="adjustmentcharges"></span>
+                    </div>
+                    <div class="row total">
+                        <span>Total ($)</span>
+                        <span class="value" id="total">0.00</span>
                     </div>
                 </div>
             </div>
-            <script>
-                var adjcharge = document.getElementById('adjustmentcharges');
-                var shipcharge = document.getElementById('shippigcharges');
-                function calculateTotal() {
-                    
-                    const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
-                    const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                    const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                    
-                    const total = subTotal + shippingCharges + adjustment;
-                    document.getElementById('total').textContent = total.toFixed(2);
-                    adjcharge.innerHTML=adjustment;
-                    shipcharge.innerHTML=shippingCharges;
-                    // Update the color of filled inputs
-                    document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
-                    document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
+        </div>
+        <script>
+                                                       
+            let globalTotalAmount = 0;
+
+            function calculateAmount(row) {
+                const rateInput = row.querySelector('.rate-input');
+                const discountInput = row.querySelector('.discount-input');
+                const amountElement = row.querySelector('.amount-class');
+
+                const rate = parseFloat(rateInput.value) || 0;
+                const discount = parseFloat(discountInput.value.replace('%', '')) || 0;
+                const amountval = rate - (rate * discount / 100);
+
+                amountElement.value = amountval.toFixed(2); 
+                updateTotalAmount(); 
+            }
+
+            function updateTotalAmount() {
+                const amountElements = document.querySelectorAll('.amount-class');
+                globalTotalAmount = 0;
+                
+                amountElements.forEach(element => {
+                    globalTotalAmount += parseFloat(element.value) || 0;
+                });
+                
+                // Update the display
+                const displayElement = document.getElementById('subTotal');
+                if (displayElement) {
+                    displayElement.textContent = globalTotalAmount.toFixed(2);
                 }
                 
-                document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
-                document.getElementById('adjustment').addEventListener('input', calculateTotal);
-        
-                calculateTotal();
-            </script>
+                console.log('Total Amount:', globalTotalAmount.toFixed(2)); 
+                return globalTotalAmount;
+            }
+
+            function addrow() {
+                let add = document.querySelector(".add-row");
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td><input type="text" placeholder="Type or click to select an item" /></td>
+                    <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                    <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                    <td>
+                        <select disabled><option>Select a Tax</option></select>
+                    </td>
+                    <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                    <td class="icon-delete"><button type="button" onclick="deleteRow(this)">x</button></td>
+                `;
+                add.appendChild(newRow);
+            }
+
+            function deleteRow(button) {
+                button.closest("tr").remove();
+                updateTotalAmount(); 
+            }
+
+   
+            var adjcharge = document.getElementById('adjustmentcharges');
+            var shipcharge = document.getElementById('shippigcharges');
+            function calculateTotal() {
+                
+                const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
+                const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
+                const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
+                
+                const total = subTotal + shippingCharges - adjustment;
+                document.getElementById('total').textContent = total.toFixed(2);
+                adjcharge.innerHTML=adjustment;
+                shipcharge.innerHTML=shippingCharges;
+                // Update the color of filled inputs
+                document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
+                document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
+            }
+            
+            document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
+            document.getElementById('adjustment').addEventListener('input', calculateTotal);
+    
+            calculateTotal();
+        </script>
               </div>
 
               <div class="tc-main-container">
-                <div class="tc-form-section">
-                  <h2 class="tc-section-title">Terms & Conditions</h2>
-                  <textarea
-                    class="tc-input-textarea"
-                    placeholder="Enter the terms and conditions of your business to be displayed in your transaction"
-                  ></textarea>
-                  <span class="tc-info-icon" title="Additional information"
-                    >ⓘ</span
-                  >
-                  <div class="tc-checkbox-wrapper" style="display: flex">
-                    <input
-                      type="checkbox"
-                      id="tc-create-invoice"
-                      style="width: fit-content"
-                      value="true"
-                      checked
-                    />
-                    <input style="display: none;" id="hidden-inp" value="{{id}}">
-                    <input style="display: none;" id="hidden-inp1" value="estimates">
-                    <label for="tc-create-invoice"
-                      >Creating Invoice From Estimate</label
-                    >
-                  </div>
-                </div>
+                
                 <div class="tc-file-upload-section">
                   <h2 class="tc-section-title">Attach File(s) to Estimate</h2>
                   <button class="tc-upload-button">Upload File</button>
@@ -1282,71 +1429,69 @@
             </style>
             <div class="button-container">
               <button class="save-draft">Save as Draft</button>
-              <button type="button" onclick="getInvoiceFormData()">Save Invoice</button>
+              <button type="button" onclick="getFormData()">Save</button>
               <button class="cancel">Cancel</button>
             </div>
-            <!-- <div id="jsonOutput"></div> -->
+  
+    <div id="jsonOutput" style="width: 500px;display: none;"></div>
 
-            <script>
-              function getInvoiceFormData() {
-                // console.log("Hi")
-                const form = document.querySelector('.containerr'); 
-                const jsonObject = {};
+    <script>
+    function getFormData() {
+        const form = document.querySelector('.containerr');
+        const jsonObject = {};
 
-                // Customer Details
-                jsonObject.customerName = document.getElementById('customer-name').value.trim();
-                if (!jsonObject.customerName) {
-                    alert('Please enter a Customer Name.');
-                    return;
-                }
+        // vendor details
+        jsonObject.vendorName = document.getElementById('vendorname').value;
+        jsonObject.SourceOfSupply = document.getElementById('sourceofsupply').value;
+        jsonObject.DestinationOfSupply = document.getElementById('destinationofsupply').value;
 
-                // Invoice Details
-                jsonObject.invoiceNumber = document.getElementById('invoice').value.trim();
-                jsonObject.orderNumber = document.getElementById('order-number').value.trim();
-                jsonObject.invoiceDate = document.getElementById('invoice-date').value;
-                jsonObject.terms = document.getElementById('terms').value.trim();
-                jsonObject.dueDate = document.getElementById('due-date').value;
-                
+        // Estimate details
+        jsonObject.bill = document.getElementById('bill').value;
+        jsonObject.ordernumber = document.getElementById('ordernumber').value;
+        jsonObject.billdate = document.getElementById('billdate').value;
+        jsonObject.duedate = document.getElementById('duedate').value;
+        jsonObject.paymentterms = document.getElementById('paymentterms').value;
+        jsonObject.itemtax = document.getElementById('item-tax').value;
+        jsonObject.pricelist = document.getElementById('price-list').value;
+        jsonObject.discount = document.getElementById('discount').value;
 
-                // Sales Person
-                jsonObject.salesPerson = document.getElementById('sales-person').value;
+        
+        // Item details
+        jsonObject.items = [];
+        const allRows = document.querySelectorAll('.add-row tr'); // Select all rows in the tbody
+        
+        allRows.forEach(row => {
+            const item = {
+                itemDetails: row.querySelector('input[placeholder="Type or click to select an item"]')?.value?.trim() || '',
+                quantity: parseFloat(row.querySelector('td:nth-child(2) input')?.value) || 0,
+                rate: parseFloat(row.querySelector('.rate-input')?.value) || 0,
+                discount: row.querySelector('.discount-input')?.value?.trim() || '0 %',
+                tax: row.querySelector('select')?.value || 'Select a Tax',
+                amount: parseFloat(row.querySelector('.amount-class')?.value) || 0
+            };
+            
+            // Only add rows that have at least one field filled out
+            if (item.itemDetails || item.quantity > 0 || item.rate > 0 || item.discount !== '0 %' || item.amount > 0) {
+                jsonObject.items.push(item);
+            }
+        });
 
-                // Item Details 
-                jsonObject.items = [];
-                const itemRows = document.querySelectorAll('table tbody tr');
-                itemRows.forEach(row => {
-                    const inputs = row.querySelectorAll('input, select');
-                    jsonObject.items.push({
-                        itemDetails: inputs[0].value.trim(),
-                        quantity: parseFloat(inputs[1].value) || 0,
-                        rate: parseFloat(inputs[2].value) || 0,
-                        discount: inputs[3].value.trim(),
-                        tax: inputs[4].value,
-                        amount: parseFloat(inputs[5].value) || 0
-                    });
-                });
+        // Totals
+        jsonObject.subTotal = document.getElementById('subTotal').textContent;
+        jsonObject.shippingCharges = document.getElementById('shippingCharges').value;
+        jsonObject.adjustment = document.getElementById('adjustment').value;
+        jsonObject.total = document.getElementById('total').textContent;
 
-                // Totals 
-                jsonObject.subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
-                jsonObject.shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                jsonObject.adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                jsonObject.total = parseFloat(document.getElementById('total').textContent) || 0;
+       
 
-                // Terms and Conditions
-                jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value.trim();
-                jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked; 
-                jsonObject.hiddeninp = document.getElementById('hidden-inp').value;
-                jsonObject.hiddeninp1 = document.getElementById('hidden-inp1').value;
-
-                // // Display the JSON
-                // const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
-                // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
-
-                fetch('/newinvoice/', {
+        // Display the JSON
+        const jsonOutput = document.getElementById('jsonOutput');
+        jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+        fetch('/bills3/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            // 'X-CSRFToken': '{{ csrf_token }}'
+            // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
         },
         body: JSON.stringify(jsonObject)
     })
@@ -1357,9 +1502,11 @@
     .catch((error) => {
         console.error('Error:', error);
     });
-            }
-            </script>
+    }
+    </script>
         </form>
+
+        
         </div>
       </main>
     </div>
@@ -1377,5 +1524,5 @@
         });
       });
     </script>
-  </body>
+ </body>
 </html>

@@ -566,10 +566,14 @@
                 <img src="images/share.svg" alt="" />
                 <p>Share</p>
               </button>
-              <button class="button1">
+              <a
+                class="button1"
+                href="/estimateinvoice/{{id}}"
+                style="text-decoration: none; color: black"
+              >
                 <img src="images/pdf.svg" alt="" />
                 <p>PDF/Print</p>
-              </button>
+              </a>
               <button
                 class="button1"
                 onclick="convert()"
@@ -631,7 +635,7 @@
                   "
                   class="convert2"
                   data="sales"
-                  onclick="data(this)"
+                  onclick="data1(this)"
                 >
                   <b> Convert to sales </b>
                 </div>
@@ -660,8 +664,13 @@
 
                   function data(element) {
                     let dataval = element.getAttribute("data");
-                    console.log(dataval);
+                    // console.log(dataval);
                     window.location.href = "/createinvoice/{{id}}/";
+                  }
+                  function data1(element) {
+                    let dataval = element.getAttribute("data");
+                    // console.log(dataval);
+                    window.location.href = "/estimatetosales/{{id}}/";
                   }
                 </script>
               </div>

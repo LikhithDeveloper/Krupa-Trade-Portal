@@ -21,13 +21,12 @@
         min-height: 100vh;
       }
       .sidebar {
-        width: 300px;
+        width: 280px;
         background-color: #ffffff;
         color: #292f46;
         padding: 20px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
-        overflow-y: scroll;
       }
       .sidebar .dropdown-content {
         display: none;
@@ -288,7 +287,7 @@
       }
       .single-input {
         width: 100%;
-        height: 100%;
+        height: 40px;
         padding: 0 30px 0 10px;
       }
       .select-input:focus,
@@ -646,6 +645,135 @@
         color: #888;
         font-style: italic;
       }
+      .btn {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background-color: #f8f8f8;
+      }
+      .btn::before {
+        content: "+";
+        display: inline-block;
+        margin-right: 5px;
+        font-size: 18px;
+        color: #0099ff;
+      }
+      .dropdown::after {
+        content: "▼";
+        display: inline-block;
+        margin-left: 5px;
+        font-size: 10px;
+        color: #666;
+      }
+      .containerrr {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: 40vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        align-items: center;
+      }
+      .row > span:first-child {
+        color: #333;
+        font-weight: normal;
+      }
+      .containerrr input[type="text"] {
+        width: 80px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        text-align: right;
+        color: #333;
+        font-size: 14px;
+      }
+      .containerrr input[type="text"]::placeholder {
+        color: #999;
+      }
+      .info-icon {
+        color: #999;
+        font-size: 14px;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+      .total {
+        font-weight: bold;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+      }
+      .apply-text {
+        color: #3498db;
+        font-size: 12px;
+        margin-top: -10px;
+        margin-bottom: 15px;
+        margin-left: 2px;
+      }
+      .value {
+        color: #999;
+        font-size: 14px;
+        text-align: right;
+        width: 80px;
+        display: inline-block;
+      }
+      .total .value {
+        color: #333;
+        font-weight: bold;
+      }
+
+      .button-container {
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        opacity: 0.8;
+      }
+      .save-draft {
+        background-color: #fff;
+        color: #333;
+      }
+      .save-draft:hover {
+        background-color: #f0f0f0;
+      }
+      .save-as-draft {
+        background-color: #0099ff;
+        color: white;
+        border-color: #0088ee;
+      }
+      .save-as-draft:hover {
+        background-color: #0088ee;
+      }
+      .cancel {
+        background-color: #fff;
+        color: #333;
+      }
+      .cancel:hover {
+        background-color: #f0f0f0;
+      }
     </style>
   </head>
   <body>
@@ -706,11 +834,11 @@
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
           <div id="sales-dropdown" class="dropdown-content show">
-            <a href="#">Customers</a>
-            <a href="#">Estimates</a>
-            <a href="#">Sales Orders</a>
-            <a href="/invoice1/" class="active">Invoices</a>
-            <a href="#">Payments Received</a>
+            <a href="/customerspage/">Customers</a>
+            <a href="/estimates/">Estimates</a>
+            <a href="/salesorder1/" class="active">Sales Orders</a>
+            <a href="/invoice1/">Invoices</a>
+            <a href="/payment1/">Payments Received</a>
           </div>
           <div class="nav-item" data-dropdown="purchases-dropdown">
             <div>
@@ -752,7 +880,7 @@
         </div>
         <div class="cont">
           <form class="containerr">
-            <h1>New Invoice</h1>
+            <h1>New Order</h1>
             <div style="background-color: #f6f6f6; padding: 20px">
               <!-- address  -->
               <div class="address-details" style="margin-bottom: 20px">
@@ -771,11 +899,13 @@
                     <div class="custom-select">
                       <select class="select-input" id="customer-name">
                         <option>{{estimates.request.company}}</option>
-                        {% for i in custoumers %}
-                        <option>{{i.company}}</option>
-                        {% endfor %}
                       </select>
                     </div>
+                    <input
+                      style="display: none"
+                      id="hidden-inp"
+                      value="{{id}}"
+                    />
                     <button class="search-button" style="margin-right: 10px">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -794,12 +924,8 @@
                     </button>
                     <span class="currency">INR</span>
                   </div>
-                  </div>
+                </div>
               </div>
-
-              <!-- place of supply  -->
-              
-              <!-- end of place of supply  -->
             </div>
 
             <!-- second section  -->
@@ -817,9 +943,9 @@
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
-                    for="invoice"
+                    for="sales-order"
                     style="font-size: 20px; font-weight: 600"
-                    >Invoice#</label
+                    >Sales Order#</label
                   >
                 </div>
                 <div class="col1">
@@ -827,23 +953,23 @@
                     <input
                       type="text"
                       class="single-input"
-                      id="invoice"
+                      id="sales-order"
                       placeholder="EST-001"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                      value="INVOICE-{{invoice_number}}"
+                      value="SALES-{{sales_number}}"
                     />
                   </div>
                 </div>
               </div>
               <!-- end of estimate  -->
 
-              <!-- invoice  -->
+              <!-- reference  -->
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
-                    for="order-number"
+                    for="referecne"
                     style="font-size: 20px; font-weight: 600"
-                    >Order Number</label
+                    >Referecne#</label
                   >
                 </div>
                 <div class="col1">
@@ -851,82 +977,75 @@
                     <input
                       type="text"
                       class="single-input"
-                      id="order-number"
+                      id="referecne"
                       style="border: 2px solid #d1d5db; border-radius: 10px"
-                      value="ORDER-{{order_number}}"
                     />
                   </div>
                 </div>
               </div>
               <!-- end of reference  -->
-              <div
-                style="
-                  display: flex;
-                  justify-content: space-around;
-                  width: 100%;
-                "
-              >
-                <!-- estimate date  -->
-                <div class="address-details" style="width: 25%">
-                  <div>
-                    <label
-                      for="invoice-date"
-                      style="font-size: 20px; font-weight: 600"
-                      >Invoice Date</label
-                    >
-                  </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative;width: 250px;">
-                      <input
-                        type="date"
-                        class="single-input"
-                        id="invoice-date"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
-                  </div>
-                  <script>
-                    const today = new Date().toISOString().split("T")[0]; // Get today's date in "YYYY-MM-DD" format
-                    document.getElementById("invoice-date").value = today;   // Set the value of the input field
-                  </script>
-                </div>
-                <div class="address-details" style="width: 25%">
-                  <div>
-                    <label
-                      for="terms"
-                      style="font-size: 20px; font-weight: 600"
-                      >Terms</label
-                    >
-                  </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative;width: 250px;">
-                      <input
-                        type="text"
-                        class="single-input"
-                        id="terms"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
-                  </div>
-                </div>
 
-                <div class="address-details" style="width: 25%">
-                  <div>
-                    <label
-                      for="due-date"
-                      style="font-size: 20px; font-weight: 600"
-                      >Due Date</label
-                    >
+              <!-- sales order date  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="sales-order-date"
+                    style="font-size: 20px; font-weight: 600"
+                    >Sales Order Date</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="date"
+                      class="single-input"
+                      id="sales-order-date"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
                   </div>
-                  <div class="col1">
-                    <div class="input-container" style="position: relative;width: 250px;">
-                      <input
-                        type="date"
-                        class="single-input"
-                        id="due-date"
-                        style="border: 2px solid #d1d5db; border-radius: 10px"
-                      />
-                    </div>
+                </div>
+              </div>
+              <!-- sales order date end  -->
+
+              <!-- explected shipment date  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="expected-shipment-date"
+                    style="font-size: 20px; font-weight: 600"
+                    >Expected Shipment Date</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="date"
+                      class="single-input"
+                      id="expected-shipment-date"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- explected shipment date end-->
+
+              <!-- payments terms  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
+                    for="payment-terms"
+                    style="font-size: 20px; font-weight: 600"
+                    >Payment Terms</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <input
+                      type="text"
+                      class="single-input"
+                      id="payment-terms"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    />
                   </div>
                 </div>
               </div>
@@ -948,6 +1067,32 @@
               <div class="address-details" style="width: 45%">
                 <div>
                   <label
+                    for="delivery-method"
+                    style="font-size: 20px; font-weight: 600"
+                    >Delivery Method</label
+                  >
+                </div>
+                <div class="col1">
+                  <div class="input-container" style="position: relative">
+                    <select
+                      name="delivery-method"
+                      id="delivery-method"
+                      class="single-input"
+                      style="border: 2px solid #d1d5db; border-radius: 10px"
+                    >
+                      <option value="">
+                        select a delivery method or type to add
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- end of sales person  -->
+
+              <!-- project name  -->
+              <div class="address-details" style="width: 45%">
+                <div>
+                  <label
                     for="sales-person"
                     style="font-size: 20px; font-weight: 600"
                     >Sales Person</label
@@ -966,13 +1111,9 @@
                   </div>
                 </div>
               </div>
-              <!-- end of sales person  -->
-
-              
+              <!-- end of reference  -->
             </div>
             <!-- end of third section  -->
-
-            
 
             <!-- section five  -->
 
@@ -998,8 +1139,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% if newinvoice %}
-                    {% for i in newinvoice %}
+                    {% if newinvoice %} {% for i in newinvoice %}
                     <tr>
                       <td>
                         <input
@@ -1008,117 +1148,33 @@
                           value="{{i.item_details}}"
                         />
                       </td>
-                      <td><input type="number" value="{{i.quantity}}" disabled /></td>
-                      <td><input type="number" value="{{i.rate}}" disabled /></td>
-                      <td><input type="text" value="{{i.discount}}" disabled /></td>
+                      <td>
+                        <input type="number" value="{{i.quantity}}" disabled />
+                      </td>
+                      <td>
+                        <input type="number" value="{{i.rate}}" disabled />
+                      </td>
+                      <td>
+                        <input type="text" value="{{i.discount}}" disabled />
+                      </td>
                       <td>
                         <select disabled>
                           <option>Select a Tax</option>
                         </select>
                       </td>
-                      <td><input type="number" value="{{i.amount}}" disabled /></td>
+                      <td>
+                        <input type="number" value="{{i.amount}}" disabled />
+                      </td>
                       <td class="icon-delete"><button>x</button></td>
                     </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>No Invoices items Found</tr>
+                    {% endfor %} {% else %}
+                    <tr>
+                      No Invoices items Found
+                    </tr>
                     {% endif %}
                   </tbody>
                 </table>
               </div>
-              <style>
-                .btn {
-                  display: flex;
-                  align-items: center;
-                  padding: 8px 12px;
-                  background-color: #fff;
-                  border: 1px solid #ddd;
-                  border-radius: 4px;
-                  font-size: 14px;
-                  color: #333;
-                  cursor: pointer;
-                }
-                .btn:hover {
-                  background-color: #f8f8f8;
-                }
-                .btn::before {
-                  content: "+";
-                  display: inline-block;
-                  margin-right: 5px;
-                  font-size: 18px;
-                  color: #0099ff;
-                }
-                .dropdown::after {
-                  content: "▼";
-                  display: inline-block;
-                  margin-left: 5px;
-                  font-size: 10px;
-                  color: #666;
-                }
-                .containerrr {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            width: 100%;
-            height: 40vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-        .row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .row > span:first-child {
-            color: #333;
-            font-weight: normal;
-        }
-        .containerrr input[type="text"] {
-            width: 80px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            text-align: right;
-            color: #333;
-            font-size: 14px;
-        }
-        .containerrr input[type="text"]::placeholder {
-            color: #999;
-        }
-        .info-icon {
-            color: #999;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-        .total {
-            font-weight: bold;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        .apply-text {
-            color: #3498db;
-            font-size: 12px;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            margin-left: 2px;
-        }
-        .value {
-            color: #999;
-            font-size: 14px;
-            text-align: right;
-            width: 80px;
-            display: inline-block;
-        }
-        .total .value {
-            color: #333;
-            font-weight: bold;
-        }
-              </style>
               <!-- Sub Total Section -->
               <div class="totals-section">
                 <div
@@ -1131,8 +1187,10 @@
                   "
                 >
                   <div style="display: flex">
-                    <button class="btn dropdown">Add New Row</button>
-                    <button class="btn">Add Items in Bulk</button>
+                    <button class="btn" type="button" onclick="addrow()">
+                      Add New Row
+                    </button>
+                    <button class="btn" type="button">Add Items in Bulk</button>
                   </div>
                   <!-- Customer Notes Section -->
                   <div>
@@ -1140,64 +1198,161 @@
                     <textarea placeholder="Enter customer notes"></textarea>
                   </div>
                 </div>
+                <!-- Total Amount Section -->
 
                 <div class="amount-section">
-                    <div class="containerrr">
-                        <div class="row">
-                            <span>Sub Total</span>
-                            <span class="value" id="subTotal">{{estimates.sub_total}}</span>
-                        </div>
-                        <div class="row">
-                            
-                              <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                                <span>Shipping Charges</span>
-                                <input type="text" id="shippingCharges" placeholder="0.00" class="" value="{{estimates.shipping_charges}}">
-                                <span class="info-icon">ⓘ</span>
-                              </div>
-                              <span class="value" id="shippigcharges"></span>
-                            
-                        </div>
-                        <div class="apply-text">Apply Tax on Shipping Charge</div>
-                        <div class="row">
-                            <div style="display:flex;gap: 10px;justify-content: center;align-items: center;">
-                
-                                <span>Adjustment</span>
-                                <input type="text" id="adjustment" placeholder="0.00" class="one" value="{{estimates.adjustment}}">
-                                <span class="info-icon">ⓘ</span>
-                            </div>
-                            <span class="value" id="adjustmentcharges"></span>
-                        </div>
-                        <div class="row total">
-                            <span>Total ($)</span>
-                            <span class="value" id="total">{{estimates.total}}</span>
-                        </div>
+                  <div class="containerrr">
+                    <div class="row">
+                      <span>Sub Total</span>
+                      <span class="value" id="subTotal"
+                        >{{estimates.sub_total}}</span
+                      >
                     </div>
+                    <div class="row">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 10px;
+                          justify-content: center;
+                          align-items: center;
+                        "
+                      >
+                        <span>Shipping Charges</span>
+                        <input
+                          type="text"
+                          id="shippingCharges"
+                          placeholder="0.00"
+                          class=""
+                          value="{{estimates.shipping_charges}}"
+                        />
+                        <span class="info-icon">ⓘ</span>
+                      </div>
+                      <span class="value" id="shippigcharges"></span>
+                    </div>
+                    <div class="apply-text">Apply Tax on Shipping Charge</div>
+                    <div class="row">
+                      <div
+                        style="
+                          display: flex;
+                          gap: 10px;
+                          justify-content: center;
+                          align-items: center;
+                        "
+                      >
+                        <span>Adjustment</span>
+                        <input
+                          type="text"
+                          id="adjustment"
+                          placeholder="0.00"
+                          class="one"
+                          value="{{estimates.adjustment}}"
+                        />
+                        <span class="info-icon">ⓘ</span>
+                      </div>
+                      <span class="value" id="adjustmentcharges"></span>
+                    </div>
+                    <div class="row total">
+                      <span>Total ($)</span>
+                      <span class="value" id="total">{{estimates.total}}</span>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            <script>
-                var adjcharge = document.getElementById('adjustmentcharges');
-                var shipcharge = document.getElementById('shippigcharges');
-                function calculateTotal() {
-                    
-                    const subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
-                    const shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                    const adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                    
-                    const total = subTotal + shippingCharges + adjustment;
-                    document.getElementById('total').textContent = total.toFixed(2);
-                    adjcharge.innerHTML=adjustment;
-                    shipcharge.innerHTML=shippingCharges;
-                    // Update the color of filled inputs
-                    document.getElementById('shippingCharges').style.color = shippingCharges ? '#333' : '#999';
-                    document.getElementById('adjustment').style.color = adjustment ? '#333' : '#999';
-                }
-                
-                document.getElementById('shippingCharges').addEventListener('input', calculateTotal);
-                document.getElementById('adjustment').addEventListener('input', calculateTotal);
-        
-                calculateTotal();
-            </script>
               </div>
+              <script>
+                let globalTotalAmount = 0;
+
+                function calculateAmount(row) {
+                  const rateInput = row.querySelector(".rate-input");
+                  const discountInput = row.querySelector(".discount-input");
+                  const amountElement = row.querySelector(".amount-class");
+
+                  const rate = parseFloat(rateInput.value) || 0;
+                  const discount =
+                    parseFloat(discountInput.value.replace("%", "")) || 0;
+                  const amountval = rate - (rate * discount) / 100;
+
+                  amountElement.value = amountval.toFixed(2);
+                  updateTotalAmount();
+                }
+
+                function updateTotalAmount() {
+                  const amountElements =
+                    document.querySelectorAll(".amount-class");
+                  globalTotalAmount = 0;
+
+                  amountElements.forEach((element) => {
+                    globalTotalAmount += parseFloat(element.value) || 0;
+                  });
+
+                  // Update the display
+                  const displayElement = document.getElementById("subTotal");
+                  if (displayElement) {
+                    displayElement.textContent = globalTotalAmount.toFixed(2);
+                  }
+
+                  console.log("Total Amount:", globalTotalAmount.toFixed(2));
+                  return globalTotalAmount;
+                }
+
+                function addrow() {
+                  let add = document.querySelector(".add-row");
+                  const newRow = document.createElement("tr");
+                  newRow.innerHTML = `
+                                    <td><input type="text" placeholder="Type or click to select an item" /></td>
+                                    <td><input type="number" placeholder="0.00" value="0.00" /></td>
+                                    <td><input type="number" class="rate-input" placeholder="0.00" oninput="calculateAmount(this.closest('tr'))" /></td>
+                                    <td><input type="text" class="discount-input" placeholder="0 %" oninput="calculateAmount(this.closest('tr'))" /></td>
+                                    <td>
+                                        <select disabled><option>Select a Tax</option></select>
+                                    </td>
+                                    <td><input type="number" class="amount-class" value="0.00" readonly placeholder="0.00" /></td>
+                                    <td class="icon-delete"><button type="button" onclick="deleteRow(this)">x</button></td>
+                                `;
+                  add.appendChild(newRow);
+                }
+
+                function deleteRow(button) {
+                  button.closest("tr").remove();
+                  updateTotalAmount();
+                }
+
+                var adjcharge = document.getElementById("adjustmentcharges");
+                var shipcharge = document.getElementById("shippigcharges");
+                function calculateTotal() {
+                  const subTotal =
+                    parseFloat(
+                      document.getElementById("subTotal").textContent
+                    ) || 0;
+                  const shippingCharges =
+                    parseFloat(
+                      document.getElementById("shippingCharges").value
+                    ) || 0;
+                  const adjustment =
+                    parseFloat(document.getElementById("adjustment").value) ||
+                    0;
+
+                  const total = subTotal + shippingCharges - adjustment;
+                  document.getElementById("total").textContent =
+                    total.toFixed(2);
+                  adjcharge.innerHTML = adjustment;
+                  shipcharge.innerHTML = shippingCharges;
+                  // Update the color of filled inputs
+                  document.getElementById("shippingCharges").style.color =
+                    shippingCharges ? "#333" : "#999";
+                  document.getElementById("adjustment").style.color = adjustment
+                    ? "#333"
+                    : "#999";
+                }
+
+                document
+                  .getElementById("shippingCharges")
+                  .addEventListener("input", calculateTotal);
+                document
+                  .getElementById("adjustment")
+                  .addEventListener("input", calculateTotal);
+
+                calculateTotal();
+              </script>
 
               <div class="tc-main-container">
                 <div class="tc-form-section">
@@ -1214,13 +1369,10 @@
                       type="checkbox"
                       id="tc-create-invoice"
                       style="width: fit-content"
-                      value="true"
-                      checked
                     />
-                    <input style="display: none;" id="hidden-inp" value="{{id}}">
-                    <input style="display: none;" id="hidden-inp1" value="estimates">
                     <label for="tc-create-invoice"
-                      >Creating Invoice From Estimate</label
+                      >Create a retainer invoice for this estimate
+                      automatically.</label
                     >
                   </div>
                 </div>
@@ -1241,125 +1393,151 @@
             <!-- Header Section -->
 
             <!-- section five end   -->
-            <style>
-              .button-container {
-                display: flex;
-                gap: 10px;
-              }
-              button {
-                padding: 8px 16px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background-color 0.3s;
-              }
-              button:hover {
-                opacity: 0.8;
-              }
-              .save-draft {
-                background-color: #fff;
-                color: #333;
-              }
-              .save-draft:hover {
-                background-color: #f0f0f0;
-              }
-              .save-as-draft {
-                background-color: #0099ff;
-                color: white;
-                border-color: #0088ee;
-              }
-              .save-as-draft:hover {
-                background-color: #0088ee;
-              }
-              .cancel {
-                background-color: #fff;
-                color: #333;
-              }
-              .cancel:hover {
-                background-color: #f0f0f0;
-              }
-            </style>
+            <style></style>
             <div class="button-container">
               <button class="save-draft">Save as Draft</button>
-              <button type="button" onclick="getInvoiceFormData()">Save Invoice</button>
+              <button type="button" onclick="getOrderFormData()">
+                Save Order
+              </button>
               <button class="cancel">Cancel</button>
             </div>
-            <!-- <div id="jsonOutput"></div> -->
+            <!-- <div id="jsonOutput" style="width: 500px"></div> -->
 
             <script>
-              function getInvoiceFormData() {
-                // console.log("Hi")
-                const form = document.querySelector('.containerr'); 
+              function getOrderFormData() {
                 const jsonObject = {};
 
                 // Customer Details
-                jsonObject.customerName = document.getElementById('customer-name').value.trim();
+                jsonObject.customerName =
+                  document.getElementById("customer-name")?.value?.trim() || "";
                 if (!jsonObject.customerName) {
-                    alert('Please enter a Customer Name.');
-                    return;
+                  alert("Please enter a Customer Name.");
+                  return;
                 }
 
-                // Invoice Details
-                jsonObject.invoiceNumber = document.getElementById('invoice').value.trim();
-                jsonObject.orderNumber = document.getElementById('order-number').value.trim();
-                jsonObject.invoiceDate = document.getElementById('invoice-date').value;
-                jsonObject.terms = document.getElementById('terms').value.trim();
-                jsonObject.dueDate = document.getElementById('due-date').value;
-                
+                // Order Details
+                jsonObject.salesOrderNumber =
+                  document.getElementById("sales-order")?.value?.trim() || "";
+                jsonObject.referenceNumber =
+                  document.getElementById("referecne")?.value?.trim() || "";
+                jsonObject.salesOrderDate =
+                  document.getElementById("sales-order-date")?.value || "";
+                jsonObject.expectedShipmentDate =
+                  document.getElementById("expected-shipment-date")?.value ||
+                  "";
+                jsonObject.paymentTerms =
+                  document.getElementById("payment-terms")?.value?.trim() || "";
 
-                // Sales Person
-                jsonObject.salesPerson = document.getElementById('sales-person').value;
+                // Delivery and Sales Person
+                jsonObject.deliveryMethod =
+                  document.getElementById("delivery-method")?.value || "";
+                jsonObject.salesPerson =
+                  document.getElementById("sales-person")?.value || "";
 
-                // Item Details 
+                // Item Details - Updated to handle all rows including dynamically added ones
                 jsonObject.items = [];
-                const itemRows = document.querySelectorAll('table tbody tr');
-                itemRows.forEach(row => {
-                    const inputs = row.querySelectorAll('input, select');
-                    jsonObject.items.push({
-                        itemDetails: inputs[0].value.trim(),
-                        quantity: parseFloat(inputs[1].value) || 0,
-                        rate: parseFloat(inputs[2].value) || 0,
-                        discount: inputs[3].value.trim(),
-                        tax: inputs[4].value,
-                        amount: parseFloat(inputs[5].value) || 0
-                    });
+                const allRows = document.querySelectorAll(".add-row tr"); // Select all rows in the tbody
+
+                allRows.forEach((row) => {
+                  const item = {
+                    itemDetails:
+                      row
+                        .querySelector(
+                          'input[placeholder="Type or click to select an item"]'
+                        )
+                        ?.value?.trim() || "",
+                    quantity:
+                      parseFloat(
+                        row.querySelector("td:nth-child(2) input")?.value
+                      ) || 0,
+                    rate:
+                      parseFloat(row.querySelector(".rate-input")?.value) || 0,
+                    discount:
+                      row.querySelector(".discount-input")?.value?.trim() ||
+                      "0 %",
+                    tax: row.querySelector("select")?.value || "Select a Tax",
+                    amount:
+                      parseFloat(row.querySelector(".amount-class")?.value) ||
+                      0,
+                  };
+
+                  // Only add rows that have at least one field filled out
+                  if (
+                    item.itemDetails ||
+                    item.quantity > 0 ||
+                    item.rate > 0 ||
+                    item.discount !== "0 %" ||
+                    item.amount > 0
+                  ) {
+                    jsonObject.items.push(item);
+                  }
                 });
 
-                // Totals 
-                jsonObject.subTotal = parseFloat(document.getElementById('subTotal').textContent) || 0;
-                jsonObject.shippingCharges = parseFloat(document.getElementById('shippingCharges').value) || 0;
-                jsonObject.adjustment = parseFloat(document.getElementById('adjustment').value) || 0;
-                jsonObject.total = parseFloat(document.getElementById('total').textContent) || 0;
+                // Totals
+                jsonObject.subTotal =
+                  parseFloat(
+                    document.getElementById("subTotal")?.textContent
+                  ) || 0;
+                jsonObject.shippingCharges =
+                  parseFloat(
+                    document.getElementById("shippingCharges")?.value
+                  ) || 0;
+                jsonObject.adjustment =
+                  parseFloat(document.getElementById("adjustment")?.value) || 0;
+                jsonObject.total =
+                  parseFloat(document.getElementById("total")?.textContent) ||
+                  0;
 
                 // Terms and Conditions
-                jsonObject.termsAndConditions = document.querySelector('.tc-input-textarea').value.trim();
-                jsonObject.createRetainerInvoice = document.getElementById('tc-create-invoice').checked; 
-                jsonObject.hiddeninp = document.getElementById('hidden-inp').value;
-                jsonObject.hiddeninp1 = document.getElementById('hidden-inp1').value;
+                const tcTextarea = document.querySelector(".tc-input-textarea");
+                const tcCheckbox = document.getElementById("tc-create-invoice");
 
-                // // Display the JSON
-                // const jsonOutput = document.getElementById('jsonOutput'); // Make sure you have <div id="jsonOutput"></div> in your HTML
-                // jsonOutput.textContent = JSON.stringify(jsonObject, null, 2);
+                jsonObject.termsAndConditions = tcTextarea?.value?.trim() || "";
+                jsonObject.createRetainerInvoice = tcCheckbox?.checked || false;
+                jsonObject.hiddeninp =
+                  document.getElementById("hidden-inp").value;
 
-                fetch('/newinvoice/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            // 'X-CSRFToken': '{{ csrf_token }}'
-        },
-        body: JSON.stringify(jsonObject)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
-            }
+                // Display the JSON
+                try {
+                  const jsonOutput = document.getElementById("jsonOutput");
+                  if (jsonOutput) {
+                    const formattedJson = JSON.stringify(jsonObject, null, 2);
+                    jsonOutput.textContent = formattedJson;
+
+                    // Optional: Log to console for debugging
+                    console.log("Form Data:", jsonObject);
+                  } else {
+                    console.error("JSON output element not found");
+                  }
+                } catch (error) {
+                  console.error("Error displaying JSON:", error);
+                }
+
+                fetch("/newsalesorder/", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    // 'X-CSRFToken': getCookie('csrftoken') // Include CSRF token
+                  },
+                  body: JSON.stringify(jsonObject),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log("Success:", data);
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                  });
+
+                return jsonObject; // Return the object for further use if needed
+              }
+
+              // Add event listener to any save or submit button
+              document
+                .getElementById("submit-button")
+                ?.addEventListener("click", getOrderFormData);
             </script>
-        </form>
+          </form>
         </div>
       </main>
     </div>
