@@ -436,24 +436,24 @@
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
-          <div
-            class="nav-item drop-active active"
-            data-dropdown="sales-dropdown"
-          >
+          <div class="nav-item" data-dropdown="sales-dropdown">
             <div>
               <img src="images/sales-dark.svg" alt="Sales Icon" class="icon" />
               <span>Sales</span>
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
-          <div id="sales-dropdown" class="dropdown-content show">
-            <a href="/customerspage/">Customers</a>
-            <a href="/estimates/" class="active">Estimates</a>
-            <a href="/salesorder1/">Sales Orders</a>
-            <a href="/invoice1/">Invoices</a>
-            <a href="/payment1/">Payments Received</a>
+          <div id="sales-dropdown" class="dropdown-content">
+            <a href="#">Customers</a>
+            <a href="#">Estimates</a>
+            <a href="#">Sales Orders</a>
+            <a href="#">Invoices</a>
+            <a href="#" class="active">Payments Received</a>
           </div>
-          <div class="nav-item" data-dropdown="purchases-dropdown">
+          <div
+            class="nav-item drop-active active"
+            data-dropdown="purchases-dropdown"
+          >
             <div>
               <img
                 src="images/purchaces.svg"
@@ -463,6 +463,14 @@
               <span>Purchases</span>
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
+          </div>
+          <div id="purchases-dropdown" class="dropdown-content show">
+            <a href="#">Vendors</a>
+            <a href="#">Expanses</a>
+            <a href="#">Recurring Expanses</a>
+            <a href="#">Purchase Orders</a>
+            <a href="#">Bills</a>
+            <a href="#" class="active">Payment Mode</a>
           </div>
         </nav>
       </aside>
@@ -501,8 +509,11 @@
               padding: 0 10px;
             "
           >
-            <select class="dropdown">
-              <option>All Estimates</option>
+            <select
+              class="dropdown"
+              style="border: none; background-color: transparent"
+            >
+              <option>All Payments</option>
             </select>
             <div>
               <button class="button blue-button" style="padding: 10px">
@@ -521,12 +532,9 @@
               <span class="document-id">EST-0001</span>
               <div style="display: flex">
                 <button class="button2">
-                  <img src="images/link.svg" alt="" />
-                  <p>Attach Files</p>
-                </button>
-                <button class="button2">
-                  <img src="images/messages.svg" alt="" />
-                  <p>Comments & History</p>
+                  <img src="images/suicase.svg" alt="" />
+                  <p>Payment History</p>
+                  <img src="images/roundcross.svg" alt="" />
                 </button>
               </div>
             </div>
@@ -542,12 +550,10 @@
                     justify-content: space-between;
                   "
                 >
-                  <span class="document-name">{{objs.vendor_name}}</span>
-                  <span class="document-name">{{objs.total}}</span>
+                  <span class="document-name">Mr ABC</span>
+                  <span class="document-name">₹0.00</span>
                 </div>
-                <span class="document-date"
-                  >{{objs.purchase_order}}<br />{{objs.date}}</span
-                >
+                <span class="document-date">EST-0001 DD/MM/YYYY</span>
                 <span class="document-status">SENT ✓</span>
               </div>
             </div>
@@ -566,119 +572,103 @@
                 <img src="images/share.svg" alt="" />
                 <p>Share</p>
               </button>
-              <a
-                class="button1"
-                href="/estimateinvoice/{{id}}"
-                style="text-decoration: none; color: black"
-              >
+              <button class="button1">
                 <img src="images/pdf.svg" alt="" />
                 <p>PDF/Print</p>
-              </a>
-              <button
-                class="button1"
-                onclick="convert()"
-                style="cursor: pointer"
-              >
+              </button>
+              <button class="button1">
                 <img src="images/convert.svg" alt="" />
                 <p>Convert</p>
               </button>
-              <div
-                style="
-                  width: 150px;
-                  height: 50px;
-                  background-color: #e0e0e0;
-                  position: absolute;
-                  display: flex;
-                  z-index: 2;
-                  left: 960px;
-                  top: 194px;
-                  border-radius: 5px;
-                  overflow: hidden;
-                  justify-content: center;
-                  align-items: center;
-                  flex-direction: column;
-                  border: 1px solid black;
-                  opacity: 0;
-                  transition: height 0.3s ease, opacity 0.3s ease;
-                "
-                class="main-convert"
-              >
-                <div
-                  style="
-                    height: 50%;
-                    display: flex;
-                    width: 100%;
-                    justify-content: center;
-                    align-items: center;
-                    /* background-color: yellow; */
-                    /* border: 0px solid black; */
-                    cursor: pointer;
-                    transition: 0.3s ease;
-                    /* border-bottom: 1px solid black; */
-                  "
-                  class="convert1"
-                  data="invoice"
-                  onclick="data(this)"
-                >
-                  <b> Convert to Bill </b>
-                </div>
-                <!-- <div
-                  style="
-                    height: 50%;
-                    width: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border: 0px solid black;
-                    cursor: pointer;
-                    transition: 0.3s ease;
-                  "
-                  class="convert2"
-                  data="sales"
-                  onclick="data1(this)"
-                >
-                  <b> Convert to sales </b>
-                </div> -->
-                <style>
-                  .convert1:hover {
-                    background-color: #0099ff;
-                    color: white;
-                  }
-                  .convert2:hover {
-                    background-color: #0099ff;
-                    color: white;
-                  }
-                </style>
-                <script>
-                  function convert() {
-                    let styling = document.querySelector(".main-convert");
-
-                    if (styling.style.height === "0px") {
-                      styling.style.height = "100px"; // Set to content height
-                      styling.style.opacity = "1"; // Fade in
-                    } else {
-                      styling.style.height = "0"; // Collapse to 0 height
-                      styling.style.opacity = "0"; // Fade out
-                    }
-                  }
-
-                  function data(element) {
-                    let dataval = element.getAttribute("data");
-                    // console.log(dataval);
-                    window.location.href = "/purchasestobill/{{id}}/";
-                  }
-                  // function data1(element) {
-                  //   let dataval = element.getAttribute("data");
-                  //   // console.log(dataval);
-                  //   window.location.href = "/estimatetosales/{{id}}/";
-                  // }
-                </script>
-              </div>
               <button class="button1">⋮</button>
             </div>
           </div>
+          <style>
+            .estimate-container {
+              background-color: white;
+              border-radius: 8px;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+                0 1px 2px rgba(0, 0, 0, 0.24);
+              padding: 16px;
+              display: flex;
+              align-items: center;
+              width: 100%;
+            }
+            .icon-wrapper {
+              background-color: #e8e8e8;
+              border-radius: 50%;
+              width: 40px;
+              height: 40px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: 16px;
+            }
+            .estimate-content {
+              flex-grow: 1;
+              display: flex;
+            }
+            .estimate-title {
+              font-weight: bold;
+              text-align: start;
+              margin-bottom: 4px;
+            }
+            .estimate-description {
+              color: #666;
+              font-size: 14px;
+            }
+            .button-group {
+              display: flex;
+              gap: 8px;
+            }
+            .estimate-button {
+              padding: 8px 16px;
+              border-radius: 4px;
+              font-size: 14px;
+              cursor: pointer;
+              border: none;
+            }
+            .button-primary {
+              background-color: #1a73e8;
+              color: white;
+            }
+            .button-secondary {
+              background-color: white;
+              color: #1a73e8;
+              border: 1px solid #1a73e8;
+            }
+          </style>
           <div class="five">
-            <div class="preview-area">
+            <div
+              class="preview-area"
+              style="display: flex; flex-direction: column; gap: 20px"
+            >
+              <div class="estimate-container">
+                <div class="estimate-content">
+                  <div class="icon-wrapper">✉</div>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: start;
+                    "
+                  >
+                    <div class="estimate-title">Send the estimate</div>
+                    <div class="estimate-description">
+                      Go ahead and email this estimate to your customer or
+                      simply mark it as sent.
+                    </div>
+                  </div>
+                </div>
+                <div class="button-group">
+                  <button class="estimate-button button-primary">
+                    Send Estimate
+                  </button>
+                  <button class="estimate-button button-secondary">
+                    Mark as Sent
+                  </button>
+                </div>
+              </div>
               <div
                 class="preview-placeholder"
                 style="width: 100%; height: 70vh; overflow-y: scroll"

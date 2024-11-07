@@ -243,148 +243,140 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
       }
       .cont {
-        display: grid;
-        grid-template-columns: 0.5fr 1.5fr;
-        grid-template-rows: 0.2fr 0.2fr 2.6fr;
-        grid-auto-flow: row;
-        grid-template-areas:
-          "one two"
-          "three four"
-          "three five";
-      }
-      .one {
-        grid-area: one;
-      }
-      .two {
-        grid-area: two;
-      }
-      .three {
-        grid-area: three;
-      }
-      .four {
-        grid-area: four;
-      }
-      .five {
-        grid-area: five;
-      }
-      .one,
-      .two,
-      .three,
-      .four,
-      .five {
-        border: 1px solid #eaeaea;
+        max-width: 1400px;
+        margin: 20px auto;
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
       }
       .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 10px;
+        padding: 10px 20px;
         border-bottom: 1px solid #e0e0e0;
       }
-      .dropdown {
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+      .tabs {
+        display: flex;
+        gap: 30px;
       }
-      .three {
-        padding: 10px 0px;
-      }
-      .document-info {
-        background-color: #eaf0f5;
-        padding: 20px;
-      }
-      .button {
+      .tab {
         padding: 5px 10px;
-        margin-left: 5px;
-        background-color: #f8f8f8;
-        border: 1px solid #ccc;
+        cursor: pointer;
+        color: #777;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .tab.active {
+        color: #2196f3;
+        border-bottom: 2px solid #2196f3;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+      }
+      .btn {
+        padding: 5px 10px;
+        border: none;
         border-radius: 4px;
         cursor: pointer;
+        font-size: 14px;
       }
-      .blue-button {
-        background-color: #0099ff;
+      .btn-primary {
+        background-color: #2196f3;
         color: white;
-        border: none;
       }
-      .document-row {
-        display: flex;
-        align-items: center;
+      .btn-icon {
+        background-color: transparent;
+        color: #777;
+        font-size: 18px;
+      }
+      .table-container {
+        width: 100%;
+        overflow-x: visible;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 12px;
         border-bottom: 1px solid #e0e0e0;
+        font-size: 14px;
       }
-      .document-row .button1 {
-        padding: 10px 20px;
-        background-color: #efefef;
-        border: 1px solid #dadada;
-        font-size: medium;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        height: 50px;
+
+      th {
+        color: black;
+        font-weight: 700;
       }
-      .document-info {
-        display: flex;
-        align-items: center;
+
+      td {
+        color: #333;
       }
-      .checkbox {
-        margin-right: 10px;
+
+      .checkbox-cell {
+        width: 40px;
       }
-      .document-details {
-        display: flex;
-        flex-direction: column;
+
+      .search-icon {
+        width: 40px;
       }
-      .document-name {
-        font-weight: bold;
-      }
-      .document-date {
-        color: #666;
-        font-size: 0.9em;
-      }
-      .document-amount {
-        font-weight: bold;
-      }
-      .document-status {
-        font-size: 0.8em;
-        color: #0099ff;
-      }
-      .preview-area {
-        padding: 20px;
-        text-align: center;
-        background-color: #f8f8f8;
-        height: 100%;
-      }
-      .preview-placeholder {
-        width: 200px;
-        height: 250px;
-        margin: 0 auto;
-        background-color: #e0e0e0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        color: #666;
-        border: 1px solid #ccc;
-      }
-      .button2 {
-        display: flex;
-        padding: 10px;
-        border: none;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-      }
-      .button2 p {
-        font-size: medium;
-      }
+
       @media (max-width: 768px) {
-        .cont {
-          grid-template-columns: 1fr;
-          grid-template-areas:
-            "one"
-            "two"
-            "three"
-            "four"
-            "five";
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
+        }
+
+        thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+        }
+
+        tr {
+          border: 1px solid #ccc;
+          margin-bottom: 10px;
+        }
+
+        td {
+          border: none;
+          position: relative;
+          padding-left: 50%;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          min-height: 40px;
+        }
+
+        td:before {
+          position: absolute;
+          top: 6px;
+          left: 6px;
+          width: 45%;
+          padding-right: 10px;
+          white-space: nowrap;
+          content: attr(data-label);
+          font-weight: bold;
+        }
+
+        .checkbox-cell,
+        .search-icon {
+          padding-left: 12px;
+          text-align: left;
+        }
+
+        .checkbox-cell:before,
+        .search-icon:before {
+          display: none;
         }
       }
     </style>
@@ -392,7 +384,7 @@
   <body>
     <div class="container">
       <button class="menu-toggle">☰</button>
-      <aside class="sidebar">
+      <aside class="sidebar" style="overflow-y: scroll">
         <img src="images/krupa.svg" alt="Logo" class="logo" />
         <nav style="height: 80vh; display: flex; flex-direction: column">
           <div
@@ -436,24 +428,24 @@
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
-          <div
-            class="nav-item drop-active active"
-            data-dropdown="sales-dropdown"
-          >
+          <div class="nav-item" data-dropdown="sales-dropdown">
             <div>
               <img src="images/sales-dark.svg" alt="Sales Icon" class="icon" />
               <span>Sales</span>
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
           </div>
-          <div id="sales-dropdown" class="dropdown-content show">
-            <a href="/customerspage/">Customers</a>
-            <a href="/estimates/" class="active">Estimates</a>
-            <a href="/salesorder1/">Sales Orders</a>
-            <a href="/invoice1/">Invoices</a>
-            <a href="/payment1/">Payments Received</a>
+          <div id="sales-dropdown" class="dropdown-content">
+            <a href="#">Customers</a>
+            <a href="#">Estimates</a>
+            <a href="#">Sales Orders</a>
+            <a href="#">Invoices</a>
+            <a href="#" class="active">Payments Received</a>
           </div>
-          <div class="nav-item" data-dropdown="purchases-dropdown">
+          <div
+            class="nav-item drop-active active"
+            data-dropdown="purchases-dropdown"
+          >
             <div>
               <img
                 src="images/purchaces.svg"
@@ -463,6 +455,14 @@
               <span>Purchases</span>
             </div>
             <img src="images/dropdown.svg" alt="Arrow" class="arrow" />
+          </div>
+          <div id="purchases-dropdown" class="dropdown-content show">
+            <a href="#">Vendors</a>
+            <a href="#" class="active">Expanses</a>
+            <a href="#">Recurring Expanses</a>
+            <a href="#">Purchase Orders</a>
+            <a href="#">Bills</a>
+            <a href="#">Payment Mode</a>
           </div>
         </nav>
       </aside>
@@ -491,202 +491,163 @@
             </svg>
           </div>
         </div>
+
+        <style>
+          .approved {
+            color: #00a1ff;
+            font-weight: 800;
+          }
+          .partiallypaid,
+          .paid {
+            color: #4bb543;
+            font-weight: 800;
+          }
+          .overdue {
+            color: red;
+            font-weight: 800;
+          }
+          .pendingapproval {
+            color: orange;
+            font-weight: 800;
+          }
+          .draft {
+            color: black;
+            font-weight: 800;
+          }
+        </style>
+
         <div class="cont">
-          <div
-            class="one"
-            style="
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 0 10px;
-            "
-          >
-            <select class="dropdown">
-              <option>All Estimates</option>
-            </select>
-            <div>
-              <button class="button blue-button" style="padding: 10px">
-                + NEW ▼
-              </button>
-              <button
-                class="button"
-                style="padding: 10px; width: 40px; height: 40px"
-              >
-                ⋮
-              </button>
+          <div class="header">
+            <div class="tabs">
+              <h1 style="font-size: 24px; font-weight: 700; color: #000000">
+                All Expanses
+              </h1>
             </div>
-          </div>
-          <div class="two">
-            <div class="header">
-              <span class="document-id">EST-0001</span>
-              <div style="display: flex">
-                <button class="button2">
-                  <img src="images/link.svg" alt="" />
-                  <p>Attach Files</p>
-                </button>
-                <button class="button2">
-                  <img src="images/messages.svg" alt="" />
-                  <p>Comments & History</p>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="three">
-            <div class="document-info">
-              <input type="checkbox" class="checkbox" />
-              <div class="document-details" style="width: 90%; gap: 5px">
-                <div
-                  style="
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                  "
-                >
-                  <span class="document-name">{{objs.vendor_name}}</span>
-                  <span class="document-name">{{objs.total}}</span>
-                </div>
-                <span class="document-date"
-                  >{{objs.purchase_order}}<br />{{objs.date}}</span
-                >
-                <span class="document-status">SENT ✓</span>
-              </div>
-            </div>
-          </div>
-          <div class="four">
-            <div class="document-row" style="display: flex">
-              <button class="button1">
-                <img src="images/edit.svg" alt="" />
-                <p>Edit</p>
-              </button>
-              <button class="button1">
-                <img src="images/estimate-message.svg" alt="" />
-                <p>Send</p>
-              </button>
-              <button class="button1">
-                <img src="images/share.svg" alt="" />
-                <p>Share</p>
-              </button>
+            <div class="action-icons" style="display: flex; gap: 10px">
+              <button class="btn btn-primary">+ New</button>
               <a
-                class="button1"
-                href="/estimateinvoice/{{id}}"
-                style="text-decoration: none; color: black"
-              >
-                <img src="images/pdf.svg" alt="" />
-                <p>PDF/Print</p>
-              </a>
-              <button
-                class="button1"
-                onclick="convert()"
-                style="cursor: pointer"
-              >
-                <img src="images/convert.svg" alt="" />
-                <p>Convert</p>
-              </button>
-              <div
                 style="
-                  width: 150px;
-                  height: 50px;
-                  background-color: #e0e0e0;
-                  position: absolute;
+                  background-color: #f0f0f0;
+                  padding: 3px;
+                  height: 30px;
+                  width: 30px;
                   display: flex;
-                  z-index: 2;
-                  left: 960px;
-                  top: 194px;
-                  border-radius: 5px;
-                  overflow: hidden;
-                  justify-content: center;
                   align-items: center;
-                  flex-direction: column;
-                  border: 1px solid black;
-                  opacity: 0;
-                  transition: height 0.3s ease, opacity 0.3s ease;
+                  justify-content: center;
+                  border-radius: 5px;
+                  border: 1px solid #c2c2cd;
                 "
-                class="main-convert"
-              >
-                <div
-                  style="
-                    height: 50%;
-                    display: flex;
-                    width: 100%;
-                    justify-content: center;
-                    align-items: center;
-                    /* background-color: yellow; */
-                    /* border: 0px solid black; */
-                    cursor: pointer;
-                    transition: 0.3s ease;
-                    /* border-bottom: 1px solid black; */
-                  "
-                  class="convert1"
-                  data="invoice"
-                  onclick="data(this)"
-                >
-                  <b> Convert to Bill </b>
-                </div>
-                <!-- <div
-                  style="
-                    height: 50%;
-                    width: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border: 0px solid black;
-                    cursor: pointer;
-                    transition: 0.3s ease;
-                  "
-                  class="convert2"
-                  data="sales"
-                  onclick="data1(this)"
-                >
-                  <b> Convert to sales </b>
-                </div> -->
-                <style>
-                  .convert1:hover {
-                    background-color: #0099ff;
-                    color: white;
-                  }
-                  .convert2:hover {
-                    background-color: #0099ff;
-                    color: white;
-                  }
-                </style>
-                <script>
-                  function convert() {
-                    let styling = document.querySelector(".main-convert");
-
-                    if (styling.style.height === "0px") {
-                      styling.style.height = "100px"; // Set to content height
-                      styling.style.opacity = "1"; // Fade in
-                    } else {
-                      styling.style.height = "0"; // Collapse to 0 height
-                      styling.style.opacity = "0"; // Fade out
-                    }
-                  }
-
-                  function data(element) {
-                    let dataval = element.getAttribute("data");
-                    // console.log(dataval);
-                    window.location.href = "/purchasestobill/{{id}}/";
-                  }
-                  // function data1(element) {
-                  //   let dataval = element.getAttribute("data");
-                  //   // console.log(dataval);
-                  //   window.location.href = "/estimatetosales/{{id}}/";
-                  // }
-                </script>
-              </div>
-              <button class="button1">⋮</button>
+                ><img src="images/threedots.svg" alt=""
+              /></a>
+              <a
+                style="
+                  background-color: #fc8f31;
+                  padding: 3px;
+                  height: 30px;
+                  width: 30px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 5px;
+                "
+                ><img src="images/question.svg" alt=""
+              /></a>
             </div>
           </div>
-          <div class="five">
-            <div class="preview-area">
-              <div
-                class="preview-placeholder"
-                style="width: 100%; height: 70vh; overflow-y: scroll"
-              >
-                SAMPLE PDF
-              </div>
-            </div>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th><img src="images/table1.svg" alt="" /></th>
+                <th>DATE</th>
+                <th>BILL</th>
+                <th>REFERENCE NUMBER</th>
+                <th>VENDOR NAME</th>
+                <th>STATUS</th>
+                <th>DUE DATE</th>
+                <th>AMOUNT</th>
+                <th>BALANCE DUE</th>
+                <th class="search-icon">
+                  <img src="images/search.svg" alt="" style="scale: 1.2" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="BILL">EST-0003</td>
+                <td data-label="REFERENCE NUMBER">123456</td>
+                <td data-label="VENDOR NAME">Mr. Joe</td>
+                <td data-label="STATUS" class="partiallypaid">
+                  PARTIALLY PAID
+                </td>
+                <td data-label="DUE DATE">9 Aug 2024</td>
+                <td data-label="AMOUNT">0.00</td>
+                <td data-label="BALANCE DUE">0.00</td>
+              </tr>
+
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="BILL">EST-0003</td>
+                <td data-label="REFERENCE NUMBER">123456</td>
+                <td data-label="VENDOR NAME">Mr. Joe</td>
+                <td data-label="STATUS" class="overdue">OVERDUE</td>
+                <td data-label="DUE DATE">9 Aug 2024</td>
+                <td data-label="AMOUNT">0.00</td>
+                <td data-label="BALANCE DUE">0.00</td>
+              </tr>
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="BILL">EST-0003</td>
+                <td data-label="REFERENCE NUMBER">123456</td>
+                <td data-label="VENDOR NAME">Mr. Joe</td>
+                <td data-label="STATUS" class="approved">APPROVED</td>
+                <td data-label="DUE DATE">9 Aug 2024</td>
+                <td data-label="AMOUNT">0.00</td>
+                <td data-label="BALANCE DUE">0.00</td>
+              </tr>
+
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="BILL">EST-0003</td>
+                <td data-label="REFERENCE NUMBER">123456</td>
+                <td data-label="VENDOR NAME">Mr. Joe</td>
+                <td data-label="STATUS" class="pendingapproval">
+                  PENDING APPROVAL
+                </td>
+                <td data-label="DUE DATE">9 Aug 2024</td>
+                <td data-label="AMOUNT">0.00</td>
+                <td data-label="BALANCE DUE">0.00</td>
+              </tr>
+
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="BILL">EST-0003</td>
+                <td data-label="REFERENCE NUMBER">123456</td>
+                <td data-label="VENDOR NAME">Mr. Joe</td>
+                <td data-label="STATUS" class="draft">Draft</td>
+                <td data-label="DUE DATE">9 Aug 2024</td>
+                <td data-label="AMOUNT">0.00</td>
+                <td data-label="BALANCE DUE">0.00</td>
+              </tr>
+
+              <tr>
+                <td class="checkbox-cell"><input type="checkbox" /></td>
+                <td data-label="DATE">5 Aug 2024</td>
+                <td data-label="BILL">EST-0003</td>
+                <td data-label="REFERENCE NUMBER">123456</td>
+                <td data-label="VENDOR NAME">Mr. Joe</td>
+                <td data-label="STATUS" class="paid">PAID</td>
+                <td data-label="DUE DATE">9 Aug 2024</td>
+                <td data-label="AMOUNT">0.00</td>
+                <td data-label="BALANCE DUE">0.00</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </main>
     </div>

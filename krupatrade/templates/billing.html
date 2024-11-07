@@ -52,7 +52,7 @@
         .sidebar {
           left: -300px;
         }
-        .sidebar.hide {
+        .sidebar.show {
           left: 0;
         }
         .main-content {
@@ -230,6 +230,7 @@
         left: 0;
         right: 0;
         background-color: #ffffff;
+        z-index: 20;
         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         padding: 10px 0;
       }
@@ -267,218 +268,167 @@
         }
       }
 
-      /* content   */
-      .order-container {
-        background-color: #ffffff;
-        border-radius: 8px;
+      .table-container {
+        width: 100%;
+        max-width: 1300px;
+        margin: 40px auto;
         padding: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
       }
-      .breadcrumb-nav {
-        margin-bottom: 20px;
-        font-size: 0.9em;
-        color: #666;
-      }
-      .order-header {
+
+      /* Tabs Section */
+      .tabs {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        justify-content: flex-start;
         margin-bottom: 20px;
-        flex-wrap: wrap;
+        padding-left: 0;
       }
-      .order-number {
-        font-size: 1.2em;
+
+      .tabs li {
+        list-style: none;
+        margin-right: 30px;
+        font-size: 18px;
         font-weight: bold;
-        margin-bottom: 10px;
+        padding-bottom: 10px;
+        cursor: pointer;
+        color: #777;
+        border-bottom: 3px solid transparent;
       }
-      .order-track-btn {
-        background-color: #1a73e8;
+
+      .tabs li.active {
+        color: #007bff;
+        border-bottom: 3px solid #007bff;
+      }
+
+      /* Table Styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        height: 40vh;
+        overflow-y: scroll;
+      }
+
+      thead {
+        background-color: #f4f4f9;
+      }
+
+      thead th {
+        text-align: left;
+        padding: 15px;
+        font-weight: bold;
+        border-bottom: 2px solid #ddd;
+        color: #333;
+      }
+
+      tbody tr {
+        border-bottom: 1px solid #eee;
+      }
+
+      tbody td {
+        padding: 15px;
+        color: #555;
+        text-align: left;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      /* Payment Status Badges */
+      .status {
+        padding: 5px 15px;
+        border-radius: 12px;
+        font-weight: bold;
+        display: inline-block;
+        font-size: 14px;
+      }
+
+      .paid {
+        background-color: #28a745;
         color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1em;
       }
-      .invoice {
-        background-color: transparent;
-        color: #999a9d;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        border: 2px solid #d0d5dd;
-        cursor: pointer;
-        font-size: 1em;
+
+      .overdue {
+        background-color: #dc3545;
+        color: white;
       }
-      .order-date-info,
-      .delivery-date-info {
-        font-size: 0.9em;
-        color: #666;
-        margin-bottom: 5px;
+
+      .estimate {
+        background-color: #007bff;
+        color: white;
       }
-      .tracking-container {
-        margin: 30px 0;
-      }
-      .tracking-progress-bar {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 10px;
-        position: relative;
-      }
-      .tracking-step {
-        text-align: center;
-        flex: 1;
-        font-size: 0.8em;
-        position: relative;
-        padding-top: 20px;
-      }
-      .tracking-step::before {
-        content: "";
-        width: 20px;
-        height: 20px;
-        background-color: #e0e0e0;
+
+      /* Action Button */
+      .action-btn {
+        background-color: #343a40;
+        color: white;
+        padding: 8px 12px;
         border-radius: 50%;
-        position: absolute;
-        top: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
+        border: none;
+        cursor: pointer;
       }
-      .tracking-step.active::before {
-        background-color: #4caf50;
-      }
-      .tracking-step.active {
-        font-weight: bold;
-        color: #4caf50;
-      }
-      .tracking-bar-bg {
-        background-color: #e0e0e0;
-        height: 4px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1;
-      }
-      .tracking-bar {
-        background-color: #4caf50;
-        height: 100%;
-        width: 0;
-        transition: width 0.5s ease-in-out;
-      }
-      .product-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        justify-content: space-between;
-        padding: 15px;
-        background-color: #f9f9f9;
-        border-radius: 4px;
-      }
-      .product-info img {
-        width: 80px;
-        height: 80px;
-        margin-right: 20px;
-        border-radius: 4px;
-      }
-      .payment-delivery-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-      }
-      .payment-delivery-info > div {
-        flex: 1;
-        padding: 15px;
-        background-color: #f9f9f9;
-        border-radius: 4px;
-      }
-      .payment-delivery-info > div:first-child {
-        margin-right: 10px;
-      }
-      .support-links a {
-        display: block;
-        margin-bottom: 10px;
-        color: #1a73e8;
-        text-decoration: none;
-      }
-      .order-summary-container {
-        margin-top: 20px;
-        background-color: #f9f9f9;
-        padding: 15px;
-        border-radius: 4px;
-      }
-      .summary-details {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-      }
-      .summary-total {
-        font-weight: bold;
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid #ddd;
-      }
-      @media (max-width: 600px) {
-        body {
-          padding: 0px;
+
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+          display: block;
         }
-        .order-container {
+
+        thead tr {
+          position: absolute;
+          top: -9999px;
+          left: -9999px;
+        }
+
+        tbody tr {
+          margin-bottom: 15px;
           padding: 10px;
-          margin-bottom: 50px;
+          border-radius: 10px;
+          box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
         }
-        .order-header {
-          flex-direction: column;
-          align-items: flex-start;
+
+        tbody td {
+          padding-left: 50%;
+          position: relative;
+          text-align: right;
         }
-        .order-track-btn,
-        .invoice {
-          width: 100%;
-          margin-top: 10px;
-        }
-        .payment-delivery-info {
-          flex-direction: column;
-        }
-        .payment-delivery-info > div {
-          margin-bottom: 10px;
-        }
-        .payment-delivery-info > div:first-child {
-          margin-right: 0;
-        }
-        .tracking-step {
-          font-size: 0.7em;
-        }
-        .tracking-container {
-          padding-top: 30px;
-        }
-        .tracking-progress-bar {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .tracking-step {
-          width: 100%;
-          text-align: left;
-          padding-left: 30px;
-          margin-bottom: 20px;
-        }
-        .tracking-step::before {
+
+        tbody td:before {
+          position: absolute;
           left: 0;
-          top: 50%;
-          transform: translateY(-50%);
+          width: 50%;
+          padding-left: 15px;
+          font-weight: bold;
+          font-size: 14px;
+          text-align: left;
+          white-space: nowrap;
         }
-        .one {
-          flex-direction: column;
-          width: 100%;
+
+        tbody td:nth-of-type(1):before {
+          content: "#Invoice";
         }
-        .tracking-bar-bg {
-          left: 10px;
-          width: 4px;
-          top: 0;
-          bottom: 0;
-          height: auto;
+        tbody td:nth-of-type(2):before {
+          content: "Name";
         }
-        .tracking-bar {
-          width: 100%;
-          transition: height 0.5s ease-in-out;
+        tbody td:nth-of-type(3):before {
+          content: "Date";
+        }
+        tbody td:nth-of-type(4):before {
+          content: "Total";
+        }
+        tbody td:nth-of-type(5):before {
+          content: "Payment Status";
+        }
+        tbody td:nth-of-type(6):before {
+          content: "Action";
         }
       }
     </style>
@@ -557,7 +507,7 @@
             <img src="/images/orders.svg" alt="Orders Icon" class="icon" />
             <span>Orders</span>
           </a>
-          <a href="/billing/{{id}}/" class="nav-item">
+          <a href="/billing/{{id}}/" class="nav-item active">
             <img src="/images/invoice.svg" alt="Invoices Icon" class="icon" />
             <span>My Billings</span>
           </a>
@@ -565,7 +515,7 @@
             <img src="/images/quote.svg" alt="Quotes Icon" class="icon" />
             <span>My Request For Quote</span>
           </a>
-          <a href="/trackhome/{{id}}/" class="nav-item active">
+          <a href="/trackhome/{{id}}/" class="nav-item">
             <img src="/images/track.svg" alt="Track Orders Icon" class="icon" />
             <span>Track Orders</span>
           </a>
@@ -680,110 +630,183 @@
 
       <main class="main-content" style="margin-top: 100px">
         <div class="cont">
-          <div class="order-container">
-            <div class="breadcrumb-nav">Home > Orders > ID 3354654654526</div>
-
-            <div class="order-header">
-              <div class="order-number">Order ID: 3354654654526</div>
-              <div class="one" style="display: flex; gap: 20px">
-                <button class="invoice">Invoice</button>
-
-                <button class="order-track-btn" onclick="trackOrder()">
-                  Track order
-                </button>
-              </div>
-            </div>
-
-            <div class="order-date-info">Order date: Feb 16, 2022</div>
-            <div class="delivery-date-info">
-              Estimated delivery: May 16, 2022
-            </div>
-
-            <div class="tracking-container">
-              <div class="tracking-progress-bar">
-                <div class="tracking-bar-bg">
-                  <div class="tracking-bar" id="progress"></div>
-                </div>
-                <div class="tracking-step" data-step="1">Order Confirmed</div>
-                <div class="tracking-step" data-step="2">Shipped</div>
-                <div class="tracking-step" data-step="3">Out For Delivery</div>
-                <div class="tracking-step" data-step="4">Delivered</div>
-              </div>
-            </div>
-
-            <div class="product-info">
-              <div style="display: flex; align-items: center">
-                <img src="images/product.png" alt="Primary TMT Fe 500D" />
-                <h3 style="font-size: larger">Primary TMT Fe 500D</h3>
-              </div>
-              <div>
-                <p>₹2599.00</p>
-                <p>Qty: 1</p>
-              </div>
-            </div>
-
-            <div class="payment-delivery-info">
-              <div class="payment-info">
-                <h3>Payment</h3>
-                <p>Visa **56</p>
-              </div>
-              <div class="delivery-info">
-                <h3>Delivery</h3>
-                <p>847 Jewess Bridge Apt.</p>
-                <p>174 London, UK</p>
-                <p>474-769-3919</p>
-              </div>
-            </div>
-
-            <div class="support-links">
-              <h3>Need Help</h3>
-              <a href="#">Order Issues</a>
-              <a href="#">Delivery Info</a>
-              <a href="#">Returns</a>
-            </div>
-
-            <div class="order-summary-container">
-              <h3>Order Summary</h3>
-              <div class="summary-details">
-                <span>Discount</span>
-                <span>₹5554</span>
-              </div>
-              <div class="summary-details">
-                <span>Discount (20%)</span>
-                <span>-₹1109.40</span>
-              </div>
-              <div class="summary-details">
-                <span>Delivery</span>
-                <span>₹0.00</span>
-              </div>
-              <div class="summary-details">
-                <span>Tax</span>
-                <span>+₹221.88</span>
-              </div>
-              <div class="summary-total">
-                <span>Total</span>
-                <span>₹4717.38</span>
-              </div>
-            </div>
+          <div class="table-container">
+            <ul class="tabs">
+              <li class="active" data-status="all">All</li>
+              <li data-status="estimate">Estimate</li>
+              <li data-status="paid">Paid</li>
+              <li data-status="overdue">Overdue</li>
+            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>#Invoice</th>
+                  <th>Name</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Payment Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- <tr data-status="paid">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status paid">Paid</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                <!-- <tr data-status="overdue">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status overdue">Overdue</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                {% for i in estimates %}
+                <tr data-status="estimate">
+                  <td>{{i.estimate_number}}</td>
+                  <td>{{i.request.company}}</td>
+                  <td>{{i.estimate_date}}</td>
+                  <td>{{i.total}}</td>
+                  <td><span class="status estimate">Estimate</span></td>
+                  <!-- <td><img src="images/go_toarrow.svg" alt="" /></td> -->
+                  <td>
+                    <!-- <img src="images/clip.svg" alt="" /> -->
+                    <a
+                      href="/invoice/{{id}}/{{i.id}}/estimate/"
+                      style="text-decoration: none; color: blue"
+                      class="btn btn-primary"
+                      >Open</a
+                    >
+                  </td>
+                </tr>
+                {% endfor %}
+                <!-- <tr data-status="estimate">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status estimate">Estimate</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                {% for i in invoiceEstimate %}
+                <tr data-status="paid">
+                  <td>{{i.invoice_number}}</td>
+                  <td>{{i.request.company}}</td>
+                  <td>{{i.due_date}}</td>
+                  <td>{{i.total}}</td>
+                  <td><span class="status paid">INVOICED</span></td>
+                  <!-- <td><img src="images/go_toarrow.svg" alt="" /></td> -->
+                  <td>
+                    <!-- <img src="images/clip.svg" alt="" /> -->
+                    <a
+                      href="/invoice/{{id}}/{{i.id}}/invoice/"
+                      style="text-decoration: none; color: blue"
+                      class="btn btn-primary"
+                      >Open</a
+                    >
+                  </td>
+                </tr>
+                {% endfor %} {% for i in salesorder %}
+                <tr data-status="overdue">
+                  <td>{{i.sales_order_number}}</td>
+                  <td>{{i.request.company}}</td>
+                  <td>{{i.sales_order_date}}/td></td>
+                  <td>{{i.total}}</td>
+                  <td><span class="status overdue">SALES</span></td>
+                  <!-- <td><img src="images/go_toarrow.svg" alt="" /></td> -->
+                  <td>
+                    <!-- <img src="images/clip.svg" alt="" /> -->
+                    <a
+                      href="/invoice/{{id}}/{{i.id}}/sales/"
+                      style="text-decoration: none; color: blue"
+                      class="btn btn-primary"
+                      >Open</a
+                    >
+                  </td>
+                </tr>
+                {% endfor %}
+                <!-- <tr data-status="estimate">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status estimate">Estimate</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                <!-- <tr data-status="paid">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status paid">Paid</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                <!-- <tr data-status="overdue">
+                  <td>#0905</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status overdue">Overdue</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                <!-- <tr data-status="estimate">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status estimate">Estimate</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                <!-- <tr data-status="estimate">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status estimate">Estimate</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr> -->
+                <!-- <tr data-status="paid">
+                  <td>#0901</td>
+                  <td>Primary TMT Fe 500D</td>
+                  <td>03.12.2020</td>
+                  <td>14500</td>
+                  <td><span class="status paid">Paid</span></td>
+                  <td><img src="images/go_toarrow.svg" alt="" /></td>
+                </tr>
+              </tbody> -->
+              </tbody>
+            </table>
           </div>
-
           <script>
-            function trackOrder() {
-              let progress = document.getElementById("progress");
-              let steps = document.querySelectorAll(".tracking-step");
-              let activeStep = 2; // Change this to track the current step
+            document.addEventListener("DOMContentLoaded", function () {
+              const tabs = document.querySelectorAll(".tabs li");
+              const rows = document.querySelectorAll("tbody tr");
 
-              progress.style.width =
-                ((activeStep - 1) / (steps.length - 1)) * 100 + "%";
+              tabs.forEach((tab) => {
+                tab.addEventListener("click", function () {
+                  tabs.forEach((tab) => tab.classList.remove("active"));
+                  this.classList.add("active");
 
-              steps.forEach((step, index) => {
-                if (index < activeStep) {
-                  step.classList.add("active");
-                }
+                  const status = this.getAttribute("data-status");
+
+                  rows.forEach((row) => {
+                    if (status === "all") {
+                      row.style.display = "";
+                    } else {
+                      if (row.getAttribute("data-status") === status) {
+                        row.style.display = "";
+                      } else {
+                        row.style.display = "none";
+                      }
+                    }
+                  });
+                });
               });
-            }
-
-            window.onload = trackOrder;
+            });
           </script>
         </div>
       </main>
@@ -791,7 +814,7 @@
     <script>
       document.querySelectorAll(".nav-item").forEach((item) => {
         item.addEventListener("click", function (e) {
-          e.preventDefault();
+          // e.preventDefault();
           document.querySelector(".nav-item.active").classList.remove("active");
           this.classList.add("active");
         });

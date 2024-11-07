@@ -51,6 +51,18 @@ urlpatterns = [
     path('bills2/<int:id>/',Bills2,name="Bills2"),
     path('bills3/',Bills3,name="Bills3"),
 
+    path('paymentsvendor1/',Payment1,name="Payment1"),
+    path('paymentsvendor2/',Payment2,name="Payment2"),
+    path('paymentsvendor3/',Payment3,name="Payment3"),
+
+    path('expanses1/',Expansens1,name="Expansens1"),
+    path('expanses2/',Expansens2,name="Expansens2"),
+    path('expanses3/',Expansens3,name="Expansens3"),
+
+    path('recurring1/',ReccuringExpanses1,name="ReccuringExpanses1"),
+    path('recurring2/',ReccuringExpanses2,name="ReccuringExpanses2"),
+    path('recurring3/',ReccuringExpanses3,name="ReccuringExpanses3"),
+
 ]
 
 if settings.DEBUG:

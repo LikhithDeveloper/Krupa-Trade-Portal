@@ -356,7 +356,7 @@
             justify-content: space-around;
           "
         >
-          <a href="#" class="nav-item">
+          <a href="/dashboard/{{id}}/" class="nav-item">
             <img
               src="/images/dashboard.svg"
               alt="Dashboard Icon"
@@ -364,7 +364,7 @@
             />
             <span>Dashboard</span>
           </a>
-          <a href="/products/{{id}}/" class="nav-item">
+          <a href="/" class="nav-item">
             <img src="/images/products.svg" alt="Products Icon" class="icon" />
             <span>Products</span>
           </a>
@@ -372,15 +372,15 @@
             <img src="/images/orders.svg" alt="Orders Icon" class="icon" />
             <span>Orders</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="/billing/{{id}}/" class="nav-item">
             <img src="/images/invoice.svg" alt="Invoices Icon" class="icon" />
-            <span>My Invoices</span>
+            <span>My Billings</span>
           </a>
           <a href="/request/{{id}}/" class="nav-item">
             <img src="/images/quote.svg" alt="Quotes Icon" class="icon" />
             <span>My Request For Quote</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="/trackhome/{{id}}/" class="nav-item">
             <img src="/images/track.svg" alt="Track Orders Icon" class="icon" />
             <span>Track Orders</span>
           </a>
@@ -388,7 +388,7 @@
             <img src="/images/account.svg" alt="Account Icon" class="icon" />
             <span>Account</span>
           </a>
-          <a href="#" class="nav-item active">
+          <a href="/support/{{id}}/" class="nav-item active">
             <img
               src="/images/tickets.svg"
               alt="Support Tickets Icon"
@@ -470,13 +470,19 @@
                 </tr>
               </thead>
               <tbody class="ticket-data">
+                {% for i in tickets %}
                 <tr>
-                  <td>#67287</td>
-                  <td>Issue with adding websites</td>
+                  <td>{{i.id}}</td>
+                  <td>{{i.subject}}</td>
+                  {% if answered %}
                   <td>closed</td>
-                  <td>General Enquiries</td>
-                  <td>2024-02-26 09:22:28</td>
+                  {% else %}
+                  <td>Open</td>
+                  {% endif %}
+                  <td>{{i.department}}</td>
+                  <td>{{i.created_at}}</td>
                 </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -490,9 +496,9 @@
         .addEventListener("click", function () {
           document.querySelector(".sidebar").classList.toggle("show");
         });
-      const records = JSON.parse('{{ tickets|safe }}');
+      const records = JSON.parse("{{ tickets|safe }}");
       console.log(records);
-     
+
       const active1 = document.getElementById("tab1");
       const active2 = document.getElementById("tab2");
       const active3 = document.getElementById("tab3");
@@ -506,7 +512,9 @@
           <tr>
                   <td>${pro.fields.order_id}</td>
                   <td>${pro.fields.subject}</td>
-                  <td>${pro.fields.answered == true?"Closed":"Not closed"}</td>
+                  <td>${
+                    pro.fields.answered == true ? "Closed" : "Not closed"
+                  }</td>
                   <td>${pro.fields.department}</td>
                   <td>${pro.fields.created_at}</td>
                 </tr>`;
@@ -519,9 +527,10 @@
 
       displayTickets(records);
       function filterTicket1() {
-        
         list.innerHTML = "";
-        const filterdata = records.filter((pro) => pro.fields.answered == false);
+        const filterdata = records.filter(
+          (pro) => pro.fields.answered == false
+        );
         displayTickets(filterdata);
         active1.classList.remove("active");
         active2.classList.add("active");

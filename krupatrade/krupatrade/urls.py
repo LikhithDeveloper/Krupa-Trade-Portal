@@ -31,10 +31,11 @@ urlpatterns = [
     path('support/<int:id>/',support_ticket_view_1,name="support_ticket_view_1"),
     path('support_create/<int:id>/',support_ticket_view_2,name="support_ticket_view_2"),
     path('accounts/<int:id>/',account_view,name='accounts'),
-    path('invoice/<int:id>/',invoice_view,name="invoice_view"),
-    path('dashboard/',dashboard_view,name="dashboard_view"),
-    path('trackhome/',TrackHome,name="TrackHome"),
-    path('trackorder/',TrackOrder,name="TrackOrder"),
+    path('invoice/<int:id>/<int:invid>/<str:name>/',invoice_view,name="invoice_view"),
+    path('billing/<int:id>/',Billing,name="Billing"),
+    path('dashboard/<int:id>/',dashboard_view,name="dashboard_view"),
+    path('trackhome/<int:id>/',TrackHome,name="TrackHome"),
+    path('trackorder/<int:id>/',TrackOrder,name="TrackOrder"),
 
     path('',include('admin_panel.urls')),
 ]

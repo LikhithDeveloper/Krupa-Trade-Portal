@@ -84,11 +84,10 @@ def order_details_view(request,id):
 
 
 @login_required
-def order_view(request, id):
-    context = {'id':id}  # Initialize context with a default value
+def order_view(request, id):  
     try:
         user = CustomUser.objects.get(id=id)
-        print(user)
+        # print(user)
         orders = Orders.objects.filter(profile=user)
         # print(orders)
         # order_id = orders[0].id
@@ -96,11 +95,12 @@ def order_view(request, id):
         # print(orders_json)
         serializer = OrdersSerializer(orders, many=True)
         orders_json = JSONRenderer().render(serializer.data)
-        print(orders_json)
+        orders_python = json.loads(orders_json)
+        # print(orders_python)
         
         if not orders.exists():  # Check if there are no orders
             context = {'orders': orders_json.decode('utf-8'), 'id': id}
-            # print(context)
+            # print("context")
         else:
             order_id = orders[0].id
             context = {'orders': orders_json.decode('utf-8'), 'id': id, 'order_id': order_id}
@@ -151,7 +151,7 @@ def products_view(requset):  # sourcery skip: avoid-builtin-shadow
         request_model.save()
     return render(requset,"products.html",context)
 
-
+@login_required
 def request_view(request,id):
     profile = CustomUser.objects.filter(id=id).first()
     requests = Request.objects.filter(profile=profile)
@@ -171,7 +171,7 @@ def support_ticket_view_1(request,id):
     print(ticket_json)
     context = {
         'id': id,
-        'tickets': ticket_json  # Decode JSON bytes to string
+        'tickets': tickets  # Decode JSON bytes to string
     }
     # print(context)
     return render(request,"supportticket.html",context)
@@ -243,27 +243,39 @@ def account_view(request, id):
     context = {'data': data, 'address': address, 'id': id, 'req': req, 'info': info}
     return render(request, "accounts.html", context)
 
+@login_required
+def Billing(request,id):
+    user = CustomUser.objects.get(id = id)
+    estimate = Estimate.objects.filter(customer_name = user)
+    salesorder = SalesOrder.objects.filter(customer_name = user)
+    invoiceEstimate = InvoiceEstimate.objects.filter(customer_name = user)
+    context = {'estimates':estimate,'salesorder':salesorder,'invoiceEstimate':invoiceEstimate,'id':id}
+    print(salesorder)
+    return render(request,"billing.html",context)
+
 
 
 @login_required
-def invoice_view(request,id):
-    # user = CustomUser.objects.get(id = id)
-    # address = UserAddress.objects.get(profile = user)
-    # order = Orders.objects.get(profile = user)
-    # invoice = Invoice.objects.get(order = order)
-    # print(invoice.invoice_id)
-    # print(order)
-    # print(user)
-    # print(address)
-    # context = {'address':address,'invoice':invoice,'user':user}
+def invoice_view(request,id,invid,name):
+    if name == "estimate":
+        estimate = Estimate.objects.get(id = invid)
+        # context = {'objs':}
     return render(request,"invoice.html")
 
 
-def dashboard_view(request):
-    return render(request,'dashboard.html')
+def dashboard_view(request,id):
+    user = CustomUser.objects.get(id = id)
+    estimate = Estimate.objects.filter(customer_name = user)
+    salesorder = SalesOrder.objects.filter(customer_name = user)
+    invoiceEstimate = InvoiceEstimate.objects.filter(customer_name = user)
+    requests = len(Request.objects.filter(profile = user))
+    orders = len(Orders.objects.filter(profile = user))
+    context = {'estimates':estimate,'salesorder':salesorder,'invoiceEstimate':invoiceEstimate,'id':id,'requests':requests,'orders':orders}
+    # print(salesorder)
+    return render(request,'dashboard.html',context)
 
-def TrackHome(request):
-    return render(request,"Track1.html")
+def TrackHome(request,id):
+    return render(request,"Track1.html",{'id':id})
 
-def TrackOrder(request):
-    return render(request,"Track2.html")
+def TrackOrder(request,id):
+    return render(request,"Track2.html",{'id':id})

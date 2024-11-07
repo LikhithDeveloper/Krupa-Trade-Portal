@@ -306,9 +306,11 @@ def Newestimates(request):   # sourcery skip: avoid-builtin-shadow
             # print("customer_name1.request =", True)
 
             # Update the customer's price and request status
+            
             customer_name1.price = float(data.get('total', 0.00))
             customer_name1.request = True
             customer_name1.save()
+            print(customer_name1.request)
 
             # Create the related EstimateItem objects
             for item in data['items']:
@@ -814,12 +816,22 @@ def Purchases1(request):
 
 def Purchases2(request,id):
     objs = Purchase.objects.get(id = id)
-    context = {'objs':objs}
+    context = {'objs':objs,'id':id}
     return render(request,"purchases2.html",context)
 
 @csrf_exempt
 def PurchasesToBill(request,id):
-    return render(request,"PurchasesToBill.html")
+    objs1 = Purchase.objects.get(id = id)
+    objs2 = PurchaseItem.objects.filter(invoice = objs1)
+    if last_bill := Bill.objects.all().last():
+        print(last_bill.bill_number)
+        bill1 = last_bill.bill_number
+        bill_number = int(bill1.split('-')[1])
+        # print(bill_number)
+        context = {"objs1": objs1,"objs2":objs2, "bill_number": bill_number+1,'id':id}
+    else:
+        context = {"objs1": objs1,"objs2":objs2, "bill_number": 1,'id':id}
+    return render(request,"PurchasesToBill.html",context)
 
 
 @csrf_exempt
@@ -838,11 +850,14 @@ def Purchases3(request):
         try:
             # Parse JSON data from the request body
             data = json.loads(request.body)
-            vendor = Vendor.objects.get(companyname=data.get('vendorName', 'Select or add Vendor'))
+            name = data.get('vendorName', 'Select or add Vendor')
+            vendorid = int(name.split('-')[1])
+            vendor = Vendor.objects.get(id = vendorid)
+
             
             # Create Purchase instance
             invoice = Purchase.objects.create(
-                vendor_name=vendor.companyname,
+                vendor_name=vendor,
                 source_of_supply=data.get('SourceOfSupply', ''),
                 destination_of_supply=data.get('DestinationOfSupply', ''),
                 purchase_order=data.get('purchaseorder', ''),
@@ -863,7 +878,7 @@ def Purchases3(request):
             for item_data in data.get('items', []):
                 PurchaseItem.objects.create(
                     invoice=invoice,
-                    item_details=item_data.get('item_details', ''),
+                    item_details=item_data.get('itemDetails', ''),
                     quantity=int(item_data.get('quantity', 0)),
                     rate=float(item_data.get('rate', '0.00')),
                     discount=float(item_data.get('discount', '0.00')),
@@ -910,12 +925,17 @@ def Bills3(request):
         try:
             # Parse JSON data from the request body
             data = json.loads(request.body)
-            print(data)
-            vendor = Vendor.objects.get(companyname=data.get('vendorName', 'Select or add Vendor'))
+            # print(data)
+            name = data.get('vendorName', 'Select or add Vendor')
+            # print(name)
+            vendorid = int(name.split('-')[1])
+            # print(vendorid)
+            vendor = Vendor.objects.get(id = vendorid)
+            # print(vendor)
 
             # Create Bill instance
             bill = Bill.objects.create(
-                vendor_name=vendor.companyname,
+                vendor_name=vendor,
                 source_of_supply=data.get('SourceOfSupply', ''),
                 destination_of_supply=data.get('DestinationOfSupply', ''),
                 bill_number=data.get('bill', ''),
@@ -931,6 +951,12 @@ def Bills3(request):
                 adjustment=float(data.get('adjustment', '0.00')),
                 total=float(data.get('total', '0.00')),
             )
+            # print(data.get('hiddeninp'))
+            if hiddeninp := data.get('hiddeninp'):
+                billu = Purchase.objects.get(id = data.get('hiddeninp'))
+                billu.status = 'BILLED'
+                billu.save()
+
 
             # Create associated BillItems
             for item_data in data.get('items', []):
@@ -956,3 +982,132 @@ def Bills3(request):
             return JsonResponse({'error': str(e)}, status=500)
 
     return render(request, "bills3.html", context)
+
+
+def Payment1(request):
+    return render(request,"paymentvendor1.html")
+def Payment2(request):
+    return render(request,"paymentvendor2.html")
+def Payment3(request):
+    return render(request,"paymentvendor3.html")
+
+
+
+def Expansens1(request):
+    return render(request,"espanses1.html")
+
+
+def Expansens2(request):
+    return render(request,"espanses2.html")
+
+@csrf_exempt
+def Expansens3(request):
+    # Handling GET request to display the form with vendors and an invoice number
+    if request.method == "POST":
+        vendors = Vendor.objects.all()
+        last_expense = Expense.objects.all().last()
+        
+        # Generate the next invoice number if there is an existing expense
+        if last_expense:
+            last_invoice_number = int(last_expense.invoice_number.split('-')[1])
+            next_invoice_number = f"EXP-{last_invoice_number + 1}"
+        else:
+            next_invoice_number = "EXP-1"
+        
+        # context = {
+        #     "vendors": vendors,
+        #     "next_invoice_number": next_invoice_number
+        # }
+    
+        try:
+            # Parse JSON data from the request body
+            data = json.loads(request.body)
+
+            # Get or validate vendor by parsing the vendor ID from the provided data
+            vendor_name = data.get('vendor', 'Select or add Vendor')
+            vendor_id = int(vendor_name.split('-')[1]) if '-' in vendor_name else None
+            vendor = Vendor.objects.get(id=vendor_id) if vendor_id else None
+
+            # Create Expense instance
+            expense = Expense.objects.create(
+                start_date=data.get('startDate', None),
+                expense_account=data.get('expenseAccount', ''),
+                amount=float(data.get('amount', '0.00')),
+                paid_through=data.get('paidThrough', ''),
+                expense_type=data.get('expenseType', ''),
+                sac=data.get('sac', ''),
+                vendor=vendor,
+                gst_treatment=data.get('gstTreatment', ''),
+                source_of_supply=data.get('sourceOfSupply', ''),
+                destination_of_supply=data.get('destinationOfSupply', ''),
+                reverse_charge=data.get('reverseCharge', False),
+                tax=float(data.get('tax', '0.00')),
+                invoice_number=data.get('invoiceNumber', ''),
+                notes=data.get('notes', ''),
+                customer_name=data.get('customerName', 'Select or add customer')
+            )
+
+            return JsonResponse({'message': 'Expense created successfully'}, status=201)
+
+        except Vendor.DoesNotExist:
+            return JsonResponse({'error': 'Vendor not found'}, status=404)
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)},status=500)
+    return render(request,"espanses3.html")
+
+
+def ReccuringExpanses1(request):
+    return render(request,"reccuring1.html")
+
+def ReccuringExpanses2(request):
+    return render(request,"reccuring2.html")
+
+@csrf_exempt
+def ReccuringExpanses3(request):
+    # Handling GET request to display the form with vendors
+    if request.method == "POST":
+        vendors = Vendor.objects.all()
+        context = {"vendors": vendors}
+        try:
+            # Parse JSON data from the request body
+            data = json.loads(request.body)
+
+            # Get or validate vendor by parsing the vendor ID from the provided data
+            vendor_name = data.get('vendor', 'Select or add Vendor')
+            vendor_id = int(vendor_name.split('-')[1]) if '-' in vendor_name else None
+            vendor = Vendor.objects.get(id=vendor_id) if vendor_id else None
+
+            # Create Expense instance
+            expense = Expense.objects.create(
+                start_date=data.get('startDate', None),
+                expense_account=data.get('expenseAccount', ''),
+                amount=float(data.get('amount', '0.00')),
+                paid_through=data.get('paidThrough', ''),
+                expense_amount=float(data.get('expenseamount', '0.00')),
+                expense_type=data.get('expenseType', ''),
+                sac=data.get('sac', ''),
+                vendor=vendor,
+                gst_treatment=data.get('gstTreatment', ''),
+                source_of_supply=data.get('sourceOfSupply', ''),
+                destination_of_supply=data.get('destinationOfSupply', ''),
+                reverse_charge=data.get('reverseCharge', False),
+                tax=float(data.get('tax', '0.00')),
+                notes=data.get('notes', ''),
+                customer_name=data.get('customerName', 'Select or add customer')
+            )
+
+            return JsonResponse({'message': 'Expense created successfully'}, status=201)
+
+        except Vendor.DoesNotExist:
+            return JsonResponse({'error': 'Vendor not found'}, status=404)
+        except ValidationError as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return render(request, "reccuring2.html", context)

@@ -23,47 +23,20 @@
       }
       .sidebar {
         width: 300px;
+        background-color: #4729c0;
+        color: black;
         background-color: white;
         padding: 20px;
         transition: all 0.3s ease;
-        position: fixed;
-        top: 60px;
-        bottom: 0;
-        left: 0;
-        z-index: 1000;
-        overflow-y: auto;
-      }
-      .sidebar.hide {
-        left: -300px;
       }
       .main-content {
         flex-grow: 1;
-        margin-left: 300px; /* Match sidebar width */
         transition: all 0.3s ease;
-        padding-top: 60px;
-        padding-left: 20px; /* Add some padding */
-        padding-right: 20px; /* Add some padding */
       }
-      .main-content.full-width {
-        margin-left: 0;
-      }
-
-      @media (max-width: 768px) {
-        .sidebar {
-          left: -300px;
-        }
-        .sidebar.show {
-          left: 0;
-        }
-        .main-content {
-          margin-left: 0;
-        }
-      }
-
-      nav {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+      .logo {
+        width: 100%;
+        max-width: 200px;
+        margin-bottom: 30px;
       }
       .nav-item {
         display: flex;
@@ -79,53 +52,33 @@
         transition: background-color 0.2s;
       }
       .nav-item:hover {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.1);
       }
       .nav-item.active {
         background-color: #00a1ff;
-        color: white;
+        font-weight: 600;
       }
       .icon {
         width: 20px;
         height: 20px;
         fill: currentColor;
+        margin-right: 10px;
       }
       .top-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 20px;
         background-color: #fff;
-        padding: 10px 20px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1001;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      .logo-container {
-        display: flex;
-        align-items: center;
-      }
-      .logo {
-        height: 90px;
-        margin-right: 20px;
-      }
-      .menu-toggle {
-        background: none;
-        border: none;
-        color: black;
-        font-size: 24px;
-        cursor: pointer;
-        margin-right: 15px;
+        padding: 30px;
       }
       .search-bar {
         display: flex;
-        background-color: #dee2e6;
+        background-color: #fff;
         border-radius: 5px;
         overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         width: 300px;
-        margin-left: 50px;
       }
       .search-bar input {
         flex-grow: 1;
@@ -133,11 +86,11 @@
         border: none;
         outline: none;
         font-size: 14px;
-        background-color: transparent;
+        background-color: #dee2e6;
       }
       .search-bar button {
         padding: 10px 15px;
-        background-color: transparent;
+        background-color: #dee2e6;
         border: none;
         cursor: pointer;
       }
@@ -150,297 +103,253 @@
         height: 24px;
         fill: #666;
       }
-      .nav-contact-card {
-        background-color: white;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        width: 250px;
-        height: 100px;
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: black;
+        font-size: 24px;
+        cursor: pointer;
       }
-      .title {
-        color: #00a2e8;
-        font-size: 15px;
-        font-weight: bold;
+      .filter-button {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 30px;
+        background-color: #fff;
+        border: 1px solid black;
+        border-radius: 20px;
+        font-size: 14px;
+        color: #333;
+        cursor: pointer;
         margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
       }
-      .contact-icon {
-        width: 30px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .contact-icon::before {
-        content: "";
-        width: 15px;
-        height: 15px;
-        border: 2px solid white;
-        border-top: none;
-        border-right: none;
-        transform: rotate(-45deg);
-        margin-top: -5px;
-      }
-      .buttons {
-        display: flex;
-        gap: 10px;
-      }
-      .btn {
-        flex: 1;
-        padding: 4px;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
+      .filter-button .icon {
+        margin-left: 5px;
+        width: 16px;
         color: white;
+        background-color: #324558;
+        border-radius: 50%;
+        height: 16px;
       }
-      .whatsapp {
-        background-color: #25d366;
+      .cont {
+        padding: 10px;
+        overflow-y: scroll;
       }
-      .call {
-        background-color: #00a2e8;
-      }
+
       @media (max-width: 768px) {
-        .search-bar {
-          width: 200px;
-        }
         .sidebar {
-          left: -300px;
+          width: 300px;
         }
-        .sidebar.hide {
-          left: 0px;
+        .nav-item {
+          justify-content: flex-start;
+          padding: 15px;
+        }
+        .top-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .search-bar {
+          width: 100%;
+        }
+        .filter-button {
+          width: 100%;
+          justify-content: center;
+        }
+        .menu-toggle {
+          display: block;
         }
       }
 
       @media (max-width: 480px) {
-        .search-bar {
-          display: none;
+        .container {
+          flex-direction: column;
         }
-        .top-icons {
-          gap: 10px;
+        .sidebar {
+          position: fixed;
+          height: 100%;
+          z-index: 1000;
+          left: -300px;
+          transition: left 0.3s ease;
         }
-      }
-
-      .bottom-nav {
-        display: none;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: #ffffff;
-        z-index: 20;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        padding: 10px 0;
-      }
-
-      .bottom-nav .bottom-nav-items {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        list-style-type: none;
-      }
-
-      .bottom-nav .bottom-nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-        color: #6b7280;
-        font-size: 12px;
-        font-weight: 500;
-      }
-
-      .bottom-nav .bottom-nav-item.b-active {
-        color: #0284c7;
-      }
-
-      .bottom-nav .bottom-nav-item svg {
-        width: 24px;
-        height: 24px;
-        margin-bottom: 4px;
-      }
-
-      @media (max-width: 767px) {
-        .bottom-nav {
+        .menu-toggle {
           display: block;
+          position: fixed;
+          top: 15px;
+          left: 15px;
+          z-index: 1001;
+        }
+        .sidebar.show {
+          left: 0;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .top-bar {
+          padding: 15px;
+        }
+        .cont {
+          padding: 20px;
+        }
+        .filter-button {
+          width: 100%;
         }
       }
 
-      .table-container {
-        width: 100%;
-        max-width: 1300px;
-        margin: 40px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+      .container-requests {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px;
       }
 
-      /* Tabs Section */
-      .tabs {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 20px;
-        padding-left: 0;
-      }
-
-      .tabs li {
-        list-style: none;
-        margin-right: 30px;
-        font-size: 18px;
-        font-weight: bold;
-        padding-bottom: 10px;
-        cursor: pointer;
-        color: #777;
-        border-bottom: 3px solid transparent;
-      }
-
-      .tabs li.active {
-        color: #007bff;
-        border-bottom: 3px solid #007bff;
-      }
-
-      /* Table Styles */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-        height: 40vh;
-        overflow-y: scroll;
-      }
-
-      thead {
-        background-color: #f4f4f9;
-      }
-
-      thead th {
-        text-align: left;
-        padding: 15px;
-        font-weight: bold;
-        border-bottom: 2px solid #ddd;
-        color: #333;
-      }
-
-      tbody tr {
-        border-bottom: 1px solid #eee;
-      }
-
-      tbody td {
-        padding: 15px;
-        color: #555;
-        text-align: left;
-      }
-
-      tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-
-      /* Payment Status Badges */
-      .status {
-        padding: 5px 15px;
-        border-radius: 12px;
-        font-weight: bold;
+      .filter-button {
         display: inline-block;
+        padding: 10px 20px;
+        background-color: #fff;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .card {
+        background-color: #fff;
+        border: 2px solid #00bfff;
+        border-radius: 10px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .card-title {
+        color: #00bfff;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+
+      .card-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         font-size: 14px;
       }
 
-      .paid {
-        background-color: #28a745;
-        color: white;
+      .rfq-details {
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
       }
 
-      .overdue {
-        background-color: #dc3545;
-        color: white;
+      .rfq-item {
+        flex: 1;
+        padding: 0 10px;
+        text-align: left;
       }
 
-      .estimate {
-        background-color: #007bff;
-        color: white;
+      .rfq-item span {
+        display: block;
+        font-weight: 600;
+        color: #333;
       }
 
-      /* Action Button */
-      .action-btn {
-        background-color: #343a40;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 50%;
-        border: none;
-        cursor: pointer;
+      .rfq-item p {
+        margin: 5px 0 0 0;
+        color: #666;
       }
 
-      /* Responsive Design */
+      .price {
+        color: #00bfff;
+        font-weight: 600;
+        font-size: 16px;
+        text-align: right;
+      }
+
       @media screen and (max-width: 768px) {
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-          display: block;
+        .card-content {
+          flex-direction: column;
+          align-items: flex-start;
         }
 
-        thead tr {
-          position: absolute;
-          top: -9999px;
-          left: -9999px;
+        .rfq-details {
+          flex-direction: column;
+          width: 100%;
         }
 
-        tbody tr {
-          margin-bottom: 15px;
-          padding: 10px;
-          border-radius: 10px;
-          box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        .rfq-item {
+          padding: 5px 0;
         }
 
-        tbody td {
-          padding-left: 50%;
-          position: relative;
-          text-align: right;
-        }
-
-        tbody td:before {
-          position: absolute;
-          left: 0;
-          width: 50%;
-          padding-left: 15px;
-          font-weight: bold;
-          font-size: 14px;
+        .price {
+          width: 100%;
           text-align: left;
-          white-space: nowrap;
+          margin-top: 10px;
         }
-
-        tbody td:nth-of-type(1):before {
-          content: "#Invoice";
-        }
-        tbody td:nth-of-type(2):before {
-          content: "Name";
-        }
-        tbody td:nth-of-type(3):before {
-          content: "Date";
-        }
-        tbody td:nth-of-type(4):before {
-          content: "Total";
-        }
-        tbody td:nth-of-type(5):before {
-          content: "Payment Status";
-        }
-        tbody td:nth-of-type(6):before {
-          content: "Action";
-        }
+      }
+      .cont {
+        padding: 50px;
+        height: 80vh;
+        overflow-y: scroll;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="top-bar">
-        <div class="logo-container">
-          <img src="images/krupa.svg" alt="Krupa Corporation" class="logo" />
-          <button class="menu-toggle" style="margin-top: 50px">
-            <img src="images/toggle.svg" alt="" />
-          </button>
+      <button class="menu-toggle">☰</button>
+      <aside class="sidebar">
+        <img src="/images/krupa.svg" alt="Logo" class="logo" />
+
+        <nav
+          style="
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+          "
+        >
+          <a href="/dashboard/{{id}}/" class="nav-item">
+            <img
+              src="/images/dashboard.svg"
+              alt="Dashboard Icon"
+              class="icon"
+            />
+            <span>Dashboard</span>
+          </a>
+          <a href="/" class="nav-item">
+            <img src="/images/products.svg" alt="Products Icon" class="icon" />
+            <span>Products</span>
+          </a>
+          <a href="/orders/{{id}}/" class="nav-item">
+            <img src="/images/orders.svg" alt="Orders Icon" class="icon" />
+            <span>Orders</span>
+          </a>
+          <a href="/billing/{{id}}/" class="nav-item">
+            <img src="/images/invoice.svg" alt="Invoices Icon" class="icon" />
+            <span>My Billings</span>
+          </a>
+          <a href="/request/{{id}}/" class="nav-item active">
+            <img src="/images/quote.svg" alt="Quotes Icon" class="icon" />
+            <span>My Request For Quote</span>
+          </a>
+          <a href="/trackhome/{{id}}/" class="nav-item">
+            <img src="/images/track.svg" alt="Track Orders Icon" class="icon" />
+            <span>Track Orders</span>
+          </a>
+          <a href="/accounts/{{id}}/" class="nav-item">
+            <img src="/images/account.svg" alt="Account Icon" class="icon" />
+            <span>Account</span>
+          </a>
+          <a href="/support/{{id}}/" class="nav-item">
+            <img
+              src="/images/tickets.svg"
+              alt="Support Tickets Icon"
+              class="icon"
+            />
+            <span>Support Tickets</span>
+          </a>
+        </nav>
+      </aside>
+      <main class="main-content">
+        <div class="top-bar">
           <div class="search-bar">
             <input type="text" placeholder="Search term" />
             <button>
@@ -451,357 +360,62 @@
               </svg>
             </button>
           </div>
-        </div>
-
-        <div class="top-icons" style="display: flex; align-items: center">
-          <svg class="contact-icon" viewBox="0 0 24 24">
-            <path
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            ></path>
-          </svg>
-          <svg class="contact-icon" viewBox="0 0 24 24">
-            <path
-              d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
-            ></path>
-          </svg>
-          <div class="nav-contact-card">
-            <div class="title">
-              <div class="icon">
-                <img src="images/support-nav.svg" alt="" />
-              </div>
-              Krupa Customer Care
-            </div>
-            <div class="buttons">
-              <a href="https://wa.me/1234567890" class="btn whatsapp"
-                >WhatsApp</a
-              >
-              <a href="tel:1234567890" class="btn call">Call</a>
-            </div>
+          <div class="top-icons">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              ></path>
+            </svg>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path
+                d="M20 17.17L18.83 16H5.17l-1.34-1.34C4.54 12.78 7.15 11 10 11h4c2.85 0 5.46 1.78 6.17 4.66l1.26 1.26c.3-.31.57-.65.83-1.02V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v13.17c.31.4.67.77 1.08 1.08L3 21.59V22h18v-.41l-1-1.59zM5 6h14v4H5V6zm0 6h10v2H5v-2z"
+              ></path>
+            </svg>
           </div>
         </div>
-      </div>
-      <aside class="sidebar">
-        <nav style="margin-top: 10vh">
-          <a href="#" class="nav-item">
-            <img src="images/dashboard.svg" alt="Dashboard Icon" class="icon" />
-            <span>Dashboard</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img src="images/products.svg" alt="Products Icon" class="icon" />
-            <span>Products</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img src="images/orders.svg" alt="Orders Icon" class="icon" />
-            <span>Orders</span>
-          </a>
-          <a href="#" class="nav-item active">
-            <img src="images/mybilling.svg" alt="Orders Icon" class="icon" />
-            <span>My Billing</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img src="images/invoice.svg" alt="Invoices Icon" class="icon" />
-            <span>My Invoices</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img src="images/quote.svg" alt="Quotes Icon" class="icon" />
-            <span>My Request For Quote</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img src="images/track.svg" alt="Track Orders Icon" class="icon" />
-            <span>Track Orders</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img src="images/account.svg" alt="Account Icon" class="icon" />
-            <span>Account</span>
-          </a>
-          <a href="#" class="nav-item">
-            <img
-              src="images/tickets.svg"
-              alt="Support Tickets Icon"
-              class="icon"
-            />
-            <span>Support Tickets</span>
-          </a>
-        </nav>
-      </aside>
-      <nav class="bottom-nav">
-        <ul class="bottom-nav-items">
-          <li>
-            <a href="#" class="bottom-nav-item b-active" data-nav="home">
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                ></path>
-              </svg>
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#" class="bottom-nav-item" data-nav="career">
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z"
-                ></path>
-              </svg>
-              Career
-            </a>
-          </li>
-          <li>
-            <a href="#" class="bottom-nav-item" data-nav="courses">
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
-                ></path>
-              </svg>
-              Courses
-            </a>
-          </li>
-          <li>
-            <a href="#" class="bottom-nav-item" data-nav="connect">
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
-                ></path>
-              </svg>
-              Connect
-            </a>
-          </li>
-          <li>
-            <a href="#" class="bottom-nav-item" data-nav="profile">
-              <svg
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                ></path>
-              </svg>
-              Profile
-            </a>
-          </li>
-        </ul>
-      </nav>
 
-      <main class="main-content" style="margin-top: 100px">
         <div class="cont">
-          <div class="table-container">
-            <ul class="tabs">
-              <li class="active" data-status="all">All</li>
-              <li data-status="estimate">Estimate</li>
-              <li data-status="paid">Paid</li>
-              <li data-status="overdue">Overdue</li>
-            </ul>
-            <table>
-              <thead>
-                <tr>
-                  <th>#Invoice</th>
-                  <th>Name</th>
-                  <th>Date</th>
-                  <th>Total</th>
-                  <th>Payment Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-status="paid">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status paid">Paid</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="overdue">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status overdue">Overdue</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="estimate">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status estimate">Estimate</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="estimate">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status estimate">Estimate</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="paid">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status paid">Paid</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="overdue">
-                  <td>#0905</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status overdue">Overdue</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="estimate">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status estimate">Estimate</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="paid">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status paid">Paid</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="overdue">
-                  <td>#0905</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status overdue">Overdue</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="estimate">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status estimate">Estimate</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="estimate">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status estimate">Estimate</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-                <tr data-status="paid">
-                  <td>#0901</td>
-                  <td>Primary TMT Fe 500D</td>
-                  <td>03.12.2020</td>
-                  <td>14500</td>
-                  <td><span class="status paid">Paid</span></td>
-                  <td><img src="images/go_toarrow.svg" alt="" /></td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="container-requests">
+            <div class="filter-button">
+              <span>Filters</span>
+            </div>
+            {% for i in requests %}
+            <div class="card">
+              <div class="card-title">RFQ-{{i.id}}</div>
+              <div class="card-content">
+                <div class="rfq-details">
+                  <div class="rfq-item">
+                    <span>#S.no</span>
+                    <p>{{i.id}}</p>
+                  </div>
+                  <div class="rfq-item">
+                    <span>Name</span>
+                    <p>{{i.product_name}}</p>
+                  </div>
+                  <div class="rfq-item">
+                    <span>Quantity</span>
+                    <p>5</p>
+                  </div>
+                </div>
+                {% if i.price %}
+                <div class="price">Proposed price: {{i.price}}</div>
+                {% else %}
+                <div class="price">Proposed price: {{i.price}}</div>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
           </div>
-          <script>
-            document.addEventListener("DOMContentLoaded", function () {
-              const tabs = document.querySelectorAll(".tabs li");
-              const rows = document.querySelectorAll("tbody tr");
-
-              tabs.forEach((tab) => {
-                tab.addEventListener("click", function () {
-                  tabs.forEach((tab) => tab.classList.remove("active"));
-                  this.classList.add("active");
-
-                  const status = this.getAttribute("data-status");
-
-                  rows.forEach((row) => {
-                    if (status === "all") {
-                      row.style.display = "";
-                    } else {
-                      if (row.getAttribute("data-status") === status) {
-                        row.style.display = "";
-                      } else {
-                        row.style.display = "none";
-                      }
-                    }
-                  });
-                });
-              });
-            });
-          </script>
         </div>
       </main>
     </div>
+
     <script>
-      document.querySelectorAll(".nav-item").forEach((item) => {
-        item.addEventListener("click", function (e) {
-          e.preventDefault();
-          document.querySelector(".nav-item.active").classList.remove("active");
-          this.classList.add("active");
+      document
+        .querySelector(".menu-toggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("show");
         });
-      });
-    </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.querySelector(".sidebar");
-        const mainContent = document.querySelector(".main-content");
-        const menuToggle = document.querySelector(".menu-toggle");
-
-        menuToggle.addEventListener("click", function () {
-          sidebar.classList.toggle("hide");
-          mainContent.classList.toggle("full-width");
-        });
-
-        function adjustLayout() {
-          if (window.innerWidth <= 768) {
-            sidebar.classList.add("hide");
-            mainContent.classList.add("full-width");
-          } else {
-            sidebar.classList.remove("hide");
-            mainContent.classList.remove("full-width");
-          }
-        }
-
-        adjustLayout();
-        window.addEventListener("resize", adjustLayout);
-      });
     </script>
   </body>
 </html>

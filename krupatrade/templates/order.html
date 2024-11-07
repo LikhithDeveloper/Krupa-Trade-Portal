@@ -277,7 +277,7 @@
             justify-content: space-around;
           "
         >
-          <a href="#" class="nav-item">
+          <a href="/dashboard/{{id}}/" class="nav-item">
             <img
               src="/images/dashboard.svg"
               alt="Dashboard Icon"
@@ -285,23 +285,23 @@
             />
             <span>Dashboard</span>
           </a>
-          <a href="/products/{{id}}/" class="nav-item">
+          <a href="/" class="nav-item">
             <img src="/images/products.svg" alt="Products Icon" class="icon" />
             <span>Products</span>
           </a>
-          <a href="#" class="nav-item active">
+          <a href="/orders/{{id}}/" class="nav-item active">
             <img src="/images/orders.svg" alt="Orders Icon" class="icon" />
             <span>Orders</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="/billing/{{id}}/" class="nav-item">
             <img src="/images/invoice.svg" alt="Invoices Icon" class="icon" />
-            <span>My Invoices</span>
+            <span>My Billings</span>
           </a>
           <a href="/request/{{id}}/" class="nav-item">
             <img src="/images/quote.svg" alt="Quotes Icon" class="icon" />
             <span>My Request For Quote</span>
           </a>
-          <a href="#" class="nav-item">
+          <a href="/trackhome/{{id}}/" class="nav-item">
             <img src="/images/track.svg" alt="Track Orders Icon" class="icon" />
             <span>Track Orders</span>
           </a>
@@ -365,32 +365,31 @@
             </thead>
             <tbody id="tableBody"></tbody>
           </table>
+          <!-- <h3>{{orders}}</h3> -->
 
-        
           <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const id = '{{ id }}'; // Replace with the actual ID you want to fetch data for
-            
-                const orders = JSON.parse('{{ orders|safe }}'); // Parse JSON data
-            
-                const tableBody = document.getElementById("tableBody");
-                tableBody.innerHTML = ""; // Clear any existing rows
-            
-                orders.forEach((order) => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${order.order_id}</td>
-                        <td>${order.product_name}</td>
-                        <td>${order.date}</td>
-                        <td>${order.total}</td>
-                        <td class="action-column">
-                            <a href="/orderdetails/{{order_id}}/" class="detail-btn">Detail</a>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
+              const id = "{{ id }}"; // ID for URL links
+               const orders = {{ orders|safe }};  // Parse JSON data
+
+              const tableBody = document.getElementById("tableBody");
+              tableBody.innerHTML = ""; // Clear any existing rows
+
+              orders.forEach((order) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td>${order.order_id}</td>
+                  <td>${order.product_name}</td>
+                  <td>${order.date}</td>
+                  <td>${order.total}</td>
+                  <td class="action-column">
+                    <a href="/orderdetails/${order.order_id}/" class="detail-btn">Detail</a>
+                  </td>
+                `;
+                tableBody.appendChild(row);
+              });
             });
-            </script>
+          </script>
         </div>
       </main>
     </div>

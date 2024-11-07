@@ -372,13 +372,13 @@ class Vendor(models.Model):
     shippingphone = models.CharField(max_length=15, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.companyname}"
+        return f"{self.companyname}-{self.id}"
 
 
 
 
 class Purchase(models.Model):
-    vendor_name = models.CharField(max_length=255, blank=True, null=True)
+    vendor_name = models.ForeignKey(Vendor,max_length=255, blank=True, null=True,on_delete=models.CASCADE)
     source_of_supply = models.CharField(max_length=255, blank=True, null=True)
     destination_of_supply = models.CharField(max_length=255, blank=True, null=True)
     purchase_order = models.CharField(max_length=255, blank=True, null=True)
@@ -409,7 +409,7 @@ class PurchaseItem(models.Model):
 from django.db import models
 
 class Bill(models.Model):
-    vendor_name = models.CharField(max_length=255, blank=True, null=True)
+    vendor_name = models.ForeignKey(Vendor,max_length=255, blank=True, null=True,on_delete=models.CASCADE)
     source_of_supply = models.CharField(max_length=255, blank=True, null=True)
     destination_of_supply = models.CharField(max_length=255, blank=True, null=True)
     bill_number = models.CharField(max_length=255, blank=True, null=True)  # ordernumber
@@ -435,3 +435,47 @@ class BillItem(models.Model):
     discount = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, default=0.00)
     tax = models.CharField(max_length=50, blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0.00)
+
+
+
+class Expense(models.Model):
+    start_date = models.DateField(null=True, blank=True)
+    expense_account = models.CharField(max_length=255, null=True, blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    paid_through = models.CharField(max_length=255, null=True, blank=True)
+    expense_type = models.CharField(max_length=255, null=True, blank=True)
+    sac = models.CharField(max_length=50, null=True, blank=True)  # Service Accounting Code
+    vendor = models.CharField(max_length=255, null=True, blank=True)
+    gst_treatment = models.CharField(max_length=255, null=True, blank=True)
+    source_of_supply = models.CharField(max_length=255, null=True, blank=True)
+    destination_of_supply = models.CharField(max_length=255, null=True, blank=True)
+    reverse_charge = models.BooleanField(default=False, null=True, blank=True)
+    tax = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    invoice_number = models.CharField(max_length=50, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    customer_name = models.CharField(max_length=255, null=True, blank=True, default="Select or add customer")
+
+    def _str_(self):
+        return f"Expense {self.invoice_number} - {self.amount}"
+    
+
+class RecurringExpense(models.Model):
+    start_date = models.DateField(null=True, blank=True)
+    expense_account = models.CharField(max_length=255, null=True, blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    paid_through = models.CharField(max_length=255, null=True, blank=True)
+    expense_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    expense_type = models.CharField(max_length=255, null=True, blank=True)
+    sac = models.CharField(max_length=50, null=True, blank=True)  # Service Accounting Code
+    vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
+    gst_treatment = models.CharField(max_length=255, null=True, blank=True)
+    source_of_supply = models.CharField(max_length=255, null=True, blank=True)
+    destination_of_supply = models.CharField(max_length=255, null=True, blank=True)
+    reverse_charge = models.BooleanField(default=False)
+    tax = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
+    customer_name = models.CharField(max_length=255, null=True, blank=True, default="Select or add customer")
+
+    def _str_(self):
+        return f"Expense {self.id} - {self.amount}"
+
