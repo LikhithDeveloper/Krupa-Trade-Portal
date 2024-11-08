@@ -196,10 +196,11 @@ def Estimates2(request,id):
     return render(request,"Estimates2.html",context)
 
 @csrf_exempt
-def Coverter_Sales(request,id):
+def Coverter_Sales(request,id):  # sourcery skip: use-named-expression
     objs1 = Estimate.objects.filter(id = id).first()
     objs2 = EstimateItem.objects.filter(estimate = objs1)
-    if sales := SalesOrder.objects.all().last():
+    sales = SalesOrder.objects.all().last()
+    if sales:
         num = sales.sales_order_number
         sales_number = int(num.split('-')[1])
         context = {"newinvoice":objs2,'estimates':objs1,"sales_number":sales_number+1,"id":id}
@@ -207,10 +208,11 @@ def Coverter_Sales(request,id):
         context = {"newinvoice":objs2,'estimates':objs1,"sales_number":1,"id":id}
     return render(request,"estimatesTosales.html",context)
 @csrf_exempt
-def Coverter_Invoice(request,id):
+def Coverter_Invoice(request,id):  # sourcery skip: use-named-expression
     objs1 = Estimate.objects.filter(id = id).first()
     objs2 = EstimateItem.objects.filter(estimate = objs1)
-    if invoice := InvoiceEstimate.objects.all().last():
+    invoice = InvoiceEstimate.objects.all().last()
+    if invoice:
         num = invoice.invoice_number
         invoice_number = int(num.split('-')[1])
         num2 = invoice.order_number
@@ -250,9 +252,10 @@ def save_pdf0(params: dict):
 
 
 @csrf_exempt
-def Newestimates(request):   # sourcery skip: avoid-builtin-shadow
+def Newestimates(request):   # sourcery skip: avoid-builtin-shadow, use-named-expression
     requests = Request.objects.all()
-    if estimates := Estimate.objects.all().last():
+    estimates = Estimate.objects.all().last()
+    if estimates:
         num = estimates.estimate_number
         estimate_number = int(num.split('-')[1])
         # print(estimate_number)
@@ -350,10 +353,11 @@ def SalesOrder2(request,id):
 
 
 @csrf_exempt
-def Coverter_Invoice_sales(request,id):
+def Coverter_Invoice_sales(request,id):  # sourcery skip: use-named-expression
     objs1 = SalesOrder.objects.filter(id = id).first()
     objs2 = SalesOrderItem.objects.filter(sales_order = objs1)
-    if invoice := InvoiceEstimate.objects.all().last():
+    invoice = InvoiceEstimate.objects.all().last()
+    if invoice:
         num = invoice.invoice_number
         invoice_number = int(num.split('-')[1])
         num2 = invoice.order_number
@@ -394,9 +398,10 @@ def save_pdf(params: dict):
 
 
 @csrf_exempt
-def Newsalesorder(request):
+def Newsalesorder(request):  # sourcery skip: use-named-expression
     requests = Request.objects.all()
-    if estimates := SalesOrder.objects.all().last():
+    estimates = SalesOrder.objects.all().last()
+    if estimates:
         num = estimates.sales_order_number
         sales_number = int(num.split('-')[1])
         # print(estimate_number)
@@ -501,9 +506,10 @@ def save_pdf2(params: dict):
 # from .models import Customer, Invoice, Item
 from django.core.exceptions import ValidationError
 @csrf_exempt
-def Invoice3(request):  # sourcery skip: low-code-quality
+def Invoice3(request):  # sourcery skip: low-code-quality, use-named-expression
     requests = Request.objects.all()
-    if estimates := InvoiceEstimate.objects.all().last():
+    estimates = InvoiceEstimate.objects.all().last()
+    if estimates:
         num = estimates.invoice_number
         num2 = estimates.order_number
         # print(num)
@@ -641,10 +647,11 @@ def save_pdf3(params: dict):
     return file_name
 
 @csrf_exempt
-def Newpayment(request):
+def Newpayment(request):  # sourcery skip: use-named-expression
     # Fetch all Request objects for the context
     requests = Request.objects.all()
-    if estimates := Payment.objects.all().last():
+    estimates = Payment.objects.all().last()
+    if estimates:
         num = estimates.payment_number
         # print(num)
         sales_number = int(num.split('-')[1])
@@ -820,10 +827,11 @@ def Purchases2(request,id):
     return render(request,"purchases2.html",context)
 
 @csrf_exempt
-def PurchasesToBill(request,id):
+def PurchasesToBill(request,id):  # sourcery skip: use-named-expression
     objs1 = Purchase.objects.get(id = id)
     objs2 = PurchaseItem.objects.filter(invoice = objs1)
-    if last_bill := Bill.objects.all().last():
+    last_bill = Bill.objects.all().last()
+    if last_bill:
         print(last_bill.bill_number)
         bill1 = last_bill.bill_number
         bill_number = int(bill1.split('-')[1])
@@ -835,9 +843,10 @@ def PurchasesToBill(request,id):
 
 
 @csrf_exempt
-def Purchases3(request):
+def Purchases3(request):  # sourcery skip: use-named-expression
     vendors = Vendor.objects.all()
-    if purchase := Purchase.objects.all().last():
+    purchase = Purchase.objects.all().last()
+    if purchase:
         num = purchase.purchase_order
         # print(num)
         sales_number = int(num.split('-')[1])
@@ -910,9 +919,10 @@ def Bills2(request,id):
     return render(request,"bills2.html",context)
 
 @csrf_exempt
-def Bills3(request):
+def Bills3(request):  # sourcery skip: use-named-expression
     vendors = Vendor.objects.all()
-    if last_bill := Bill.objects.all().last():
+    last_bill = Bill.objects.all().last()
+    if last_bill:
         print(last_bill.bill_number)
         bill1 = last_bill.bill_number
         bill_number = int(bill1.split('-')[1])
@@ -952,7 +962,8 @@ def Bills3(request):
                 total=float(data.get('total', '0.00')),
             )
             # print(data.get('hiddeninp'))
-            if hiddeninp := data.get('hiddeninp'):
+            hiddeninp = data.get('hiddeninp')
+            if hiddeninp:
                 billu = Purchase.objects.get(id = data.get('hiddeninp'))
                 billu.status = 'BILLED'
                 billu.save()
@@ -1001,7 +1012,7 @@ def Expansens2(request):
     return render(request,"espanses2.html")
 
 @csrf_exempt
-def Expansens3(request):
+def Expansens3(request):  # sourcery skip: use-named-expression
     # Handling GET request to display the form with vendors and an invoice number
     if request.method == "POST":
         vendors = Vendor.objects.all()

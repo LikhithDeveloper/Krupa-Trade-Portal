@@ -78,9 +78,10 @@ class Orders(models.Model):
     quantity = models.IntegerField()
     company = models.CharField(max_length=30)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # sourcery skip: use-named-expression
         if not self.order_id:
-            if last_order := Orders.objects.order_by('-id').first():
+            last_order = Orders.objects.order_by('-id').first()
+            if last_order:
                 self.order_id = str(int(last_order.order_id) + 1).zfill(5)
             else:
                 self.order_id = '000001'  # Starting value
@@ -142,9 +143,10 @@ class SupportTicket(models.Model):
     answered = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)  # Make sure this is uncommented
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # sourcery skip: use-named-expression
         if not self.order_id:
-            if last_order := SupportTicket.objects.order_by('-id').first():
+            last_order = SupportTicket.objects.order_by('-id').first()
+            if last_order:
                 self.order_id = str(int(last_order.order_id) + 1).zfill(5)
             else:
                 self.order_id = '000001'  # Starting value
@@ -169,9 +171,10 @@ class Invoice(models.Model):
     balance = models.IntegerField()
     paid = models.IntegerField()
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # sourcery skip: use-named-expression
         if not self.invoice_id:
-            if last_invoice := Invoice.objects.order_by('-id').first():
+            last_invoice = Invoice.objects.order_by('-id').first()
+            if last_invoice:
                 self.invoice_id = str(int(last_invoice.invoice_id) + 1).zfill(6)
             else:
                 self.invoice_id = '000001'  # Starting value
