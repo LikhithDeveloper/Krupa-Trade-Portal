@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-# from admin_panel.views import AdminProducts,AddProducts,AddSubCategories,AddCategories,Leads1,Leads2,Leads3,Customers,ManagersView,AddManagers,Estimates,Estimates2,Newestimates,Invoice1,Invoice2,Invoice3,Newsalesorder,SalesOrder1,Payment1,Newpayment,Payment2,Coverter_Invoice,SalesOrder2, Coverter_Invoice_sales,Create_invoice_sales,InvoiceReal,PaymentInvoice,Create_invoice_estimates,Coverter_Sales
+from admin_panel.views import AdminProducts,AddProducts,AddSubCategories,AddCategories,Leads1,Leads2,Leads3,Customers,ManagersView,AddManagers,Estimates,Estimates2,Newestimates,Invoice1,Invoice2,Invoice3,Newsalesorder,SalesOrder1,Payment1,Newpayment,Payment2,Coverter_Invoice,SalesOrder2, Coverter_Invoice_sales,Create_invoice_sales,InvoiceReal,PaymentInvoice,Create_invoice_estimates,Coverter_Sales
 from django.conf import settings
 from django.conf.urls.static import static
-from admin_panel.views import*
+from admin_panel.views import Vendors1,Vendors2,Vendors3,Purchases1,Purchases2,Purchases3,PurchasesToBill,Bills1,Bills2,Bills3,Payments1,Payments2,Payments3
+from admin_panel.views import Expansens1,Expansens2,Expansens3,ReccuringExpanses2,ReccuringExpanses3,ReccuringExpanses1
 
 urlpatterns = [
     path('adminproducts/',AdminProducts,name="AdminProducts"),
@@ -51,9 +52,9 @@ urlpatterns = [
     path('bills2/<int:id>/',Bills2,name="Bills2"),
     path('bills3/',Bills3,name="Bills3"),
 
-    path('paymentsvendor1/',Payment1,name="Payment1"),
-    path('paymentsvendor2/',Payment2,name="Payment2"),
-    path('paymentsvendor3/',Payment3,name="Payment3"),
+    path('paymentsvendor1/',Payments1,name="Payment1"),
+    path('paymentsvendor2/',Payments2,name="Payment2"),
+    path('paymentsvendor3/',Payments3,name="Payment3"),
 
     path('expanses1/',Expansens1,name="Expansens1"),
     path('expanses2/',Expansens2,name="Expansens2"),

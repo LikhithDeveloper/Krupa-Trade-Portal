@@ -995,11 +995,11 @@ def Bills3(request):  # sourcery skip: use-named-expression
     return render(request, "bills3.html", context)
 
 
-def Payment1(request):
+def Payments1(request):
     return render(request,"paymentvendor1.html")
-def Payment2(request):
+def Payments2(request):
     return render(request,"paymentvendor2.html")
-def Payment3(request):
+def Payments3(request):
     return render(request,"paymentvendor3.html")
 
 
